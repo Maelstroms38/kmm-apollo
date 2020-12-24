@@ -1,0 +1,11 @@
+query GetDesserts {
+  desserts {
+    id
+    name
+    amount
+    reviews {
+      text
+      rating
+    }
+  }
+}
