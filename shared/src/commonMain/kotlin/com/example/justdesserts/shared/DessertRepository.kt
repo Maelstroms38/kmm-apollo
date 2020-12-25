@@ -19,9 +19,9 @@ class DessertRepository {
     )
   )
 
-  suspend fun getDesserts(): List<GetDessertsQuery.Dessert?>? {
+  suspend fun getDesserts(): List<GetDessertsQuery.Dessert>? {
     val response = apolloClient.query(GetDessertsQuery()).execute().single()
-    return response.data?.desserts
+    return response.data?.dessertsFilterNotNull()
   }
 
 }

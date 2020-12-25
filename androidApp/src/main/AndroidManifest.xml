@@ -1,11 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android" package="com.example.justdesserts.androidApp">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    package="com.example.justdesserts">
+
+    <uses-permission android:name="android.permission.INTERNET" />
 
     <application
+            android:name="com.example.justdesserts.androidApp.MainApplication"
             android:allowBackup="false"
             android:supportsRtl="true"
-            android:theme="@style/AppTheme">
-        <activity android:name=".MainActivity">
+            android:usesCleartextTraffic="true"
+            android:theme="@style/AppTheme"
+            tools:targetApi="m">
+        <activity android:name="com.example.justdesserts.androidApp.ui.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
 
