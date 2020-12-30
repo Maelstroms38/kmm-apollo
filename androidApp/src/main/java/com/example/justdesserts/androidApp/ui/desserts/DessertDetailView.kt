@@ -11,17 +11,18 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import com.example.justdesserts.GetDessertQuery
 import com.example.justdesserts.GetDessertsQuery
 import dev.chrisbanes.accompanist.coil.CoilImage
 import org.koin.androidx.compose.getViewModel
 
 @Composable
-fun DessertDetailView(characterId: String, popBack: () -> Unit) {
+fun DessertDetailView(dessertId: String, popBack: () -> Unit) {
     val dessertListViewModel = getViewModel<DessertListViewModel>()
-    val (dessert, setDessert) = remember { mutableStateOf<GetDessertsQuery.Dessert?>(null) }
+    val (dessert, setDessert) = remember { mutableStateOf<GetDessertQuery.Dessert?>(null) }
 
-    LaunchedEffect(characterId) {
-//        setDessert(characterListsViewModel.getCharacter(characterId))
+    LaunchedEffect(dessertId) {
+         setDessert(dessertListViewModel.getDessert(dessertId))
     }
 
     Scaffold(
@@ -36,14 +37,10 @@ fun DessertDetailView(characterId: String, popBack: () -> Unit) {
             )
         })
     {
-        Surface(color = Color.LightGray) {
+        Surface(color = Color.White) {
 
             ScrollableColumn(modifier = Modifier.padding(top = 16.dp)) {
                 dessert?.let {
-
-                    Text("Mugshot", style = typography.h5, color = AmbientContentColor.current,
-                        modifier = Modifier.padding(vertical = 8.dp, horizontal = 16.dp))
-
                     Surface(color = Color.White) {
                         Row(
                             modifier = Modifier.fillMaxWidth().padding(16.dp),
@@ -64,11 +61,10 @@ fun DessertDetailView(characterId: String, popBack: () -> Unit) {
 
                     Spacer(modifier = Modifier.preferredHeight(16.dp))
 
-                    Text("Episodes", style = typography.h5, color = AmbientContentColor.current,
+                    Text("Reviews", style = typography.h5, color = AmbientContentColor.current,
                         modifier = Modifier.padding(vertical = 8.dp, horizontal = 16.dp))
 
                     Surface(color = Color.White) {
-                        // TODO: Reviews list
                         DessertReviewsList(dessert)
                     }
 
@@ -83,7 +79,7 @@ fun DessertDetailView(characterId: String, popBack: () -> Unit) {
 }
 
 @Composable
-private fun DessertReviewsList(dessert: GetDessertsQuery.Dessert) {
+private fun DessertReviewsList(dessert: GetDessertQuery.Dessert) {
 
     Column(modifier = Modifier.padding(horizontal = 16.dp),) {
         dessert.reviews?.let { reviewsList ->
@@ -91,7 +87,7 @@ private fun DessertReviewsList(dessert: GetDessertsQuery.Dessert) {
                 Column {
                     Text(review.text,
                         style = typography.h6)
-                    Text(review.rating.toString(),
+                    Text("${review.rating.toString()} stars",
                         style = typography.subtitle2,
                         color = Color.Gray)
                 }

@@ -18,7 +18,6 @@ import com.example.justdesserts.androidApp.ui.desserts.DessertListView
 
 sealed class Screens(val route: String, val label: String, val icon: ImageVector? = null) {
     object DessertsScreen : Screens("Desserts", "Desserts", Icons.Default.List)
-    object FavoritesScreen : Screens("Favorites", "Favorites",  Icons.Default.Star)
     object DessertDetailsScreen : Screens("DessertDetails", "DessertDetails")
 }
 
@@ -38,7 +37,7 @@ class MainActivity : AppCompatActivity() {
 fun MainLayout() {
     val navController = rememberNavController()
 
-    val bottomNavigationItems = listOf(Screens.DessertsScreen, Screens.FavoritesScreen)
+    val bottomNavigationItems = listOf(Screens.DessertsScreen)
     val bottomBar: @Composable () -> Unit = { BottomNavigation(navController, bottomNavigationItems) }
 
     NavHost(navController, startDestination = Screens.DessertsScreen.route) {
@@ -50,14 +49,6 @@ fun MainLayout() {
         composable(Screens.DessertDetailsScreen.route + "/{id}") { backStackEntry ->
             DessertDetailView(backStackEntry.arguments?.get("id") as String, popBack = { navController.popBackStack() })
         }
-//        composable(Screens.FavoritesScreen.route) {
-//            FavoritesListView(bottomBar) {
-//                navController.navigate(Screens.DessertDetailsScreen.route+ "/${it.id}")
-//            }
-//        }
-//        composable(Screens.DessertDetailsScreen.route + "/{id}") { backStackEntry ->
-//            DessertDetailView(backStackEntry.arguments?.get("id") as String, popBack = { navController.popBackStack() })
-//        }
     }
 }
 

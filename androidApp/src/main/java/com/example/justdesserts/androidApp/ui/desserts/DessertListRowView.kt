@@ -16,7 +16,7 @@ import com.example.justdesserts.GetDessertsQuery
 import dev.chrisbanes.accompanist.coil.CoilImage
 
 @Composable
-fun DessertListRowView(dessert: GetDessertsQuery.Dessert, dessertSelected: (network: GetDessertsQuery.Dessert) -> Unit) {
+fun DessertListRowView(dessert: GetDessertsQuery.Result, dessertSelected: (network: GetDessertsQuery.Result) -> Unit) {
   Row(modifier = Modifier.fillMaxWidth().clickable(onClick = { dessertSelected(dessert) }).padding(16.dp),
       verticalAlignment = Alignment.CenterVertically
   ) {

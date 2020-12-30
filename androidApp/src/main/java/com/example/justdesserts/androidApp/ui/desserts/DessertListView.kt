@@ -11,7 +11,7 @@ import com.example.justdesserts.GetDessertsQuery
 import org.koin.androidx.compose.getViewModel
 
 @Composable
-fun DessertListView(bottomBar: @Composable () -> Unit, dessertSelected: (dessert: GetDessertsQuery.Dessert) -> Unit) {
+fun DessertListView(bottomBar: @Composable () -> Unit, dessertSelected: (dessert: GetDessertsQuery.Result) -> Unit) {
   val dessertListViewModel = getViewModel<DessertListViewModel>()
   val lazyDessertList = dessertListViewModel.desserts.collectAsLazyPagingItems()
 
