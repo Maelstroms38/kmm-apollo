@@ -1,4 +1,4 @@
-package com.example.justdesserts.androidApp.ui.desserts
+package com.example.justdesserts.androidApp.ui.desserts.list
 
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.Scaffold

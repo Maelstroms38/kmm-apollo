@@ -1,4 +1,4 @@
-package com.example.justdesserts.androidApp.ui.desserts
+package com.example.justdesserts.androidApp.ui.desserts.list
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*

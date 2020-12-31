@@ -6,15 +6,15 @@ import androidx.compose.material.*
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.List
-import androidx.compose.material.icons.filled.Star
 import androidx.compose.runtime.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.setContent
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.*
-import com.example.justdesserts.androidApp.ui.desserts.DessertDetailView
-import com.example.justdesserts.androidApp.ui.desserts.DessertListView
+import com.example.justdesserts.androidApp.ui.desserts.detail.DessertDetailView
+import com.example.justdesserts.androidApp.ui.desserts.form.DessertFormView
+import com.example.justdesserts.androidApp.ui.desserts.list.DessertListView
 
 sealed class Screens(val route: String, val label: String, val icon: ImageVector? = null) {
     object DessertsScreen : Screens("Desserts", "Desserts", Icons.Default.List)
