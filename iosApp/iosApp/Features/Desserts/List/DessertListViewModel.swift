@@ -55,4 +55,28 @@ class DessertListViewModel: ObservableObject {
             }
         }
     }
+    
+    func createDessert(dessert: NewDessertMutation.NewDessert) {
+        let result = GetDessertsQuery.Result(__typename: dessert.__typename, id: dessert.id, name: dessert.name, description: dessert.description_, imageUrl: dessert.imageUrl)
+        self.desserts.append(result)
+    }
+    
+    func updateDessert(dessert: UpdateDessertMutation.UpdateDessert) {
+        let result = GetDessertsQuery.Result(__typename: dessert.__typename, id: dessert.id, name: dessert.name, description: dessert.description_, imageUrl: dessert.imageUrl)
+        let insertIndex = self.desserts.firstIndex { dessert -> Bool in
+            return dessert.id == result.id
+        }
+        if let index = insertIndex {
+            self.desserts[index] = result
+        }
+    }
+    
+    func deleteDessert(dessertId: String) {
+        let deletedIndex = self.desserts.firstIndex { dessert -> Bool in
+            return dessert.id == dessertId
+        }
+        if let delete = deletedIndex {
+            self.desserts.remove(at: delete)
+        }
+    }
 }

@@ -21,7 +21,7 @@ fun DessertListRowView(dessert: GetDessertsQuery.Result, dessertSelected: (netwo
       verticalAlignment = Alignment.CenterVertically
   ) {
 
-    val imageUrl = "http://placekitten.com/200/300"
+    val imageUrl = dessert.imageUrl
     if (imageUrl != null) {
       Card(modifier = Modifier.preferredSize(50.dp), shape = CircleShape) {
         CoilImage(data = imageUrl)
@@ -32,7 +32,7 @@ fun DessertListRowView(dessert: GetDessertsQuery.Result, dessertSelected: (netwo
 
     Column(modifier = Modifier.padding(start = 8.dp, end = 8.dp)) {
       Text(dessert.name ?: "", style = MaterialTheme.typography.h6)
-      Text("${dessert.amount ?: 0} servings(s)",
+      Text(dessert.description ?: "",
            style = MaterialTheme.typography.subtitle2, color = Color.Gray)
     }
   }

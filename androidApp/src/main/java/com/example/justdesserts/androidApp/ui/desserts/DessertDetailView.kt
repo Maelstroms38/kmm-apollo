@@ -46,7 +46,7 @@ fun DessertDetailView(dessertId: String, popBack: () -> Unit) {
                             modifier = Modifier.fillMaxWidth().padding(16.dp),
                             horizontalArrangement = Arrangement.Center
                         ) {
-                            val imageUrl = "http://placekitten.com/200/300"
+                            val imageUrl = dessert.imageUrl
                             if (imageUrl != null) {
                                 Card(
                                     modifier = Modifier.preferredSize(150.dp),

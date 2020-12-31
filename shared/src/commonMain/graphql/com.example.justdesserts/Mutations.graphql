@@ -1,0 +1,21 @@
+mutation NewDessert($name: String!, $description: String!, $imageUrl: String!) {
+  newDessert(name: $name, description: $description, imageUrl: $imageUrl) {
+    id
+    name
+    description
+    imageUrl
+  }
+}
+
+mutation UpdateDessert($dessertId: ID!, $name: String!, $description: String!, $imageUrl: String!) {
+  updateDessert(id:$dessertId, name: $name, description: $description, imageUrl: $imageUrl) {
+    id
+    name
+    description
+    imageUrl
+  }
+}
+
+mutation DeleteDessert($dessertId:ID!) {
+  deleteDessert(id:$dessertId)
+}

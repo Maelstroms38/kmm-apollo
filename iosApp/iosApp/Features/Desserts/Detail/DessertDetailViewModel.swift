@@ -23,4 +23,29 @@ class DessertDetailViewModel: ObservableObject {
             }
         }
     }
+    
+    func newDessert(name: String, description: String, imageUrl: String) {
+        repository.doNewDessert(name: name, description: description, imageUrl: imageUrl) { [weak self] (data, error) in
+            guard let self = self else { return }
+            if let dessert = data {
+                self.dessert = GetDessertQuery.Dessert(__typename: dessert.__typename, id: dessert.id, name: dessert.name, description: dessert.description_, imageUrl: dessert.imageUrl, reviews: [])
+            }
+        }
+    }
+    
+    func updateDessert(dessertId: String, name: String, description: String, imageUrl: String) {
+        repository.updateDessert(dessertId: dessertId, name: name, description: description, imageUrl: imageUrl) { [weak self] (data, error) in
+            guard let self = self else { return }
+            if let dessert = data {
+                self.dessert = GetDessertQuery.Dessert(__typename: dessert.__typename, id: dessert.id, name: dessert.name, description: dessert.description_, imageUrl: dessert.imageUrl, reviews: self.dessert?.reviews)
+            }
+        }
+    }
+    
+    func deleteDessert(dessertId: String) {
+        repository.deleteDessert(dessertId: dessertId) { [weak self] (deleted, error) in
+            guard let self = self else { return }
+            self.dessert = nil
+        }
+    }
 }

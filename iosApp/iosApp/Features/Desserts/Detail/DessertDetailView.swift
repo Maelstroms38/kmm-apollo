@@ -12,13 +12,20 @@ import shared
 
 @available(iOS 14.0, *)
 struct DessertDetailView: View {
+    
+    @Environment(\.presentationMode) var presentationMode
+    
     @StateObject private var viewModel = DessertDetailViewModel()
+    
+    let delegate: DessertListViewDelegate
+    
+    @State private var isEditingViewShown = false
     
     let dessertId: String
     
     var body: some View {
         List {
-            Section(header: Text(viewModel.dessert?.name ?? "Loading...")) {
+            Section(header: Text("Preview")) {
                 HStack {
                     Spacer()
                     if let image = viewModel.dessert?.imageUrl,
@@ -48,9 +55,45 @@ struct DessertDetailView: View {
             }
         }
         .listStyle(GroupedListStyle())
-        .navigationTitle("Dessert")
+        .navigationTitle(viewModel.dessert?.name ?? "")
+        navigationBarItems(trailing:
+            Button(action: {
+                self.isEditingViewShown = true
+            }) {
+                Image(systemName: "square.and.pencil")
+            }
+        )
         .onAppear() {
             viewModel.fetchDessert(dessertId: dessertId)
+        }
+        .padding()
+        .sheet(isPresented: $isEditingViewShown) {
+            VStack {
+                DessertFormView(handler: { dessert in
+                    
+                    guard let name = dessert.name, let description = dessert.description_, let imageUrl = dessert.imageUrl else { return }
+                    
+                    switch dessert.__typename {
+                    
+                    case "newDessert":
+                        viewModel.newDessert(name: name, description: description, imageUrl: imageUrl)
+                        delegate.onCreateDessert(dessert: NewDessertMutation.NewDessert(__typename: dessert.__typename, id: dessert.id, name: name, description: description, imageUrl: imageUrl))
+                    case "updateDessert":
+                        viewModel.updateDessert(dessertId: dessert.id, name: name, description: description, imageUrl: imageUrl)
+                        delegate.onUpdateDessert(dessert: UpdateDessertMutation.UpdateDessert(__typename: dessert.__typename, id: dessert.id, name: name, description: description, imageUrl: imageUrl))
+                    case "deleteDessert":
+                        viewModel.deleteDessert(dessertId: dessertId)
+                        delegate.onDeleteDessert(dessertId: dessertId)
+                        self.presentationMode.wrappedValue.dismiss()
+                        
+                    default:
+                        break
+                    }
+                    
+                    self.isEditingViewShown = false
+                },
+                dessertId: dessertId, name: viewModel.dessert?.name ?? "", description: viewModel.dessert?.description_ ?? "", imageUrl: viewModel.dessert?.imageUrl ?? "")
+            }
         }
     }
     }

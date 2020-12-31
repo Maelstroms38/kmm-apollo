@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0B0FA14A259E29920033ABE2 /* DessertFormView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B0FA149259E29920033ABE2 /* DessertFormView.swift */; };
 		0B58525D259BAC66000572B6 /* DessertListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B58525C259BAC66000572B6 /* DessertListViewModel.swift */; };
 		0B585263259BADD9000572B6 /* DessertListRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B585262259BADD9000572B6 /* DessertListRowView.swift */; };
 		0B585268259BAEC9000572B6 /* KingfisherSwiftUI in Frameworks */ = {isa = PBXBuildFile; productRef = 0B585267259BAEC9000572B6 /* KingfisherSwiftUI */; };
@@ -58,6 +59,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		0B0FA149259E29920033ABE2 /* DessertFormView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DessertFormView.swift; sourceTree = "<group>"; };
 		0B58525C259BAC66000572B6 /* DessertListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DessertListViewModel.swift; sourceTree = "<group>"; };
 		0B585262259BADD9000572B6 /* DessertListRowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DessertListRowView.swift; sourceTree = "<group>"; };
 		0B58526B259BB12E000572B6 /* DessertListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DessertListView.swift; sourceTree = "<group>"; };
@@ -108,6 +110,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		0B0FA144259E29760033ABE2 /* Form */ = {
+			isa = PBXGroup;
+			children = (
+				0B0FA149259E29920033ABE2 /* DessertFormView.swift */,
+			);
+			path = Form;
+			sourceTree = "<group>";
+		};
 		0B58525A259BAC35000572B6 /* Features */ = {
 			isa = PBXGroup;
 			children = (
@@ -119,6 +129,7 @@
 		0B58525B259BAC40000572B6 /* Desserts */ = {
 			isa = PBXGroup;
 			children = (
+				0B0FA144259E29760033ABE2 /* Form */,
 				0B915876259CF10700DBA0CE /* List */,
 				0B915875259CF0F400DBA0CE /* Detail */,
 			);
@@ -375,6 +386,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				0B91586C259CE77E00DBA0CE /* DessertDetailViewModel.swift in Sources */,
+				0B0FA14A259E29920033ABE2 /* DessertFormView.swift in Sources */,
 				7555FF7F242A565900829871 /* AppDelegate.swift in Sources */,
 				0B915872259CEC8D00DBA0CE /* DessertReviewRowView.swift in Sources */,
 				0B585263259BADD9000572B6 /* DessertListRowView.swift in Sources */,
