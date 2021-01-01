@@ -27,15 +27,6 @@ class DessertDetailViewModel: ObservableObject {
         }
     }
     
-    func newDessert(dessert: Dessert) {
-        repository.doNewDessert(name: dessert.name, description: dessert.description, imageUrl: dessert.imageUrl) { [weak self] (data, error) in
-            guard let self = self,
-                  let _ = data else { return }
-            self.dessert = dessert
-            self.delegate?.onCreateDessert(newDessert: dessert)
-        }
-    }
-    
     func updateDessert(dessert: Dessert) {
         repository.updateDessert(dessertId: dessert.dessertId, name: dessert.name, description: dessert.description, imageUrl: dessert.imageUrl) { [weak self] (data, error) in
             guard let self = self,

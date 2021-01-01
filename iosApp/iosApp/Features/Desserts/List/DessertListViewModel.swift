@@ -39,7 +39,7 @@ class DessertListViewModel: ObservableObject {
             
             guard let self = self, let results = data?.results as? [GetDessertsQuery.Result] else { return }
             
-            let desserts = results.map { Dessert(action: DessertAction.READ, dessertId: $0.id, name: $0.name ?? "", description: $0.description_ ?? "", imageUrl: $0.imageUrl ?? "") }
+            let desserts = results.map { Dessert(dessertId: $0.id, name: $0.name ?? "", description: $0.description_ ?? "", imageUrl: $0.imageUrl ?? "") }
             
             if page > 0 {
                 self.desserts.append(contentsOf: desserts)
@@ -58,7 +58,16 @@ class DessertListViewModel: ObservableObject {
     }
     
     func createDessert(newDessert: Dessert) {
-        self.desserts.append(newDessert)
+        repository.doNewDessert(name: newDessert.name, description: newDessert.description, imageUrl: newDessert.imageUrl) { [weak self] (data, error) in
+            guard let self = self,
+                  let dessertId = data?.id,
+                  let name = data?.name,
+                  let description = data?.description_,
+                  let imageUrl = data?.imageUrl else { return }
+            
+            let dessertData = Dessert(dessertId: dessertId, name: name, description: description, imageUrl: imageUrl)
+            self.desserts.append(dessertData)
+        }
     }
     
     func updateDessert(updatedDessert: Dessert) {

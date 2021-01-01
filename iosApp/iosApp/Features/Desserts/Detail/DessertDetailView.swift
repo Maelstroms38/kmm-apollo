@@ -71,21 +71,11 @@ struct DessertDetailView: View {
         .sheet(isPresented: $isEditingViewShown) {
             VStack {
                 DessertFormView(handler: { dessert in
-                    let action = dessert.action
-                    let dessertId = dessert.dessertId
-                    let name = dessert.name
-                    let description = dessert.description
-                    let imageUrl = dessert.imageUrl
-                    let reviews = dessert.reviews
-                    let dessert = Dessert(action: action, dessertId: dessertId, name: name, description: description, imageUrl: imageUrl, reviews: reviews)
-                    
                     switch dessert.action {
-                    case .CREATE:
-                        viewModel.newDessert(dessert: dessert)
                     case .UPDATE:
                         viewModel.updateDessert(dessert: dessert)
                     case .DELETE:
-                        viewModel.deleteDessert(dessertId: dessertId)
+                        viewModel.deleteDessert(dessertId: dessert.dessertId)
                         self.presentationMode.wrappedValue.dismiss()
                         
                     default:
@@ -96,6 +86,8 @@ struct DessertDetailView: View {
                 },
                 dessertId: dessertId, name: viewModel.dessert?.name ?? "", description: viewModel.dessert?.description ?? "", imageUrl: viewModel.dessert?.imageUrl ?? "")
             }
+        }.onDisappear() {
+            self.isEditingViewShown = false
         }
     }
     }

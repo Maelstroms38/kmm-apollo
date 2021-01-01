@@ -20,7 +20,7 @@ struct DessertFormView: View {
     @State var imageUrl: String
     
     private var isEditing: Bool {
-        return !dessertId.isEmpty
+        return dessertId != "new"
     }
     
     private var label: String {
@@ -29,7 +29,7 @@ struct DessertFormView: View {
     
     var body: some View {
         Form {
-            Section(header: Text(label)) {
+            Section(header: Text("\(label) Dessert")) {
                 TextField("Name", text: $name)
                 TextField("Description", text: $description)
                 TextField("Image URL", text: $imageUrl)
@@ -37,22 +37,17 @@ struct DessertFormView: View {
             Section {
                 Button(
                     action: {
-                        if (isEditing) {
-                            self.handler(Dessert(
-                                action: .UPDATE, dessertId: dessertId, name: name, description: description, imageUrl: imageUrl
-                            ))
-                        } else {
-                            self.handler(Dessert(
-                                action: .CREATE, dessertId: dessertId, name: name, description: description, imageUrl: imageUrl
-                            ))
-                        }
+                        let action: DessertAction = isEditing ? .UPDATE : .CREATE
+                        self.handler(Dessert(
+                            action: action, dessertId: dessertId, name: name, description: description, imageUrl: imageUrl
+                        ))
                     },
                     label: { Text(label) }
                 )
                 if isEditing {
                     Button(
                         action: {
-                            self.handler(Dessert(action: DessertAction.DELETE, dessertId: dessertId))
+                            self.handler(Dessert(action: .DELETE, dessertId: dessertId))
                         },
                         label: { Text("Delete") }
                     )

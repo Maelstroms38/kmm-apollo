@@ -49,41 +49,28 @@ import org.koin.androidx.compose.getViewModel
 fun DessertDetailView(dessertId: String, popBack: () -> Unit) {
     val dessertDetailViewModel = getViewModel<DessertDetailViewModel>()
     val (dessert, setDessert) = remember { mutableStateOf<Dessert?>(Dessert(DessertAction.READ, dessertId, "", "", "")) }
+    val (loading, setLoading) = remember { mutableStateOf(true) }
     val drawerState = rememberBottomDrawerState(BottomDrawerValue.Closed)
     val scope = rememberCoroutineScope()
 
     suspend fun handleDessert(dessert: Dessert) {
         when(dessert.action) {
             DessertAction.READ -> {
-                if (dessertId != "new") {
-                    val readDessert = dessertDetailViewModel.getDessert(dessertId)
-                    val reviewsMap = readDessert?.reviews?.map {
-                        Review(
-                            dessertId,
-                            it?.text ?: "",
-                            it?.rating ?: 0
-                        )
-                    }
-                    setDessert(Dessert(
+                val readDessert = dessertDetailViewModel.getDessert(dessertId)
+                val reviewsMap = readDessert?.reviews?.map {
+                    Review(
+                        dessertId,
+                        it?.text ?: "",
+                        it?.rating ?: 0
+                    )
+                }
+                setDessert(
+                    Dessert(
                         dessertId = dessertId,
                         name = readDessert?.name ?: "",
                         description = readDessert?.description ?: "",
                         imageUrl = readDessert?.imageUrl ?: "",
                         reviews = reviewsMap ?: emptyList()
-                    ))
-                    drawerState.close()
-                } else {
-                    drawerState.expand()
-                }
-            }
-            DessertAction.CREATE -> {
-                val newDessert = dessertDetailViewModel.createDessert(dessert)
-                setDessert(
-                    Dessert(
-                        dessertId = newDessert?.id ?: "",
-                        name = newDessert?.name ?: "",
-                        description = newDessert?.description ?: "",
-                        imageUrl = newDessert?.imageUrl ?: ""
                     )
                 )
                 drawerState.close()
@@ -112,6 +99,7 @@ fun DessertDetailView(dessertId: String, popBack: () -> Unit) {
     LaunchedEffect(dessert) {
         dessert?.let {
             handleDessert(it)
+            setLoading(false)
         } ?: run {
             popBack()
         }
@@ -147,7 +135,7 @@ fun DessertDetailView(dessertId: String, popBack: () -> Unit) {
             BottomDrawerLayout(drawerState = drawerState,
                 drawerContent = {
                     dessert?.let { it ->
-                        if (dessert.dessertId == "new" || dessert.name.isNotEmpty()) {
+                        if (!loading) {
                             DessertFormView(
                                 Dessert(
                                     dessertId = it.dessertId,
