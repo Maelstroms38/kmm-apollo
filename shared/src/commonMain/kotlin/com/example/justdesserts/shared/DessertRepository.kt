@@ -12,7 +12,7 @@ import kotlinx.coroutines.flow.single
 class DessertRepository {
   private val apolloClient = ApolloClient(
     networkTransport = ApolloHttpNetworkTransport(
-      serverUrl = "http://192.168.0.156:9000/graphql",
+      serverUrl = "http://localhost:9000/graphql",
       headers = mapOf(
         "Accept" to "application/json",
         "Content-Type" to "application/json",

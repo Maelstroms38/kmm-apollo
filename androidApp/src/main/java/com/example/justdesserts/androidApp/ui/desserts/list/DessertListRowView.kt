@@ -13,26 +13,22 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import com.example.justdesserts.GetDessertsQuery
+import com.example.justdesserts.androidApp.models.Dessert
 import dev.chrisbanes.accompanist.coil.CoilImage
 
 @Composable
-fun DessertListRowView(dessert: GetDessertsQuery.Result, dessertSelected: (network: GetDessertsQuery.Result) -> Unit) {
+fun DessertListRowView(dessert: Dessert, dessertSelected: (network: Dessert) -> Unit) {
   Row(modifier = Modifier.fillMaxWidth().clickable(onClick = { dessertSelected(dessert) }).padding(16.dp),
       verticalAlignment = Alignment.CenterVertically
   ) {
 
-    val imageUrl = dessert.imageUrl
-    if (imageUrl != null) {
-      Card(modifier = Modifier.preferredSize(50.dp), shape = CircleShape) {
-        CoilImage(data = imageUrl)
-      }
-    } else {
-      Spacer(modifier = Modifier.preferredSize(50.dp))
+    Card(modifier = Modifier.preferredSize(50.dp), shape = CircleShape) {
+      CoilImage(data = dessert.imageUrl)
     }
 
     Column(modifier = Modifier.padding(start = 8.dp, end = 8.dp)) {
-      Text(dessert.name ?: "", style = MaterialTheme.typography.h6)
-      Text(dessert.description ?: "",
+      Text(dessert.name, style = MaterialTheme.typography.h6)
+      Text(dessert.description,
            style = MaterialTheme.typography.subtitle2, color = Color.Gray)
     }
   }

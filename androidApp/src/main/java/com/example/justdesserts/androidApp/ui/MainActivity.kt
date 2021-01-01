@@ -43,7 +43,7 @@ fun MainLayout() {
     NavHost(navController, startDestination = Screens.DessertsScreen.route) {
         composable(Screens.DessertsScreen.route) {
             DessertListView(bottomBar) {
-                navController.navigate(Screens.DessertDetailsScreen.route+ "/${it.id}")
+                navController.navigate(Screens.DessertDetailsScreen.route + "/${it.dessertId}")
             }
         }
         composable(Screens.DessertDetailsScreen.route + "/{id}") { backStackEntry ->

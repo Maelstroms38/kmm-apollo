@@ -26,29 +26,95 @@ import androidx.compose.material.Text
 import androidx.compose.material.TopAppBar
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
-import androidx.compose.material.icons.filled.Check
+import androidx.compose.material.icons.outlined.ArrowDropDown
 import androidx.compose.material.icons.outlined.Create
 import androidx.compose.material.rememberBottomDrawerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
-import com.example.justdesserts.GetDessertQuery
+import com.example.justdesserts.androidApp.models.Dessert
+import com.example.justdesserts.androidApp.models.DessertAction
+import com.example.justdesserts.androidApp.models.Review
 import com.example.justdesserts.androidApp.ui.desserts.form.DessertFormView
 import dev.chrisbanes.accompanist.coil.CoilImage
+import kotlinx.coroutines.async
 import org.koin.androidx.compose.getViewModel
 
 @Composable
 fun DessertDetailView(dessertId: String, popBack: () -> Unit) {
     val dessertDetailViewModel = getViewModel<DessertDetailViewModel>()
-    val (dessert, setDessert) = remember { mutableStateOf<GetDessertQuery.Dessert?>(null) }
+    val (dessert, setDessert) = remember { mutableStateOf<Dessert?>(Dessert(DessertAction.READ, dessertId, "", "", "")) }
     val drawerState = rememberBottomDrawerState(BottomDrawerValue.Closed)
+    val scope = rememberCoroutineScope()
 
-    LaunchedEffect(dessertId) {
-         setDessert(dessertDetailViewModel.getDessert(dessertId))
+    suspend fun handleDessert(dessert: Dessert) {
+        when(dessert.action) {
+            DessertAction.READ -> {
+                if (dessertId != "new") {
+                    val readDessert = dessertDetailViewModel.getDessert(dessertId)
+                    val reviewsMap = readDessert?.reviews?.map {
+                        Review(
+                            dessertId,
+                            it?.text ?: "",
+                            it?.rating ?: 0
+                        )
+                    }
+                    setDessert(Dessert(
+                        dessertId = dessertId,
+                        name = readDessert?.name ?: "",
+                        description = readDessert?.description ?: "",
+                        imageUrl = readDessert?.imageUrl ?: "",
+                        reviews = reviewsMap ?: emptyList()
+                    ))
+                    drawerState.close()
+                } else {
+                    drawerState.expand()
+                }
+            }
+            DessertAction.CREATE -> {
+                val newDessert = dessertDetailViewModel.createDessert(dessert)
+                setDessert(
+                    Dessert(
+                        dessertId = newDessert?.id ?: "",
+                        name = newDessert?.name ?: "",
+                        description = newDessert?.description ?: "",
+                        imageUrl = newDessert?.imageUrl ?: ""
+                    )
+                )
+                drawerState.close()
+            }
+            DessertAction.UPDATE -> {
+                val updateDessert = dessertDetailViewModel.updateDessert(dessert)
+                    setDessert(
+                        Dessert(
+                            dessertId = updateDessert?.id ?: "",
+                            name = updateDessert?.name ?: "",
+                            description = updateDessert?.description ?: "",
+                            imageUrl = updateDessert?.imageUrl ?: "",
+                            reviews = dessert.reviews
+                    )
+                )
+                drawerState.close()
+            }
+            DessertAction.DELETE -> {
+                val deleted = dessertDetailViewModel.deleteDessert(dessertId)
+                if (deleted == true) popBack()
+            }
+        }
+    }
+
+
+    LaunchedEffect(dessert) {
+        dessert?.let {
+            handleDessert(it)
+        } ?: run {
+            popBack()
+        }
     }
 
     Scaffold(
@@ -71,7 +137,7 @@ fun DessertDetailView(dessertId: String, popBack: () -> Unit) {
                 }
             }, backgroundColor = MaterialTheme.colors.primary) {
                 if (drawerState.isExpanded || drawerState.isOpen) {
-                    Icon(Icons.Filled.Check)
+                    Icon(Icons.Outlined.ArrowDropDown)
                 } else {
                     Icon(Icons.Outlined.Create)
                 }
@@ -80,13 +146,21 @@ fun DessertDetailView(dessertId: String, popBack: () -> Unit) {
         bodyContent = {
             BottomDrawerLayout(drawerState = drawerState,
                 drawerContent = {
-                    dessert?.let {
-                        DessertFormView(
-                            dessertId = it.id,
-                            name = it.name ?: "",
-                            description = it.description ?: "",
-                            imageUrl = it.imageUrl ?: ""
-                        )
+                    dessert?.let { it ->
+                        if (dessert.dessertId == "new" || dessert.name.isNotEmpty()) {
+                            DessertFormView(
+                                Dessert(
+                                    dessertId = it.dessertId,
+                                    name = it.name,
+                                    description = it.description,
+                                    imageUrl = it.imageUrl
+                                ),
+                                handler = { dessert -> scope.async {
+                                    handleDessert(dessert)
+                                }
+                                }
+                            )
+                        }
                     }
                 }, bodyContent = {
                     Surface(color = Color.White) {
@@ -98,13 +172,11 @@ fun DessertDetailView(dessertId: String, popBack: () -> Unit) {
                                         horizontalArrangement = Arrangement.Center
                                     ) {
                                         val imageUrl = dessert.imageUrl
-                                        if (imageUrl != null) {
-                                            Card(
-                                                modifier = Modifier.preferredSize(150.dp),
-                                                shape = RoundedCornerShape(25.dp)
-                                            ) {
-                                                CoilImage(data = imageUrl)
-                                            }
+                                        Card(
+                                            modifier = Modifier.preferredSize(150.dp),
+                                            shape = RoundedCornerShape(25.dp)
+                                        ) {
+                                            CoilImage(data = imageUrl)
                                         }
                                     }
                                 }
@@ -117,7 +189,7 @@ fun DessertDetailView(dessertId: String, popBack: () -> Unit) {
                                 )
 
                                 Text(
-                                    dessert.description ?: "", style = MaterialTheme.typography.body1,
+                                    dessert.description, style = MaterialTheme.typography.body1,
                                     modifier = Modifier.padding(vertical = 8.dp, horizontal = 16.dp)
                                 )
 
@@ -141,15 +213,15 @@ fun DessertDetailView(dessertId: String, popBack: () -> Unit) {
 }
 
 @Composable
-private fun DessertReviewsList(dessert: GetDessertQuery.Dessert) {
+private fun DessertReviewsList(dessert: Dessert) {
 
-    Column(modifier = Modifier.padding(horizontal = 16.dp),) {
-        dessert.reviews?.let { reviewsList ->
-            reviewsList.filterNotNull().forEach { review ->
+    Column(modifier = Modifier.padding(horizontal = 16.dp)) {
+        dessert.reviews.let { reviewsList ->
+            reviewsList.forEach { review ->
                 Column {
                     Text(review.text,
                         style = typography.h6)
-                    Text("${review.rating.toString()} stars",
+                    Text("${review.rating} star(s)",
                         style = typography.subtitle2,
                         color = Color.Gray)
                 }
