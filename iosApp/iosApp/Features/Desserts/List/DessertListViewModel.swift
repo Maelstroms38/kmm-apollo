@@ -11,7 +11,7 @@ import SwiftUI
 import shared
 
 class DessertListViewModel: ObservableObject {
-    @Published public var desserts: [GetDessertsQuery.Result] = []
+    @Published public var desserts: [Dessert] = []
     
     let repository = DessertRepository()
     
@@ -37,13 +37,14 @@ class DessertListViewModel: ObservableObject {
         let page = currentPage
         repository.getDesserts(page: page, size: 10) { [weak self] (data, error) in
             
-            guard let self = self else { return }
-            guard let results = data?.results as? [GetDessertsQuery.Result] else { return }
+            guard let self = self, let results = data?.results as? [GetDessertsQuery.Result] else { return }
+            
+            let desserts = results.map { Dessert(action: DessertAction.READ, dessertId: $0.id, name: $0.name ?? "", description: $0.description_ ?? "", imageUrl: $0.imageUrl ?? "") }
             
             if page > 0 {
-                self.desserts.append(contentsOf: results)
+                self.desserts.append(contentsOf: desserts)
             } else {
-                self.desserts = results
+                self.desserts = desserts
             }
             
             if let totalPages = data?.info?.pages {
@@ -56,24 +57,22 @@ class DessertListViewModel: ObservableObject {
         }
     }
     
-    func createDessert(dessert: NewDessertMutation.NewDessert) {
-        let result = GetDessertsQuery.Result(__typename: dessert.__typename, id: dessert.id, name: dessert.name, description: dessert.description_, imageUrl: dessert.imageUrl)
-        self.desserts.append(result)
+    func createDessert(newDessert: Dessert) {
+        self.desserts.append(newDessert)
     }
     
-    func updateDessert(dessert: UpdateDessertMutation.UpdateDessert) {
-        let result = GetDessertsQuery.Result(__typename: dessert.__typename, id: dessert.id, name: dessert.name, description: dessert.description_, imageUrl: dessert.imageUrl)
+    func updateDessert(updatedDessert: Dessert) {
         let insertIndex = self.desserts.firstIndex { dessert -> Bool in
-            return dessert.id == result.id
+            return dessert.dessertId == updatedDessert.dessertId
         }
         if let index = insertIndex {
-            self.desserts[index] = result
+            self.desserts[index] = updatedDessert
         }
     }
     
     func deleteDessert(dessertId: String) {
         let deletedIndex = self.desserts.firstIndex { dessert -> Bool in
-            return dessert.id == dessertId
+            return dessert.dessertId == dessertId
         }
         if let delete = deletedIndex {
             self.desserts.remove(at: delete)

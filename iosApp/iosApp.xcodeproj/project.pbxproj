@@ -15,6 +15,9 @@
 		0B915868259CE39E00DBA0CE /* DessertDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B915867259CE39E00DBA0CE /* DessertDetailView.swift */; };
 		0B91586C259CE77E00DBA0CE /* DessertDetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B91586B259CE77E00DBA0CE /* DessertDetailViewModel.swift */; };
 		0B915872259CEC8D00DBA0CE /* DessertReviewRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B915871259CEC8D00DBA0CE /* DessertReviewRowView.swift */; };
+		0BBF3D67259F9B1A00964B35 /* Dessert.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BBF3D66259F9B1A00964B35 /* Dessert.swift */; };
+		0BBF3D6B259F9B2B00964B35 /* DessertAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BBF3D6A259F9B2B00964B35 /* DessertAction.swift */; };
+		0BBF3D6F259F9BE400964B35 /* Review.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BBF3D6E259F9BE400964B35 /* Review.swift */; };
 		7555FF7F242A565900829871 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7555FF7E242A565900829871 /* AppDelegate.swift */; };
 		7555FF81242A565900829871 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7555FF80242A565900829871 /* SceneDelegate.swift */; };
 		7555FF83242A565900829871 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7555FF82242A565900829871 /* ContentView.swift */; };
@@ -66,6 +69,9 @@
 		0B915867259CE39E00DBA0CE /* DessertDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DessertDetailView.swift; sourceTree = "<group>"; };
 		0B91586B259CE77E00DBA0CE /* DessertDetailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DessertDetailViewModel.swift; sourceTree = "<group>"; };
 		0B915871259CEC8D00DBA0CE /* DessertReviewRowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DessertReviewRowView.swift; sourceTree = "<group>"; };
+		0BBF3D66259F9B1A00964B35 /* Dessert.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Dessert.swift; sourceTree = "<group>"; };
+		0BBF3D6A259F9B2B00964B35 /* DessertAction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DessertAction.swift; sourceTree = "<group>"; };
+		0BBF3D6E259F9BE400964B35 /* Review.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Review.swift; sourceTree = "<group>"; };
 		7555FF7B242A565900829871 /* iosApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = iosApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		7555FF7E242A565900829871 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		7555FF80242A565900829871 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -129,6 +135,7 @@
 		0B58525B259BAC40000572B6 /* Desserts */ = {
 			isa = PBXGroup;
 			children = (
+				0BBF3D65259F9B0F00964B35 /* Models */,
 				0B0FA144259E29760033ABE2 /* Form */,
 				0B915876259CF10700DBA0CE /* List */,
 				0B915875259CF0F400DBA0CE /* Detail */,
@@ -154,6 +161,16 @@
 				0B585262259BADD9000572B6 /* DessertListRowView.swift */,
 			);
 			path = List;
+			sourceTree = "<group>";
+		};
+		0BBF3D65259F9B0F00964B35 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				0BBF3D66259F9B1A00964B35 /* Dessert.swift */,
+				0BBF3D6A259F9B2B00964B35 /* DessertAction.swift */,
+				0BBF3D6E259F9BE400964B35 /* Review.swift */,
+			);
+			path = Models;
 			sourceTree = "<group>";
 		};
 		7555FF72242A565900829871 = {
@@ -387,10 +404,13 @@
 			files = (
 				0B91586C259CE77E00DBA0CE /* DessertDetailViewModel.swift in Sources */,
 				0B0FA14A259E29920033ABE2 /* DessertFormView.swift in Sources */,
+				0BBF3D6B259F9B2B00964B35 /* DessertAction.swift in Sources */,
 				7555FF7F242A565900829871 /* AppDelegate.swift in Sources */,
 				0B915872259CEC8D00DBA0CE /* DessertReviewRowView.swift in Sources */,
+				0BBF3D67259F9B1A00964B35 /* Dessert.swift in Sources */,
 				0B585263259BADD9000572B6 /* DessertListRowView.swift in Sources */,
 				0B915868259CE39E00DBA0CE /* DessertDetailView.swift in Sources */,
+				0BBF3D6F259F9BE400964B35 /* Review.swift in Sources */,
 				7555FF81242A565900829871 /* SceneDelegate.swift in Sources */,
 				0B58526C259BB12E000572B6 /* DessertListView.swift in Sources */,
 				7555FF83242A565900829871 /* ContentView.swift in Sources */,

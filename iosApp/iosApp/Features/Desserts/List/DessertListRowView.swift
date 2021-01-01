@@ -12,7 +12,7 @@ import KingfisherSwiftUI
 
 @available(iOS 14.0, *)
 struct DessertListRowView: View {
-    let dessert: GetDessertsQuery.Result
+    let dessert: Dessert
     
     var body: some View {
         HStack {
@@ -29,10 +29,10 @@ struct DessertListRowView: View {
                     .foregroundColor(.gray)
             }
             VStack(alignment: .leading) {
-                Text(dessert.name ?? "Loading...")
+                Text(dessert.name)
                     .font(.title3)
                     .foregroundColor(.accentColor)
-                Text(dessert.description_ ?? "")
+                Text(dessert.description)
                     .font(.footnote)
                     .foregroundColor(.gray)
             }

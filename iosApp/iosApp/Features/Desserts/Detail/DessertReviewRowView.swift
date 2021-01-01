@@ -12,7 +12,7 @@ import KingfisherSwiftUI
 
 @available(iOS 14.0, *)
 struct DessertReviewRowView: View {
-    let review: GetDessertQuery.Review
+    let review: Review
     
     var body: some View {
         HStack {
@@ -20,7 +20,7 @@ struct DessertReviewRowView: View {
                 Text(review.text)
                     .font(.title3)
                     .foregroundColor(.accentColor)
-                Text("\(review.rating ?? 0) star(s)")
+                Text("\(review.rating) star(s)")
                     .font(.footnote)
                     .foregroundColor(.gray)
             }

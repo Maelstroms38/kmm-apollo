@@ -11,8 +11,8 @@ import SwiftUI
 import shared
 
 protocol DessertListViewDelegate {
-    func onCreateDessert(dessert: NewDessertMutation.NewDessert)
-    func onUpdateDessert(dessert: UpdateDessertMutation.UpdateDessert)
+    func onCreateDessert(newDessert: Dessert)
+    func onUpdateDessert(updatedDessert: Dessert)
     func onDeleteDessert(dessertId: String)
 }
 
@@ -24,8 +24,8 @@ struct DessertListView: View, DessertListViewDelegate {
     var body: some View {
         NavigationView {
             List {
-                ForEach(viewModel.desserts, id: \.id) { dessert in
-                    NavigationLink(destination: DessertDetailView(delegate: self, dessertId: dessert.id), label: {
+                ForEach(viewModel.desserts, id: \.dessertId) { dessert in
+                    NavigationLink(destination: DessertDetailView(delegate: self, dessertId: dessert.dessertId), label: {
                         DessertListRowView(dessert: dessert)
                     })
                 }
@@ -54,12 +54,12 @@ struct DessertListView: View, DessertListViewDelegate {
         })
     }
     
-    func onCreateDessert(dessert: NewDessertMutation.NewDessert) {
-        viewModel.createDessert(dessert: dessert)
+    func onCreateDessert(newDessert: Dessert) {
+        viewModel.createDessert(newDessert: newDessert)
     }
     
-    func onUpdateDessert(dessert: UpdateDessertMutation.UpdateDessert) {
-        viewModel.updateDessert(dessert: dessert)
+    func onUpdateDessert(updatedDessert: Dessert) {
+        viewModel.updateDessert(updatedDessert: updatedDessert)
     }
     
     func onDeleteDessert(dessertId: String) {

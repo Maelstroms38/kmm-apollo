@@ -15,9 +15,9 @@ struct DessertDetailView: View {
     
     @Environment(\.presentationMode) var presentationMode
     
-    @StateObject private var viewModel = DessertDetailViewModel()
-    
     let delegate: DessertListViewDelegate
+    
+    @StateObject private var viewModel = DessertDetailViewModel()
     
     @State private var isEditingViewShown = false
     
@@ -45,12 +45,12 @@ struct DessertDetailView: View {
             }
         
         Section(header: Text("Summary")) {
-            Text(viewModel.dessert?.description_ ?? "")
+            Text(viewModel.dessert?.description ?? "")
                 .font(.body)
         }
             
         Section(header: Text("Reviews")) {
-            ForEach(viewModel.dessert?.reviews as? [GetDessertQuery.Review] ?? [], id: \.id) { review in
+            ForEach(viewModel.dessert?.reviews ?? [], id: \.dessertId) { review in
                 DessertReviewRowView(review: review)
             }
         }
@@ -64,26 +64,28 @@ struct DessertDetailView: View {
             }
         )
         .onAppear() {
+            viewModel.delegate = delegate
             viewModel.fetchDessert(dessertId: dessertId)
         }
         .padding()
         .sheet(isPresented: $isEditingViewShown) {
             VStack {
                 DessertFormView(handler: { dessert in
+                    let action = dessert.action
+                    let dessertId = dessert.dessertId
+                    let name = dessert.name
+                    let description = dessert.description
+                    let imageUrl = dessert.imageUrl
+                    let reviews = dessert.reviews
+                    let dessert = Dessert(action: action, dessertId: dessertId, name: name, description: description, imageUrl: imageUrl, reviews: reviews)
                     
-                    guard let name = dessert.name, let description = dessert.description_, let imageUrl = dessert.imageUrl else { return }
-                    
-                    switch dessert.__typename {
-                    
-                    case "newDessert":
-                        viewModel.newDessert(name: name, description: description, imageUrl: imageUrl)
-                        delegate.onCreateDessert(dessert: NewDessertMutation.NewDessert(__typename: dessert.__typename, id: dessert.id, name: name, description: description, imageUrl: imageUrl))
-                    case "updateDessert":
-                        viewModel.updateDessert(dessertId: dessert.id, name: name, description: description, imageUrl: imageUrl)
-                        delegate.onUpdateDessert(dessert: UpdateDessertMutation.UpdateDessert(__typename: dessert.__typename, id: dessert.id, name: name, description: description, imageUrl: imageUrl))
-                    case "deleteDessert":
+                    switch dessert.action {
+                    case .CREATE:
+                        viewModel.newDessert(dessert: dessert)
+                    case .UPDATE:
+                        viewModel.updateDessert(dessert: dessert)
+                    case .DELETE:
                         viewModel.deleteDessert(dessertId: dessertId)
-                        delegate.onDeleteDessert(dessertId: dessertId)
                         self.presentationMode.wrappedValue.dismiss()
                         
                     default:
@@ -92,7 +94,7 @@ struct DessertDetailView: View {
                     
                     self.isEditingViewShown = false
                 },
-                dessertId: dessertId, name: viewModel.dessert?.name ?? "", description: viewModel.dessert?.description_ ?? "", imageUrl: viewModel.dessert?.imageUrl ?? "")
+                dessertId: dessertId, name: viewModel.dessert?.name ?? "", description: viewModel.dessert?.description ?? "", imageUrl: viewModel.dessert?.imageUrl ?? "")
             }
         }
     }

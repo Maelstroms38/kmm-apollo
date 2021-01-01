@@ -12,7 +12,7 @@ import shared
 
 @available(iOS 14.0, *)
 struct DessertFormView: View {
-    var handler: (GetDessertQuery.Dessert) -> Void
+    var handler: (Dessert) -> Void
     
     let dessertId: String
     @State var name: String
@@ -38,12 +38,12 @@ struct DessertFormView: View {
                 Button(
                     action: {
                         if (isEditing) {
-                            self.handler(GetDessertQuery.Dessert(
-                            __typename: "updateDessert", id: dessertId, name: name, description: description, imageUrl: imageUrl, reviews: []
+                            self.handler(Dessert(
+                                action: .UPDATE, dessertId: dessertId, name: name, description: description, imageUrl: imageUrl
                             ))
                         } else {
-                            self.handler(GetDessertQuery.Dessert(
-                            __typename: "newDessert", id: dessertId, name: name, description: description, imageUrl: imageUrl, reviews: []
+                            self.handler(Dessert(
+                                action: .CREATE, dessertId: dessertId, name: name, description: description, imageUrl: imageUrl
                             ))
                         }
                     },
@@ -52,7 +52,7 @@ struct DessertFormView: View {
                 if isEditing {
                     Button(
                         action: {
-                            self.handler(GetDessertQuery.Dessert(__typename: "deleteDessert", id: dessertId, name: "", description: "", imageUrl: "", reviews: []))
+                            self.handler(Dessert(action: DessertAction.DELETE, dessertId: dessertId))
                         },
                         label: { Text("Delete") }
                     )
