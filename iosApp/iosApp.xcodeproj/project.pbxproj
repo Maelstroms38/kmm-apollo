@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		0B0FA14A259E29920033ABE2 /* DessertFormView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B0FA149259E29920033ABE2 /* DessertFormView.swift */; };
+		0B428C6625A2AE740073BED8 /* DessertCreateView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B428C6525A2AE740073BED8 /* DessertCreateView.swift */; };
+		0B428C6A25A2AE980073BED8 /* DessertCreateViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B428C6925A2AE980073BED8 /* DessertCreateViewModel.swift */; };
 		0B58525D259BAC66000572B6 /* DessertListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B58525C259BAC66000572B6 /* DessertListViewModel.swift */; };
 		0B585263259BADD9000572B6 /* DessertListRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B585262259BADD9000572B6 /* DessertListRowView.swift */; };
 		0B585268259BAEC9000572B6 /* KingfisherSwiftUI in Frameworks */ = {isa = PBXBuildFile; productRef = 0B585267259BAEC9000572B6 /* KingfisherSwiftUI */; };
@@ -63,6 +65,8 @@
 
 /* Begin PBXFileReference section */
 		0B0FA149259E29920033ABE2 /* DessertFormView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DessertFormView.swift; sourceTree = "<group>"; };
+		0B428C6525A2AE740073BED8 /* DessertCreateView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DessertCreateView.swift; sourceTree = "<group>"; };
+		0B428C6925A2AE980073BED8 /* DessertCreateViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DessertCreateViewModel.swift; sourceTree = "<group>"; };
 		0B58525C259BAC66000572B6 /* DessertListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DessertListViewModel.swift; sourceTree = "<group>"; };
 		0B585262259BADD9000572B6 /* DessertListRowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DessertListRowView.swift; sourceTree = "<group>"; };
 		0B58526B259BB12E000572B6 /* DessertListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DessertListView.swift; sourceTree = "<group>"; };
@@ -124,6 +128,15 @@
 			path = Form;
 			sourceTree = "<group>";
 		};
+		0B428C6425A2ADCD0073BED8 /* Create */ = {
+			isa = PBXGroup;
+			children = (
+				0B428C6525A2AE740073BED8 /* DessertCreateView.swift */,
+				0B428C6925A2AE980073BED8 /* DessertCreateViewModel.swift */,
+			);
+			path = Create;
+			sourceTree = "<group>";
+		};
 		0B58525A259BAC35000572B6 /* Features */ = {
 			isa = PBXGroup;
 			children = (
@@ -138,6 +151,7 @@
 				0BBF3D65259F9B0F00964B35 /* Models */,
 				0B0FA144259E29760033ABE2 /* Form */,
 				0B915876259CF10700DBA0CE /* List */,
+				0B428C6425A2ADCD0073BED8 /* Create */,
 				0B915875259CF0F400DBA0CE /* Detail */,
 			);
 			path = Desserts;
@@ -146,8 +160,8 @@
 		0B915875259CF0F400DBA0CE /* Detail */ = {
 			isa = PBXGroup;
 			children = (
-				0B91586B259CE77E00DBA0CE /* DessertDetailViewModel.swift */,
 				0B915867259CE39E00DBA0CE /* DessertDetailView.swift */,
+				0B91586B259CE77E00DBA0CE /* DessertDetailViewModel.swift */,
 				0B915871259CEC8D00DBA0CE /* DessertReviewRowView.swift */,
 			);
 			path = Detail;
@@ -156,8 +170,8 @@
 		0B915876259CF10700DBA0CE /* List */ = {
 			isa = PBXGroup;
 			children = (
-				0B58525C259BAC66000572B6 /* DessertListViewModel.swift */,
 				0B58526B259BB12E000572B6 /* DessertListView.swift */,
+				0B58525C259BAC66000572B6 /* DessertListViewModel.swift */,
 				0B585262259BADD9000572B6 /* DessertListRowView.swift */,
 			);
 			path = List;
@@ -413,8 +427,10 @@
 				0BBF3D6F259F9BE400964B35 /* Review.swift in Sources */,
 				7555FF81242A565900829871 /* SceneDelegate.swift in Sources */,
 				0B58526C259BB12E000572B6 /* DessertListView.swift in Sources */,
+				0B428C6A25A2AE980073BED8 /* DessertCreateViewModel.swift in Sources */,
 				7555FF83242A565900829871 /* ContentView.swift in Sources */,
 				0B58525D259BAC66000572B6 /* DessertListViewModel.swift in Sources */,
+				0B428C6625A2AE740073BED8 /* DessertCreateView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

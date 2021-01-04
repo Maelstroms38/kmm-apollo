@@ -58,16 +58,7 @@ class DessertListViewModel: ObservableObject {
     }
     
     func createDessert(newDessert: Dessert) {
-        repository.doNewDessert(name: newDessert.name, description: newDessert.description, imageUrl: newDessert.imageUrl) { [weak self] (data, error) in
-            guard let self = self,
-                  let dessertId = data?.id,
-                  let name = data?.name,
-                  let description = data?.description_,
-                  let imageUrl = data?.imageUrl else { return }
-            
-            let dessertData = Dessert(dessertId: dessertId, name: name, description: description, imageUrl: imageUrl)
-            self.desserts.append(dessertData)
-        }
+        self.desserts.append(newDessert)
     }
     
     func updateDessert(updatedDessert: Dessert) {

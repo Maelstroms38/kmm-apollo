@@ -11,6 +11,7 @@ import SwiftUI
 import shared
 
 protocol DessertListViewDelegate {
+    func onCreateDessert(newDessert: Dessert)
     func onUpdateDessert(updatedDessert: Dessert)
     func onDeleteDessert(dessertId: String)
 }
@@ -19,8 +20,6 @@ protocol DessertListViewDelegate {
 struct DessertListView: View, DessertListViewDelegate {
     
     @StateObject private var viewModel = DessertListViewModel()
-    
-    @State private var isCreatingViewShown = false
     
     var body: some View {
         NavigationView {
@@ -36,32 +35,12 @@ struct DessertListView: View, DessertListViewDelegate {
             }
             .navigationTitle("Desserts")
             .navigationBarItems(trailing:
-                Button(action: {
-                    self.isCreatingViewShown = true
-                }) {
+                NavigationLink(destination: DessertCreateView(delegate: self)) {
                     Image(systemName: "square.and.pencil")
                 }
             )
             .onAppear() {
                 viewModel.fetchDesserts()
-            }
-            .sheet(isPresented: $isCreatingViewShown) {
-                VStack {
-                    DessertFormView(handler: { dessert in
-                        switch dessert.action {
-                        case .CREATE:
-                            viewModel.createDessert(newDessert: dessert)
-                        default:
-                            break
-                        }
-                        
-                        self.isCreatingViewShown = false
-                    },
-                    dessertId: "new", name: "", description: "", imageUrl: "")
-                }
-            }
-            .onDisappear() {
-                self.isCreatingViewShown = false
             }
         }
     }
@@ -78,6 +57,10 @@ struct DessertListView: View, DessertListViewDelegate {
         .onAppear(perform: {
             viewModel.currentPage += 1
         })
+    }
+    
+    func onCreateDessert(newDessert: Dessert) {
+        viewModel.createDessert(newDessert: newDessert)
     }
     
     func onUpdateDessert(updatedDessert: Dessert) {
