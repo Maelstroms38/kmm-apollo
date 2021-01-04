@@ -12,13 +12,14 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.setContent
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.*
+import com.example.justdesserts.androidApp.ui.desserts.create.DessertCreateView
 import com.example.justdesserts.androidApp.ui.desserts.detail.DessertDetailView
-import com.example.justdesserts.androidApp.ui.desserts.form.DessertFormView
 import com.example.justdesserts.androidApp.ui.desserts.list.DessertListView
 
 sealed class Screens(val route: String, val label: String, val icon: ImageVector? = null) {
     object DessertsScreen : Screens("Desserts", "Desserts", Icons.Default.List)
     object DessertDetailsScreen : Screens("DessertDetails", "DessertDetails")
+    object DessertCreateScreen : Screens("DessertCreate", "DessertCreate")
 }
 
 class MainActivity : AppCompatActivity() {
@@ -42,12 +43,18 @@ fun MainLayout() {
 
     NavHost(navController, startDestination = Screens.DessertsScreen.route) {
         composable(Screens.DessertsScreen.route) {
-            DessertListView(bottomBar) {
+            DessertListView(bottomBar, {
+                navController.navigate(Screens.DessertCreateScreen.route)
+            }) {
                 navController.navigate(Screens.DessertDetailsScreen.route + "/${it.dessertId}")
             }
         }
         composable(Screens.DessertDetailsScreen.route + "/{id}") { backStackEntry ->
             DessertDetailView(backStackEntry.arguments?.get("id") as String, popBack = { navController.popBackStack() })
+        }
+        
+        composable(Screens.DessertCreateScreen.route) {
+            DessertCreateView(popBack = { navController.popBackStack() })
         }
     }
 }

@@ -27,75 +27,31 @@ import kotlinx.coroutines.async
 import org.koin.androidx.compose.getViewModel
 
 @Composable
-fun DessertListView(bottomBar: @Composable () -> Unit, dessertSelected: (dessert: Dessert) -> Unit) {
+fun DessertListView(bottomBar: @Composable () -> Unit, newDessertSelected: () -> Unit, dessertSelected: (dessert: Dessert) -> Unit) {
   val dessertListViewModel = getViewModel<DessertListViewModel>()
   val lazyDessertList = dessertListViewModel.desserts.collectAsLazyPagingItems()
-  val (dessert, setDessert) = remember { mutableStateOf<Dessert?>(Dessert(DessertAction.READ, "new", "", "", "")) }
-  val drawerState = rememberBottomDrawerState(BottomDrawerValue.Closed)
-  val scope = rememberCoroutineScope()
-
-  suspend fun createDessert(dessert: Dessert) {
-    dessertListViewModel.createDessert(dessert)
-    setDessert(
-      Dessert(
-        dessertId = "new",
-        name = "",
-        description = "",
-        imageUrl = ""
-      )
-    )
-    drawerState.close()
-  }
 
   Scaffold(
     topBar = { TopAppBar(title = { Text( "Desserts") }) },
     bottomBar = bottomBar,
     floatingActionButton = {
       FloatingActionButton(onClick = {
-        if (drawerState.isExpanded || drawerState.isOpen) {
-          drawerState.close()
-        } else {
-          drawerState.expand()
-        }
+        newDessertSelected()
       }, backgroundColor = MaterialTheme.colors.primary) {
-        if (drawerState.isExpanded || drawerState.isOpen) {
-          Icon(Icons.Outlined.ArrowDropDown)
-        } else {
-          Icon(Icons.Outlined.Add)
-        }
+        Icon(Icons.Outlined.Add)
       }
     },
     bodyContent = {
-      BottomDrawerLayout(drawerState = drawerState,
-        drawerContent = {
-          dessert?.let { it ->
-            DessertFormView(
-              Dessert(
-                dessertId = it.dessertId,
-                name = it.name,
-                description = it.description,
-                imageUrl = it.imageUrl
-              ),
-              handler = { dessert ->
-                scope.async {
-                  createDessert(dessert)
-                  drawerState.close()
-                }
-              }
-            )
-          }
-        }, bodyContent = {
-          LazyColumn(contentPadding = it) {
-            items(lazyDessertList) { dessert ->
-              val readDessert = Dessert(
-                dessertId = dessert?.id ?: "",
-                name = dessert?.name ?: "",
-                description = dessert?.description ?: "",
-                imageUrl = dessert?.imageUrl ?: ""
-              )
-              DessertListRowView(readDessert, dessertSelected)
-            }
-          }
-        })
-      })
+      LazyColumn(contentPadding = it) {
+        items(lazyDessertList) { dessert ->
+          val readDessert = Dessert(
+            dessertId = dessert?.id ?: "",
+            name = dessert?.name ?: "",
+            description = dessert?.description ?: "",
+            imageUrl = dessert?.imageUrl ?: ""
+          )
+          DessertListRowView(readDessert, dessertSelected)
+        }
+      }
+    })
 }
