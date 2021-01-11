@@ -12,11 +12,15 @@ class DessertDataSource @ApolloExperimental constructor(private val repository: 
   override suspend fun load(params: LoadParams<Int>): LoadResult<Int, GetDessertsQuery.Result> {
     val pageNumber = params.key ?: 0
 
-    val dessertResponse = repository.getDesserts(page = pageNumber, size = 10)
-    val desserts = dessertResponse?.resultsFilterNotNull()
+    return try {
+      val dessertResponse = repository.getDesserts(page = pageNumber, size = 10)
+      val desserts = dessertResponse?.resultsFilterNotNull()
 
-    val prevKey = if (pageNumber > 0) pageNumber - 1 else null
-    val nextKey = dessertResponse?.info?.next
-    return LoadResult.Page(data = desserts ?: emptyList(), prevKey = prevKey, nextKey = nextKey)
+      val prevKey = if (pageNumber > 0) pageNumber - 1 else null
+      val nextKey = dessertResponse?.info?.next
+      LoadResult.Page(data = desserts ?: emptyList(), prevKey = prevKey, nextKey = nextKey)
+    } catch (err: Exception) {
+      LoadResult.Page(data = emptyList(), prevKey = null, nextKey = null)
+    }
   }
 }

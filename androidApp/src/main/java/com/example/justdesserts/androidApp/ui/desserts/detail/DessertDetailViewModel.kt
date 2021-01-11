@@ -14,10 +14,4 @@ class DessertDetailViewModel constructor(private val repository: DessertReposito
     suspend fun getDessert(dessertId: String): GetDessertQuery.Dessert? {
         return repository.getDessert(dessertId)
     }
-    suspend fun updateDessert(dessert: Dessert): UpdateDessertMutation.UpdateDessert? {
-        return repository.updateDessert(dessert.dessertId, dessert.name, dessert.description, dessert.imageUrl)
-    }
-    suspend fun deleteDessert(dessertId: String): Boolean? {
-        return repository.deleteDessert(dessertId)
-    }
 }
