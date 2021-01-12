@@ -50,8 +50,10 @@ struct DessertDetailView: View {
         }
             
         Section(header: Text("Reviews")) {
-            ForEach(viewModel.dessert?.reviews ?? [], id: \.dessertId) { review in
-                DessertReviewRowView(review: review)
+            if let reviews = viewModel.dessert?.reviews {
+                ForEach(Array(reviews.enumerated()), id: \.offset) { index, review in
+                    DessertReviewRowView(review: review)
+                }
             }
         }
         .listStyle(GroupedListStyle())

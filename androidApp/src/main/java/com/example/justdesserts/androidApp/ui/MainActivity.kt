@@ -50,7 +50,7 @@ fun MainLayout() {
                 navController.navigate(Screens.DessertFormScreen.route)
             }, dessertSelected = {
                 navController.navigate(Screens.DessertDetailsScreen.route +
-                        "?id=${it.dessertId}&name=${it.name}&description=${it.description}&imageUrl=${it.imageUrl}")
+                        it.toQueryString())
             })
         }
         composable(Screens.DessertDetailsScreen.route + queryString,
@@ -69,7 +69,7 @@ fun MainLayout() {
             DessertDetailView(dessert,
                 editDessertSelected = {
                     navController.navigate(Screens.DessertFormScreen.route +
-                            "?id=${it.dessertId}&name=${it.name}&description=${it.description}&imageUrl=${it.imageUrl}")
+                            it.toQueryString())
                 }, popBack = { navController.popBackStack() })
         }
         

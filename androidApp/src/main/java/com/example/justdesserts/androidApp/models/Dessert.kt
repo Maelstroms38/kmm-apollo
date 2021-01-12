@@ -8,4 +8,8 @@ data class Dessert(
     val description: String,
     val imageUrl: String,
     val reviews: List<Review> = emptyList()
-)
+) {
+    fun toQueryString(): String {
+        return "?id=${this.dessertId}&name=${this.name}&description=${this.description}&imageUrl=${this.imageUrl}"
+    }
+}

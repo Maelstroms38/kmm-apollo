@@ -20,9 +20,11 @@ struct DessertReviewRowView: View {
                 Text(review.text)
                     .font(.title3)
                     .foregroundColor(.accentColor)
-                Text("\(review.rating) star(s)")
-                    .font(.footnote)
-                    .foregroundColor(.gray)
+                HStack {
+                    ForEach(0..<review.rating) { index in
+                        Image(systemName: "star.fill")
+                    }
+                }
             }
         }
     }
