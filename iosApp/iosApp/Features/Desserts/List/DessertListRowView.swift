@@ -20,7 +20,7 @@ struct DessertListRowView: View {
                let url = URL(string: image) {
                 KFImage(url)
                     .resizable()
-                    .aspectRatio(contentMode: .fit)
+                    .aspectRatio(contentMode: .fill)
                     .frame(width: 50, height: 50)
                     .cornerRadius(25)
             } else {

@@ -9,6 +9,7 @@
 import Foundation
 
 struct Review {
+    let id: String
     let dessertId: String
     let text: String
     let rating: Int

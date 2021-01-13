@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.preferredHeight
 import androidx.compose.foundation.layout.preferredSize
+import androidx.compose.foundation.lazy.LazyColumnFor
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.AmbientContentColor
 import androidx.compose.material.Card
@@ -29,13 +30,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
 import com.example.justdesserts.androidApp.models.Dessert
-import com.example.justdesserts.androidApp.models.DessertAction
 import com.example.justdesserts.androidApp.models.Review
 import dev.chrisbanes.accompanist.coil.CoilImage
 import org.koin.androidx.compose.getViewModel
@@ -142,38 +141,12 @@ private fun DessertReviewsList(dessert: Dessert) {
 
     Column(modifier = Modifier.padding(horizontal = 16.dp)) {
         dessert.reviews.let { reviewsList ->
-            reviewsList.forEach { review ->
-                Column {
-                    Text(review.text,
-                        style = typography.h6)
-                    Row {
-                        when (review.rating) {
-                            1 -> {
-                                Icon(Icons.Filled.Star)
-                            }
-                            2 -> {
-                                Icon(Icons.Filled.Star)
-                                Icon(Icons.Filled.Star)
-                            }
-                            3 -> {
-                                Icon(Icons.Filled.Star)
-                                Icon(Icons.Filled.Star)
-                                Icon(Icons.Filled.Star)
-                            }
-                            4 -> {
-                                Icon(Icons.Filled.Star)
-                                Icon(Icons.Filled.Star)
-                                Icon(Icons.Filled.Star)
-                                Icon(Icons.Filled.Star)
-                            }
-                            5 -> {
-                                Icon(Icons.Filled.Star)
-                                Icon(Icons.Filled.Star)
-                                Icon(Icons.Filled.Star)
-                                Icon(Icons.Filled.Star)
-                                Icon(Icons.Filled.Star)
-                            }
-                        }
+            LazyColumnFor(items = reviewsList) { review ->
+                Text(review.text,
+                    style = typography.h6)
+                Row {
+                    List(review.rating) {
+                        Icon(Icons.Filled.Star)
                     }
                 }
                 Divider()

@@ -11,9 +11,9 @@ import SwiftUI
 import shared
 
 class DessertCreateViewModel: ObservableObject {
-    @Published public var dessert: Dessert?
+    @Published var dessert: Dessert?
     
-    var delegate: DessertListViewDelegate?
+    var delegate: DessertDelegate?
     
     let repository = DessertRepository()
     
@@ -27,6 +27,21 @@ class DessertCreateViewModel: ObservableObject {
             
             let dessertData = Dessert(dessertId: dessertId, name: name, description: description, imageUrl: imageUrl)
             self.delegate?.onCreateDessert(newDessert: dessertData)
+        }
+    }
+    
+    func updateDessert(dessert: Dessert) {
+        repository.updateDessert(dessertId: dessert.dessertId, name: dessert.name, description: dessert.description, imageUrl: dessert.imageUrl) { [weak self] (data, error) in
+            guard let self = self,
+                  let _ = data else { return }
+            self.delegate?.onUpdateDessert(updatedDessert: dessert)
+        }
+    }
+    
+    func deleteDessert(dessertId: String) {
+        repository.deleteDessert(dessertId: dessertId) { [weak self] (deleted, error) in
+            guard let self = self else { return }
+            self.delegate?.onDeleteDessert(dessertId: dessertId)
         }
     }
 }

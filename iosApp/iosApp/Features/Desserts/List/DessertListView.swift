@@ -10,14 +10,8 @@ import Foundation
 import SwiftUI
 import shared
 
-protocol DessertListViewDelegate {
-    func onCreateDessert(newDessert: Dessert)
-    func onUpdateDessert(updatedDessert: Dessert)
-    func onDeleteDessert(dessertId: String)
-}
-
 @available(iOS 14.0, *)
-struct DessertListView: View, DessertListViewDelegate {
+struct DessertListView: View, DessertDelegate {
     
     @StateObject private var viewModel = DessertListViewModel()
     
@@ -25,9 +19,9 @@ struct DessertListView: View, DessertListViewDelegate {
         NavigationView {
             List {
                 ForEach(viewModel.desserts, id: \.dessertId) { dessert in
-                    NavigationLink(destination: DessertDetailView(delegate: self, dessertId: dessert.dessertId), label: {
+                    NavigationLink(destination: DessertDetailView(dessert: dessert, delegate: self)) {
                         DessertListRowView(dessert: dessert)
-                    })
+                    }
                 }
                 if viewModel.shouldDisplayNextPage {
                     nextPageView
@@ -35,8 +29,8 @@ struct DessertListView: View, DessertListViewDelegate {
             }
             .navigationTitle("Desserts")
             .navigationBarItems(trailing:
-                NavigationLink(destination: DessertCreateView(delegate: self)) {
-                    Image(systemName: "square.and.pencil")
+                NavigationLink(destination: DessertCreateView(delegate: self, dessert: nil)) {
+                    Image(systemName: "plus")
                 }
             )
             .onAppear() {
@@ -60,14 +54,14 @@ struct DessertListView: View, DessertListViewDelegate {
     }
     
     func onCreateDessert(newDessert: Dessert) {
-        viewModel.createDessert(newDessert: newDessert)
+        viewModel.onCreateDessert(newDessert: newDessert)
     }
     
     func onUpdateDessert(updatedDessert: Dessert) {
-        viewModel.updateDessert(updatedDessert: updatedDessert)
+        viewModel.onUpdateDessert(updatedDessert: updatedDessert)
     }
     
     func onDeleteDessert(dessertId: String) {
-        viewModel.deleteDessert(dessertId: dessertId)
+        viewModel.onDeleteDessert(dessertId: dessertId)
     }
 }

@@ -12,7 +12,9 @@ import shared
 @available(iOS 14.0, *)
 struct DessertCreateView: View {
     
-    let delegate: DessertListViewDelegate
+    let delegate: DessertDelegate
+    
+    let dessert: Dessert?
     
     @StateObject private var viewModel = DessertCreateViewModel()
     
@@ -21,13 +23,24 @@ struct DessertCreateView: View {
     var body: some View {
         VStack {
             DessertFormView(handler: { dessert in
-                viewModel.createDessert(newDessert: dessert)
+                switch dessert.action {
+                case .CREATE:
+                    viewModel.createDessert(newDessert: dessert)
+                case .UPDATE:
+                    viewModel.updateDessert(dessert: dessert)
+                case .DELETE:
+                    viewModel.deleteDessert(dessertId: dessert.dessertId)
+                    
+                default:
+                    break
+                }
                 presentationMode.wrappedValue.dismiss()
             },
-            dessertId: "new", name: "", description: "", imageUrl: "")
+            dessertId: dessert?.dessertId ?? "new", name: dessert?.name ?? "", description: dessert?.description ?? "", imageUrl: dessert?.imageUrl ?? "")
         }
-        Spacer()
+        .navigationBarTitle("", displayMode: .inline)
         .onAppear() {
+            self.viewModel.dessert = dessert
             self.viewModel.delegate = delegate
         }
     }

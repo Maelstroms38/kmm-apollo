@@ -57,11 +57,11 @@ class DessertListViewModel: ObservableObject {
         }
     }
     
-    func createDessert(newDessert: Dessert) {
+    func onCreateDessert(newDessert: Dessert) {
         self.desserts.append(newDessert)
     }
     
-    func updateDessert(updatedDessert: Dessert) {
+    func onUpdateDessert(updatedDessert: Dessert) {
         let insertIndex = self.desserts.firstIndex { dessert -> Bool in
             return dessert.dessertId == updatedDessert.dessertId
         }
@@ -70,7 +70,7 @@ class DessertListViewModel: ObservableObject {
         }
     }
     
-    func deleteDessert(dessertId: String) {
+    func onDeleteDessert(dessertId: String) {
         let deletedIndex = self.desserts.firstIndex { dessert -> Bool in
             return dessert.dessertId == dessertId
         }

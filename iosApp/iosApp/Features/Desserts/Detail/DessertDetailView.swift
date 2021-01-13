@@ -11,17 +11,17 @@ import KingfisherSwiftUI
 import shared
 
 @available(iOS 14.0, *)
-struct DessertDetailView: View {
-    
-    @Environment(\.presentationMode) var presentationMode
-    
-    let delegate: DessertListViewDelegate
+struct DessertDetailView: View, DessertDelegate {
     
     @StateObject private var viewModel = DessertDetailViewModel()
     
-    @State private var isEditingViewShown = false
+    let dessert: Dessert
     
-    let dessertId: String
+    let delegate: DessertDelegate
+    
+    @State var isEditingViewShown = false
+    
+    @Environment(\.presentationMode) var presentationMode
     
     var body: some View {
         List {
@@ -32,7 +32,7 @@ struct DessertDetailView: View {
                        let url = URL(string: image) {
                         KFImage(url)
                             .resizable()
-                            .aspectRatio(contentMode: .fit)
+                            .aspectRatio(contentMode: .fill)
                             .frame(width: 150, height: 150)
                             .cornerRadius(25)
                     } else {
@@ -44,54 +44,48 @@ struct DessertDetailView: View {
                 }
             }
         
-        Section(header: Text("Summary")) {
-            Text(viewModel.dessert?.description ?? "")
-                .font(.body)
-        }
-            
-        Section(header: Text("Reviews")) {
-            if let reviews = viewModel.dessert?.reviews {
-                ForEach(Array(reviews.enumerated()), id: \.offset) { index, review in
-                    DessertReviewRowView(review: review)
+            Section(header: Text("Summary")) {
+                Text(viewModel.dessert?.description ?? "")
+                    .font(.body)
+            }
+                
+            Section(header: Text("Reviews")) {
+                if let reviews = viewModel.dessert?.reviews {
+                    ForEach(reviews, id: \.id) { review in
+                        DessertReviewRowView(review: review)
+                    }
                 }
             }
         }
         .listStyle(GroupedListStyle())
-        .navigationTitle(viewModel.dessert?.name ?? "")
-        navigationBarItems(trailing:
+        .navigationBarTitle(viewModel.dessert?.name ?? "", displayMode: .inline)
+        .navigationBarItems(trailing:
             Button(action: {
                 self.isEditingViewShown = true
-            }) {
+            }, label: {
                 Image(systemName: "square.and.pencil")
-            }
+            })
         )
+        .sheet(isPresented: $isEditingViewShown) {
+            DessertCreateView(delegate: self, dessert: viewModel.dessert)
+        }
         .onAppear() {
             viewModel.delegate = delegate
-            viewModel.fetchDessert(dessertId: dessertId)
-        }
-        .padding()
-        .sheet(isPresented: $isEditingViewShown) {
-            VStack {
-                DessertFormView(handler: { dessert in
-                    switch dessert.action {
-                    case .UPDATE:
-                        viewModel.updateDessert(dessert: dessert)
-                    case .DELETE:
-                        viewModel.deleteDessert(dessertId: dessert.dessertId)
-                        self.presentationMode.wrappedValue.dismiss()
-                        
-                    default:
-                        break
-                    }
-                    
-                    self.isEditingViewShown = false
-                },
-                dessertId: dessertId, name: viewModel.dessert?.name ?? "", description: viewModel.dessert?.description ?? "", imageUrl: viewModel.dessert?.imageUrl ?? "")
-            }
-        }.onDisappear() {
-            self.isEditingViewShown = false
+            viewModel.fetchDessert(dessertId: dessert.dessertId)
         }
     }
+    
+    func onCreateDessert(newDessert: Dessert) {
+        viewModel.onCreateDessert(newDessert: newDessert)
+    }
+    
+    func onUpdateDessert(updatedDessert: Dessert) {
+        viewModel.onUpdateDessert(updatedDessert: updatedDessert)
+    }
+    
+    func onDeleteDessert(dessertId: String) {
+        presentationMode.wrappedValue.dismiss()
+        viewModel.onDeleteDessert(dessertId: dessertId)
     }
     
 }
