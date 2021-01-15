@@ -4,13 +4,15 @@ object Versions {
   const val kotlinxSerialization = "1.0.0-RC"
   const val koin = "2.2.2"
 
-  const val compose = "1.0.0-alpha09"
-  const val nav_compose = "1.0.0-alpha04"
-  const val nav_paging = "1.0.0-alpha04"
-  const val accompanist = "0.4.1"
+  const val compose = "1.0.0-alpha10"
+  const val nav_compose = "1.0.0-alpha05"
+  const val nav_paging = "1.0.0-alpha05"
+  const val accompanist = "0.4.2"
 
   const val junit = "4.13"
   const val testRunner = "1.3.0"
+
+  const val sqlDelight = "1.4.3"
 }
 
 
@@ -37,6 +39,10 @@ object Koin {
   val android = "org.koin:koin-android:${Versions.koin}"
   val androidViewModel = "org.koin:koin-androidx-viewmodel:${Versions.koin}"
   val compose = "org.koin:koin-androidx-compose:${Versions.koin}"
+}
+
+object SQLDelight {
+  val sqldelight = "com.squareup.sqldelight:gradle-plugin:${Versions.sqlDelight}"
 }
 
 

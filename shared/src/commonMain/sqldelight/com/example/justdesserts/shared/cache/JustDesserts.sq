@@ -1,0 +1,43 @@
+CREATE TABLE Dessert (
+    id TEXT NOT NULL PRIMARY KEY,
+    name TEXT,
+    description TEXT,
+    imageUrl TEXT
+);
+
+CREATE TABLE Review (
+    id TEXT NOT NULL PRIMARY KEY,
+    dessertId TEXT NOT NULL,
+    text TEXT,
+    rating INTEGER
+);
+
+insertDessert:
+INSERT INTO Dessert(id, name, description, imageUrl)
+VALUES(?, ?, ?, ?);
+
+insertReview:
+INSERT INTO Review(id, dessertId, text, rating)
+VALUES(?, ?, ?, ?);
+
+removeAllDesserts:
+DELETE FROM Dessert;
+
+removeAllRatings:
+DELETE FROM Review;
+
+selectDessertById:
+SELECT * FROM Dessert
+WHERE id = ?;
+
+selectReviewById:
+SELECT * FROM Review
+WHERE id = ?;
+
+selectReviewsByDessertId:
+SELECT * FROM Review
+WHERE dessertId = ?;
+
+selectDessertsPage:
+SELECT * FROM Dessert
+LIMIT ? OFFSET ?;
