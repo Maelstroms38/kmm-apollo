@@ -23,6 +23,7 @@ query GetDessert($dessertId:String) {
     imageUrl
     reviews {
       id
+      dessertId
       text
       rating
     }

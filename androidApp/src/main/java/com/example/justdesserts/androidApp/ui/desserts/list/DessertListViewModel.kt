@@ -6,9 +6,6 @@ import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import com.apollographql.apollo.api.ApolloExperimental
 import com.example.justdesserts.GetDessertsQuery
-import com.example.justdesserts.NewDessertMutation
-import com.example.justdesserts.androidApp.models.Dessert
-import com.example.justdesserts.androidApp.ui.desserts.DessertDataSource
 import com.example.justdesserts.shared.DessertRepository
 import kotlinx.coroutines.flow.Flow
 

@@ -5,6 +5,7 @@ plugins {
     id("com.android.library")
     // TODO: Apollo GraphQL
     id("com.apollographql.apollo").version("2.4.6")
+    id("com.squareup.sqldelight")
 }
 
 group = "com.example.justdesserts"
@@ -31,6 +32,15 @@ kotlin {
             }
         }
     }
+    // Block from https://github.com/cashapp/sqldelight/issues/2044#issuecomment-721299517.
+    // See also: https://stackoverflow.com/a/62916853
+    val onPhone = System.getenv("SDK_NAME")?.startsWith("iphoneos") ?: false
+    if (onPhone) {
+        iosArm64("ios")
+    } else {
+        iosX64("ios")
+    }
+
     sourceSets {
         // TODO: Apollo Coroutines
         val commonMain by getting {
@@ -40,6 +50,7 @@ kotlin {
                 }
 
                 api("com.apollographql.apollo:apollo-runtime-kotlin:2.4.6")
+                implementation("com.squareup.sqldelight:runtime:${Versions.sqlDelight}")
             }
         }
         val commonTest by getting {
@@ -51,6 +62,7 @@ kotlin {
         val androidMain by getting {
             dependencies {
                 implementation("com.google.android.material:material:1.2.1")
+                implementation("com.squareup.sqldelight:android-driver:${Versions.sqlDelight}")
             }
         }
         val androidTest by getting {
@@ -59,7 +71,11 @@ kotlin {
                 implementation("junit:junit:4.13.1")
             }
         }
-        val iosMain by getting
+        val iosMain by getting {
+            dependencies {
+                implementation("com.squareup.sqldelight:native-driver:${Versions.sqlDelight}")
+            }
+        }
         val iosTest by getting
     }
 }
@@ -104,4 +120,10 @@ tasks.getByName("build").dependsOn(packForXcode)
 apollo {
     // instruct the compiler to generate Kotlin models
     generateKotlinModels.set(true)
+}
+
+sqldelight {
+    database("JustDesserts") {
+        packageName = "com.example.justdesserts.shared.cache"
+    }
 }

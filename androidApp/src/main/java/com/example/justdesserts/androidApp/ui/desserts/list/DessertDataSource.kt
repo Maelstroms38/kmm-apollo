@@ -1,7 +1,6 @@
-package com.example.justdesserts.androidApp.ui.desserts
+package com.example.justdesserts.androidApp.ui.desserts.list
 
 import androidx.paging.PagingSource
-import androidx.paging.PagingState
 import com.apollographql.apollo.api.ApolloExperimental
 import com.example.justdesserts.GetDessertsQuery
 import com.example.justdesserts.shared.DessertRepository
