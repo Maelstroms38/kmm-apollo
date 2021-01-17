@@ -1,6 +1,5 @@
 package com.example.justdesserts.androidApp.models
 
-
 data class Dessert(
     val action: DessertAction = DessertAction.READ,
     val dessertId: String,

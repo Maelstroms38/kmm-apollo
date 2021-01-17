@@ -8,7 +8,8 @@ import com.apollographql.apollo.network.http.ApolloHttpNetworkTransport
 import com.example.justdesserts.*
 import com.example.justdesserts.shared.cache.Database
 import com.example.justdesserts.shared.cache.DatabaseDriverFactory
-import com.example.justdesserts.shared.cache.Dessert
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.single
 
 @ApolloExperimental
@@ -29,42 +30,52 @@ class DessertRepository(databaseDriverFactory: DatabaseDriverFactory) {
   )
 
   @Throws(Exception::class) suspend fun getDesserts(page: Int, size: Int): GetDessertsQuery.Desserts? {
-    val cachedDesserts = database.getDessertsPage(page, size)
-    if (cachedDesserts.isNotEmpty()) {
-      val info = GetDessertsQuery.Info(count = cachedDesserts.size, next = page + 1, prev = page - 1, pages = 1)
-      return GetDessertsQuery.Desserts(results = cachedDesserts, info = info)
-    }
-    val response = apolloClient.query(
-      GetDessertsQuery(
-        Input.optional(page),
-        Input.optional(size)
-      )
-    ).execute().single().also {
-      database.clearDatabase()
-      database.createDesserts(it.data?.desserts)
-    }
-    return response.data?.desserts
+      val response = apolloClient.query(
+        GetDessertsQuery(
+          Input.optional(page),
+          Input.optional(size)
+        )
+      ).execute().single()
+      return response.data?.desserts
   }
 
-  suspend fun getDessert(dessertId: String): GetDessertQuery.Dessert? {
-      val response =
-        apolloClient.query(GetDessertQuery(Input.optional(dessertId))).execute().single()
+  @Throws(Exception::class) suspend fun getDessert(dessertId: String): GetDessertQuery.Dessert? {
+    val response = apolloClient.query(GetDessertQuery(Input.optional(dessertId))).execute().single()
     return response.data?.dessert
   }
 
-  suspend fun newDessert(name: String, description: String, imageUrl: String): NewDessertMutation.NewDessert? {
+  @Throws(Exception::class) suspend fun newDessert(name: String, description: String, imageUrl: String): NewDessertMutation.NewDessert? {
     val response = apolloClient.mutate(NewDessertMutation(name, description, imageUrl)).execute().single()
     return response.data?.newDessert
   }
 
-  suspend fun updateDessert(dessertId: String, name: String, description: String, imageUrl: String): UpdateDessertMutation.UpdateDessert? {
+  @Throws(Exception::class) suspend fun updateDessert(dessertId: String, name: String, description: String, imageUrl: String): UpdateDessertMutation.UpdateDessert? {
     val response = apolloClient.mutate(UpdateDessertMutation(dessertId, name, description, imageUrl)).execute().single()
     return response.data?.updateDessert
   }
 
-  suspend fun deleteDessert(dessertId: String): Boolean? {
+  @Throws(Exception::class) suspend fun deleteDessert(dessertId: String): Boolean? {
     val response = apolloClient.mutate(DeleteDessertMutation(dessertId)).execute().single()
     return response.data?.deleteDessert
+  }
+
+  @Throws(Exception::class) suspend fun saveFavorite(dessertId: String) {
+    val dessert = getDessert(dessertId)
+    dessert?.let {
+      database.saveDessert(it)
+    }
+  }
+
+  fun removeFavorite(dessertId: String) {
+    database.deleteDessert(dessertId)
+  }
+
+  fun isFavorite(dessertId: String): Boolean {
+    return database.getDessertById(dessertId) != null
+  }
+
+  fun getFavoriteDesserts(): List<GetDessertQuery.Dessert> {
+    return database.getDesserts()
   }
 
 }

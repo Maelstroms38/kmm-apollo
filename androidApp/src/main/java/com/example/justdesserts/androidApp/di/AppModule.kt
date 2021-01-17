@@ -2,6 +2,7 @@ package com.example.justdesserts.androidApp.di
 
 import com.example.justdesserts.androidApp.ui.desserts.form.DessertFormViewModel
 import com.example.justdesserts.androidApp.ui.desserts.detail.DessertDetailViewModel
+import com.example.justdesserts.androidApp.ui.desserts.favorites.FavoriteListViewModel
 import com.example.justdesserts.androidApp.ui.desserts.list.DessertListViewModel
 import com.example.justdesserts.shared.DessertRepository
 import com.example.justdesserts.shared.cache.DatabaseDriverFactory
@@ -14,6 +15,7 @@ val mainAppModule = module {
   viewModel { DessertListViewModel(get()) }
   viewModel { DessertDetailViewModel(get()) }
   viewModel { DessertFormViewModel(get()) }
+  viewModel { FavoriteListViewModel(get()) }
 
   single { DessertRepository(DatabaseDriverFactory(this.androidApplication().applicationContext)) }
 }

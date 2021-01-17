@@ -5,6 +5,7 @@ import android.os.Bundle
 import androidx.compose.material.*
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.List
 import androidx.compose.runtime.*
 import androidx.compose.runtime.Composable
@@ -15,6 +16,7 @@ import androidx.navigation.compose.*
 import com.example.justdesserts.androidApp.models.Dessert
 import com.example.justdesserts.androidApp.models.DessertAction
 import com.example.justdesserts.androidApp.ui.desserts.detail.DessertDetailView
+import com.example.justdesserts.androidApp.ui.desserts.favorites.FavoriteListView
 import com.example.justdesserts.androidApp.ui.desserts.form.DessertFormView
 import com.example.justdesserts.androidApp.ui.desserts.list.DessertListView
 
@@ -22,6 +24,7 @@ sealed class Screens(val route: String, val label: String, val icon: ImageVector
     object DessertsScreen : Screens("Desserts", "Desserts", Icons.Default.List)
     object DessertDetailsScreen : Screens("DessertDetails", "DessertDetails")
     object DessertFormScreen : Screens("DessertForm", "DessertForm")
+    object FavoritesScreen : Screens("Favorites", "Favorites", Icons.Default.Favorite)
 }
 
 class MainActivity : AppCompatActivity() {
@@ -40,7 +43,7 @@ class MainActivity : AppCompatActivity() {
 fun MainLayout() {
     val navController = rememberNavController()
 
-    val bottomNavigationItems = listOf(Screens.DessertsScreen)
+    val bottomNavigationItems = listOf(Screens.DessertsScreen, Screens.FavoritesScreen)
     val bottomBar: @Composable () -> Unit = { BottomNavigation(navController, bottomNavigationItems) }
     val queryString = "?id={id}&name={name}&description={description}&imageUrl={imageUrl}"
 
@@ -92,6 +95,13 @@ fun MainLayout() {
                     navController.popBackStack()
                 }
             )
+        }
+
+        composable(Screens.FavoritesScreen.route) {
+            FavoriteListView(bottomBar, dessertSelected = {
+                navController.navigate(Screens.DessertDetailsScreen.route +
+                        it.toQueryString())
+            })
         }
     }
 }
