@@ -15,7 +15,7 @@ class DessertCreateViewModel: ObservableObject {
     
     var delegate: DessertDelegate?
     
-    let repository = DessertRepository()
+    let repository = DessertRepository(databaseDriverFactory: DatabaseDriverFactory())
     
     func createDessert(newDessert: Dessert) {
         repository.doNewDessert(name: newDessert.name, description: newDessert.description, imageUrl: newDessert.imageUrl) { [weak self] (data, error) in

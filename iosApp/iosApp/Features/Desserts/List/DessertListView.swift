@@ -11,15 +11,17 @@ import SwiftUI
 import shared
 
 @available(iOS 14.0, *)
-struct DessertListView: View, DessertDelegate {
+struct DessertListView: View {
     
-    @StateObject private var viewModel = DessertListViewModel()
+    private(set) var delegate: DessertDelegate
+    
+    @StateObject var viewModel: DessertListViewModel
     
     var body: some View {
         NavigationView {
             List {
                 ForEach(viewModel.desserts, id: \.dessertId) { dessert in
-                    NavigationLink(destination: DessertDetailView(dessert: dessert, delegate: self)) {
+                    NavigationLink(destination: DessertDetailView(dessert: dessert, delegate: delegate)) {
                         DessertListRowView(dessert: dessert)
                     }
                 }
@@ -29,7 +31,7 @@ struct DessertListView: View, DessertDelegate {
             }
             .navigationTitle("Desserts")
             .navigationBarItems(trailing:
-                NavigationLink(destination: DessertCreateView(delegate: self, dessert: nil)) {
+                NavigationLink(destination: DessertCreateView(delegate: delegate, dessert: nil)) {
                     Image(systemName: "plus")
                 }
             )
@@ -51,17 +53,5 @@ struct DessertListView: View, DessertDelegate {
         .onAppear(perform: {
             viewModel.currentPage += 1
         })
-    }
-    
-    func onCreateDessert(newDessert: Dessert) {
-        viewModel.onCreateDessert(newDessert: newDessert)
-    }
-    
-    func onUpdateDessert(updatedDessert: Dessert) {
-        viewModel.onUpdateDessert(updatedDessert: updatedDessert)
-    }
-    
-    func onDeleteDessert(dessertId: String) {
-        viewModel.onDeleteDessert(dessertId: dessertId)
     }
 }

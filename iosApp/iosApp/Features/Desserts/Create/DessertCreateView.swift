@@ -12,7 +12,7 @@ import shared
 @available(iOS 14.0, *)
 struct DessertCreateView: View {
     
-    let delegate: DessertDelegate
+    private(set) var delegate: DessertDelegate
     
     let dessert: Dessert?
     

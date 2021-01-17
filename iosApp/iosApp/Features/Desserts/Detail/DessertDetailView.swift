@@ -15,9 +15,9 @@ struct DessertDetailView: View, DessertDelegate {
     
     @StateObject private var viewModel = DessertDetailViewModel()
     
-    let dessert: Dessert
+    private(set) var dessert: Dessert
     
-    let delegate: DessertDelegate
+    private(set) var delegate: DessertDelegate
     
     @State var isEditingViewShown = false
     
@@ -28,7 +28,7 @@ struct DessertDetailView: View, DessertDelegate {
             Section(header: Text("Preview")) {
                 HStack {
                     Spacer()
-                    if let image = viewModel.dessert?.imageUrl,
+                    if let image = dessert.imageUrl,
                        let url = URL(string: image) {
                         KFImage(url)
                             .resizable()
@@ -45,7 +45,7 @@ struct DessertDetailView: View, DessertDelegate {
             }
         
             Section(header: Text("Summary")) {
-                Text(viewModel.dessert?.description ?? "")
+                Text(dessert.description)
                     .font(.body)
             }
                 
@@ -58,13 +58,24 @@ struct DessertDetailView: View, DessertDelegate {
             }
         }
         .listStyle(GroupedListStyle())
-        .navigationBarTitle(viewModel.dessert?.name ?? "", displayMode: .inline)
+        .navigationBarTitle(dessert.name, displayMode: .inline)
         .navigationBarItems(trailing:
-            Button(action: {
-                self.isEditingViewShown = true
-            }, label: {
-                Image(systemName: "square.and.pencil")
-            })
+            HStack {
+                Button(action: {
+                    if (viewModel.isFavorite ?? false) {
+                        viewModel.removeFavorite(dessertId: dessert.dessertId)
+                    } else {
+                        viewModel.saveFavorite(dessertId: dessert.dessertId)
+                    }
+                }, label: {
+                    Image(systemName: viewModel.isFavorite ?? false ? "heart.fill" : "heart")
+                })
+                Button(action: {
+                    self.isEditingViewShown = true
+                }, label: {
+                    Image(systemName: "square.and.pencil")
+                })
+            }
         )
         .sheet(isPresented: $isEditingViewShown) {
             DessertCreateView(delegate: self, dessert: viewModel.dessert)
