@@ -32,7 +32,7 @@ struct DessertListRowView: View {
                 Text(dessert.name)
                     .font(.title3)
                     .foregroundColor(.accentColor)
-                Text(dessert.description)
+                Text(dessert.description_)
                     .font(.footnote)
                     .foregroundColor(.gray)
             }

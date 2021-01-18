@@ -18,29 +18,27 @@ import androidx.compose.material.TopAppBar
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.example.justdesserts.androidApp.models.Dessert
-import com.example.justdesserts.androidApp.models.DessertAction
-import com.example.justdesserts.androidApp.models.Review
+import com.example.justdesserts.shared.cache.DessertAction
+import com.example.justdesserts.shared.cache.Dessert
 import kotlinx.coroutines.async
 import org.koin.androidx.compose.getViewModel
 
 @Composable
-fun DessertFormView(dessert: Dessert, popBack: () -> Unit) {
+fun DessertFormView(dessert: Dessert, action: DessertAction, popBack: () -> Unit) {
     val dessertFormViewModel = getViewModel<DessertFormViewModel>()
     val (dessert, setDessert) = remember { mutableStateOf(dessert) }
-    val isEditing = dessert?.action != DessertAction.CREATE
+    val isEditing = action != DessertAction.CREATE
     val scope = rememberCoroutineScope()
     val label = if (isEditing) "Save" else "Create"
 
-    suspend fun handleDessert(dessert: Dessert) {
-        when (dessert.action) {
+    suspend fun handleDessert(action: DessertAction) {
+        when (action) {
             DessertAction.CREATE -> {
                 dessertFormViewModel.createDessert(dessert)
                 popBack()
@@ -49,17 +47,16 @@ fun DessertFormView(dessert: Dessert, popBack: () -> Unit) {
                 val updateDessert = dessertFormViewModel.updateDessert(dessert)
                 setDessert(
                     Dessert(
-                        dessertId = updateDessert?.id ?: "",
+                        id = updateDessert?.id ?: "",
                         name = updateDessert?.name ?: "",
                         description = updateDessert?.description ?: "",
-                        imageUrl = updateDessert?.imageUrl ?: "",
-                        reviews = dessert.reviews
+                        imageUrl = updateDessert?.imageUrl ?: ""
                     )
                 )
                 popBack()
             }
             DessertAction.DELETE -> {
-                val deleted = dessertFormViewModel.deleteDessert(dessert.dessertId)
+                val deleted = dessertFormViewModel.deleteDessert(dessert.id)
                 if (deleted == true) popBack()
             }
         }
@@ -113,14 +110,8 @@ fun DessertFormView(dessert: Dessert, popBack: () -> Unit) {
                         Spacer(modifier = Modifier.preferredHeight(16.dp))
 
                         Button(onClick = {
-                            if (isEditing) {
-                                scope.async {
-                                    handleDessert(dessert)
-                                }
-                            } else {
-                                scope.async {
-                                    handleDessert(dessert)
-                                }
+                            scope.async {
+                                handleDessert(action)
                             }
                         }, modifier = Modifier.padding(16.dp).preferredWidth(320.dp)) {
                             Text(label)
@@ -129,7 +120,7 @@ fun DessertFormView(dessert: Dessert, popBack: () -> Unit) {
                         if (isEditing) {
                             Button(onClick = {
                                 scope.async {
-                                    handleDessert(dessert.copy(action = DessertAction.DELETE))
+                                    handleDessert(DessertAction.DELETE)
                                 }
                             }, modifier = Modifier.padding(16.dp).preferredWidth(320.dp)) {
                                 Text("Delete")

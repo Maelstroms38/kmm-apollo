@@ -6,10 +6,11 @@ import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import com.example.justdesserts.GetDessertQuery
 import com.example.justdesserts.shared.DessertRepository
+import com.example.justdesserts.shared.cache.Dessert
 import kotlinx.coroutines.flow.Flow
 
 class FavoriteListViewModel constructor(repository: DessertRepository): ViewModel() {
-    val desserts: Flow<PagingData<GetDessertQuery.Dessert>> = Pager(PagingConfig(pageSize = 100)) {
+    val desserts: Flow<PagingData<Dessert>> = Pager(PagingConfig(pageSize = 100)) {
         FavoriteDataSource(repository)
     }.flow
 }

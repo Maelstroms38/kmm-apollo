@@ -37,9 +37,8 @@ class DessertListViewModel: ObservableObject {
         let page = currentPage
         repository.getDesserts(page: page, size: 10) { [weak self] (data, error) in
             
-            guard let self = self, let results = data?.results as? [GetDessertsQuery.Result] else { return }
-            
-            let desserts = results.map { Dessert(dessertId: $0.id, name: $0.name ?? "", description: $0.description_ ?? "", imageUrl: $0.imageUrl ?? "") }
+            guard let self = self,
+                  let desserts = data?.desserts else { return }
             
             if page > 0 {
                 self.desserts.append(contentsOf: desserts)
@@ -63,7 +62,7 @@ class DessertListViewModel: ObservableObject {
     
     func onUpdateDessert(updatedDessert: Dessert) {
         let insertIndex = self.desserts.firstIndex { dessert -> Bool in
-            return dessert.dessertId == updatedDessert.dessertId
+            return dessert.id == updatedDessert.id
         }
         if let index = insertIndex {
             self.desserts[index] = updatedDessert
@@ -72,7 +71,7 @@ class DessertListViewModel: ObservableObject {
     
     func onDeleteDessert(dessertId: String) {
         let deletedIndex = self.desserts.firstIndex { dessert -> Bool in
-            return dessert.dessertId == dessertId
+            return dessert.id == dessertId
         }
         if let delete = deletedIndex {
             self.desserts.remove(at: delete)

@@ -22,21 +22,21 @@ struct DessertCreateView: View {
     
     var body: some View {
         VStack {
-            DessertFormView(handler: { dessert in
-                switch dessert.action {
-                case .CREATE:
+            DessertFormView(handler: { dessert, action in
+                switch action {
+                case .create:
                     viewModel.createDessert(newDessert: dessert)
-                case .UPDATE:
+                case .update:
                     viewModel.updateDessert(dessert: dessert)
-                case .DELETE:
-                    viewModel.deleteDessert(dessertId: dessert.dessertId)
+                case .delete_:
+                    viewModel.deleteDessert(dessertId: dessert.id)
                     
                 default:
                     break
                 }
                 presentationMode.wrappedValue.dismiss()
             },
-            dessertId: dessert?.dessertId ?? "new", name: dessert?.name ?? "", description: dessert?.description ?? "", imageUrl: dessert?.imageUrl ?? "")
+            dessertId: dessert?.id ?? "new", name: dessert?.name ?? "", description: dessert?.description_ ?? "", imageUrl: dessert?.imageUrl ?? "")
         }
         .navigationBarTitle("", displayMode: .inline)
         .onAppear() {

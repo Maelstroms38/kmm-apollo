@@ -7,11 +7,12 @@ import androidx.paging.PagingData
 import com.apollographql.apollo.api.ApolloExperimental
 import com.example.justdesserts.GetDessertsQuery
 import com.example.justdesserts.shared.DessertRepository
+import com.example.justdesserts.shared.cache.Dessert
 import kotlinx.coroutines.flow.Flow
 
 @ApolloExperimental
 class DessertListViewModel constructor(private val repository: DessertRepository): ViewModel() {
-  val desserts: Flow<PagingData<GetDessertsQuery.Result>> = Pager(PagingConfig(pageSize = 10)) {
+  val desserts: Flow<PagingData<Dessert>> = Pager(PagingConfig(pageSize = 10)) {
     DessertDataSource(repository)
   }.flow
 }

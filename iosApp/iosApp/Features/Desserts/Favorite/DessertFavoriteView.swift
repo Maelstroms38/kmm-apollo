@@ -20,7 +20,7 @@ struct DessertFavoriteView: View {
     var body: some View {
         NavigationView {
             List {
-                ForEach(viewModel.favorites, id: \.dessertId) { dessert in
+                ForEach(viewModel.favorites, id: \.id) { dessert in
                     NavigationLink(destination: DessertDetailView(dessert: dessert, delegate: delegate)) {
                         DessertListRowView(dessert: dessert)
                     }

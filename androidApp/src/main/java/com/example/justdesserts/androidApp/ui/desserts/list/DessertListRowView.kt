@@ -13,7 +13,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
-import com.example.justdesserts.androidApp.models.Dessert
+import com.example.justdesserts.shared.cache.Dessert
 import dev.chrisbanes.accompanist.coil.CoilImage
 
 @Composable

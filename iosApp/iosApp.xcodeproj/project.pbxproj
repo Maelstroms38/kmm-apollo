@@ -17,9 +17,6 @@
 		0B915868259CE39E00DBA0CE /* DessertDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B915867259CE39E00DBA0CE /* DessertDetailView.swift */; };
 		0B91586C259CE77E00DBA0CE /* DessertDetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B91586B259CE77E00DBA0CE /* DessertDetailViewModel.swift */; };
 		0B915872259CEC8D00DBA0CE /* DessertReviewRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B915871259CEC8D00DBA0CE /* DessertReviewRowView.swift */; };
-		0BBF3D67259F9B1A00964B35 /* Dessert.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BBF3D66259F9B1A00964B35 /* Dessert.swift */; };
-		0BBF3D6B259F9B2B00964B35 /* DessertAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BBF3D6A259F9B2B00964B35 /* DessertAction.swift */; };
-		0BBF3D6F259F9BE400964B35 /* Review.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BBF3D6E259F9BE400964B35 /* Review.swift */; };
 		0BC3205225B4D1A600DE0382 /* DessertFavoriteView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BC3205125B4D1A600DE0382 /* DessertFavoriteView.swift */; };
 		0BC3205625B4D1EA00DE0382 /* DessertFavoriteViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BC3205525B4D1EA00DE0382 /* DessertFavoriteViewModel.swift */; };
 		0BFB078025AE3BBC00FFF321 /* DessertDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BFB077F25AE3BBC00FFF321 /* DessertDelegate.swift */; };
@@ -76,9 +73,6 @@
 		0B915867259CE39E00DBA0CE /* DessertDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DessertDetailView.swift; sourceTree = "<group>"; };
 		0B91586B259CE77E00DBA0CE /* DessertDetailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DessertDetailViewModel.swift; sourceTree = "<group>"; };
 		0B915871259CEC8D00DBA0CE /* DessertReviewRowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DessertReviewRowView.swift; sourceTree = "<group>"; };
-		0BBF3D66259F9B1A00964B35 /* Dessert.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Dessert.swift; sourceTree = "<group>"; };
-		0BBF3D6A259F9B2B00964B35 /* DessertAction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DessertAction.swift; sourceTree = "<group>"; };
-		0BBF3D6E259F9BE400964B35 /* Review.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Review.swift; sourceTree = "<group>"; };
 		0BC3205125B4D1A600DE0382 /* DessertFavoriteView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DessertFavoriteView.swift; sourceTree = "<group>"; };
 		0BC3205525B4D1EA00DE0382 /* DessertFavoriteViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DessertFavoriteViewModel.swift; sourceTree = "<group>"; };
 		0BFB077F25AE3BBC00FFF321 /* DessertDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DessertDelegate.swift; sourceTree = "<group>"; };
@@ -179,9 +173,6 @@
 		0BBF3D65259F9B0F00964B35 /* Models */ = {
 			isa = PBXGroup;
 			children = (
-				0BBF3D66259F9B1A00964B35 /* Dessert.swift */,
-				0BBF3D6A259F9B2B00964B35 /* DessertAction.swift */,
-				0BBF3D6E259F9BE400964B35 /* Review.swift */,
 				0BFB077F25AE3BBC00FFF321 /* DessertDelegate.swift */,
 			);
 			path = Models;
@@ -427,14 +418,11 @@
 			files = (
 				0B91586C259CE77E00DBA0CE /* DessertDetailViewModel.swift in Sources */,
 				0B0FA14A259E29920033ABE2 /* DessertFormView.swift in Sources */,
-				0BBF3D6B259F9B2B00964B35 /* DessertAction.swift in Sources */,
 				7555FF7F242A565900829871 /* AppDelegate.swift in Sources */,
 				0B915872259CEC8D00DBA0CE /* DessertReviewRowView.swift in Sources */,
 				0BFB078025AE3BBC00FFF321 /* DessertDelegate.swift in Sources */,
-				0BBF3D67259F9B1A00964B35 /* Dessert.swift in Sources */,
 				0B585263259BADD9000572B6 /* DessertListRowView.swift in Sources */,
 				0B915868259CE39E00DBA0CE /* DessertDetailView.swift in Sources */,
-				0BBF3D6F259F9BE400964B35 /* Review.swift in Sources */,
 				7555FF81242A565900829871 /* SceneDelegate.swift in Sources */,
 				0B58526C259BB12E000572B6 /* DessertListView.swift in Sources */,
 				0B428C6A25A2AE980073BED8 /* DessertCreateViewModel.swift in Sources */,

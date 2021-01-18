@@ -15,21 +15,16 @@ internal class Database(databaseDriverFactory: DatabaseDriverFactory) {
         }
     }
 
-    internal fun getDesserts(): List<GetDessertQuery.Dessert> {
-        return dbQuery.selectAllDesserts(::mapDessert).executeAsList()
+    internal fun getDesserts(): List<Dessert> {
+        return dbQuery.selectAllDesserts().executeAsList()
     }
 
-    internal fun getDessertById(dessertId: String): GetDessertQuery.Dessert? {
-        return dbQuery.selectDessertById(dessertId, ::mapDessert).executeAsOneOrNull()
+    internal fun getDessertById(dessertId: String): Dessert? {
+        return dbQuery.selectDessertById(dessertId).executeAsOneOrNull()
     }
 
-    internal fun saveDessert(dessert: GetDessertQuery.Dessert) {
+    internal fun saveDessert(dessert: Dessert) {
         dbQuery.transaction {
-            dessert.reviewsFilterNotNull()?.forEach { review ->
-                if (getReviewById(review.id) == null) {
-                    insertReview(review)
-                }
-            }
             insertDessert(dessert)
         }
     }
@@ -39,33 +34,20 @@ internal class Database(databaseDriverFactory: DatabaseDriverFactory) {
         }
     }
 
-    private fun getReviewById(reviewId: String): GetDessertQuery.Review? {
-        return dbQuery.selectReviewById(reviewId, ::mapReview).executeAsOneOrNull()
-    }
-
-    private fun mapDessert(id: String, name: String, description: String, imageUrl: String): GetDessertQuery.Dessert {
-        val reviews = dbQuery.selectReviewsByDessertId(id, ::mapReview).executeAsList()
-        return GetDessertQuery.Dessert("Dessert", id, name, description, imageUrl, reviews)
-    }
-
-    private fun mapReview(id: String, dessertId: String, text: String, rating: Long?): GetDessertQuery.Review {
-        return GetDessertQuery.Review("Review", id, dessertId, text, rating?.toInt())
-    }
-
     private fun removeDessert(dessertId: String) {
         dbQuery.removeDessertById(dessertId)
     }
 
-    private fun insertDessert(dessert: GetDessertQuery.Dessert) {
+    private fun insertDessert(dessert: Dessert) {
         dbQuery.insertDessert(
             dessert.id,
-            dessert.name ?: "",
-            dessert.description ?: "",
-            dessert.imageUrl ?: ""
+            dessert.name,
+            dessert.description,
+            dessert.imageUrl
         )
     }
 
-    private fun insertReview(review: GetDessertQuery.Review) {
-        dbQuery.insertReview(review.id, review.dessertId, review.text, review.rating?.toLong())
+    private fun insertReview(review: Review) {
+        dbQuery.insertReview(review.id, review.dessertId, review.text, review.rating)
     }
 }

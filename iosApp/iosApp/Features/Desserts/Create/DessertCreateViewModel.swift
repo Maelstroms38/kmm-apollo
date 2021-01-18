@@ -18,20 +18,15 @@ class DessertCreateViewModel: ObservableObject {
     let repository = DessertRepository(databaseDriverFactory: DatabaseDriverFactory())
     
     func createDessert(newDessert: Dessert) {
-        repository.doNewDessert(name: newDessert.name, description: newDessert.description, imageUrl: newDessert.imageUrl) { [weak self] (data, error) in
+        repository.doNewDessert(name: newDessert.name, description: newDessert.description_, imageUrl: newDessert.imageUrl) { [weak self] (data, error) in
             guard let self = self,
-                  let dessertId = data?.id,
-                  let name = data?.name,
-                  let description = data?.description_,
-                  let imageUrl = data?.imageUrl else { return }
-            
-            let dessertData = Dessert(dessertId: dessertId, name: name, description: description, imageUrl: imageUrl)
-            self.delegate?.onCreateDessert(newDessert: dessertData)
+                  let newDessert = data else { return }
+            self.delegate?.onCreateDessert(newDessert: newDessert)
         }
     }
     
     func updateDessert(dessert: Dessert) {
-        repository.updateDessert(dessertId: dessert.dessertId, name: dessert.name, description: dessert.description, imageUrl: dessert.imageUrl) { [weak self] (data, error) in
+        repository.updateDessert(dessertId: dessert.id, name: dessert.name, description: dessert.description_, imageUrl: dessert.imageUrl) { [weak self] (data, error) in
             guard let self = self,
                   let _ = data else { return }
             self.delegate?.onUpdateDessert(updatedDessert: dessert)

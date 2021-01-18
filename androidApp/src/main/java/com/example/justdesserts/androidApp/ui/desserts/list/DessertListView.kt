@@ -12,8 +12,7 @@ import androidx.compose.material.icons.outlined.Add
 import androidx.compose.runtime.Composable
 import androidx.paging.compose.collectAsLazyPagingItems
 import androidx.paging.compose.items
-import com.example.justdesserts.androidApp.models.Dessert
-import com.example.justdesserts.androidApp.models.DessertAction
+import com.example.justdesserts.shared.cache.Dessert
 import org.koin.androidx.compose.getViewModel
 
 @Composable
@@ -26,21 +25,17 @@ fun DessertListView(bottomBar: @Composable () -> Unit, newDessertSelected: (dess
     bottomBar = bottomBar,
     floatingActionButton = {
       FloatingActionButton(onClick = {
-        newDessertSelected(Dessert(DessertAction.CREATE, "", "", "", ""))
+        newDessertSelected(Dessert("", "", "", ""))
       }, backgroundColor = MaterialTheme.colors.primary) {
         Icon(Icons.Outlined.Add)
       }
     },
     bodyContent = {
       LazyColumn(contentPadding = it) {
-        items(lazyDessertList) { dessert ->
-          val readDessert = Dessert(
-            dessertId = dessert?.id ?: "",
-            name = dessert?.name ?: "",
-            description = dessert?.description ?: "",
-            imageUrl = dessert?.imageUrl ?: ""
-          )
-          DessertListRowView(readDessert, dessertSelected)
+        items(lazyDessertList) { item ->
+          item?.let { dessert ->
+            DessertListRowView(dessert, dessertSelected)
+          }
         }
       }
     })

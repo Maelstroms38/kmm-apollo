@@ -13,12 +13,13 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.setContent
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.*
-import com.example.justdesserts.androidApp.models.Dessert
-import com.example.justdesserts.androidApp.models.DessertAction
+import com.example.justdesserts.shared.cache.DessertAction
 import com.example.justdesserts.androidApp.ui.desserts.detail.DessertDetailView
 import com.example.justdesserts.androidApp.ui.desserts.favorites.FavoriteListView
 import com.example.justdesserts.androidApp.ui.desserts.form.DessertFormView
 import com.example.justdesserts.androidApp.ui.desserts.list.DessertListView
+import com.example.justdesserts.shared.cache.Dessert
+import com.example.justdesserts.shared.cache.toQueryString
 
 sealed class Screens(val route: String, val label: String, val icon: ImageVector? = null) {
     object DessertsScreen : Screens("Desserts", "Desserts", Icons.Default.List)
@@ -67,7 +68,7 @@ fun MainLayout() {
             val name = backStackEntry.arguments?.get("name") as String
             val description = backStackEntry.arguments?.get("description") as String
             val imageUrl = backStackEntry.arguments?.get("imageUrl") as String
-            val dessert = Dessert(DessertAction.READ, id, name, description, imageUrl)
+            val dessert = Dessert(id, name, description, imageUrl)
 
             DessertDetailView(dessert,
                 editDessertSelected = {
@@ -88,9 +89,9 @@ fun MainLayout() {
             val description = backStackEntry.arguments?.get("description") as String
             val imageUrl = backStackEntry.arguments?.get("imageUrl") as String
             val action = if (id != "new") DessertAction.UPDATE else DessertAction.CREATE
-            val dessert = Dessert(action, id, name, description, imageUrl)
+            val dessert = Dessert(id, name, description, imageUrl)
 
-            DessertFormView(dessert,
+            DessertFormView(dessert, action,
                 popBack = {
                     navController.popBackStack()
                 }

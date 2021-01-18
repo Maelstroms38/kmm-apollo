@@ -45,12 +45,12 @@ struct DessertDetailView: View, DessertDelegate {
             }
         
             Section(header: Text("Summary")) {
-                Text(dessert.description)
+                Text(dessert.description_)
                     .font(.body)
             }
                 
             Section(header: Text("Reviews")) {
-                if let reviews = viewModel.dessert?.reviews {
+                if let reviews = viewModel.reviews {
                     ForEach(reviews, id: \.id) { review in
                         DessertReviewRowView(review: review)
                     }
@@ -63,9 +63,9 @@ struct DessertDetailView: View, DessertDelegate {
             HStack {
                 Button(action: {
                     if (viewModel.isFavorite ?? false) {
-                        viewModel.removeFavorite(dessertId: dessert.dessertId)
+                        viewModel.removeFavorite(dessertId: dessert.id)
                     } else {
-                        viewModel.saveFavorite(dessertId: dessert.dessertId)
+                        viewModel.saveFavorite(dessertId: dessert.id)
                     }
                 }, label: {
                     Image(systemName: viewModel.isFavorite ?? false ? "heart.fill" : "heart")
@@ -82,7 +82,7 @@ struct DessertDetailView: View, DessertDelegate {
         }
         .onAppear() {
             viewModel.delegate = delegate
-            viewModel.fetchDessert(dessertId: dessert.dessertId)
+            viewModel.fetchDessert(dessertId: dessert.id)
         }
     }
     

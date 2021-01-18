@@ -17,17 +17,16 @@ class DessertFavoriteViewModel: ObservableObject {
     
     func fetchFavorites() {
         let favorites = self.repository.getFavoriteDesserts()
-        let desserts = favorites.map { Dessert(dessertId: $0.id, name: $0.name ?? "", description: $0.description_ ?? "", imageUrl: $0.imageUrl ?? "") }
-        self.favorites = desserts
+        self.favorites = favorites
     }
     
     func onUpdateDessert(updatedDessert: Dessert) {
-        self.repository.removeFavorite(dessertId: updatedDessert.dessertId)
-        self.repository.saveFavorite(dessertId: updatedDessert.dessertId, completionHandler: { [weak self] (data, error) in
+        self.repository.removeFavorite(dessertId: updatedDessert.id)
+        self.repository.saveFavorite(dessertId: updatedDessert.id, completionHandler: { [weak self] (data, error) in
             guard let self = self else { return }
             
             let insertIndex = self.favorites.firstIndex { dessert -> Bool in
-                return dessert.dessertId == updatedDessert.dessertId
+                return dessert.id == updatedDessert.id
             }
             if let index = insertIndex {
                 self.favorites[index] = updatedDessert

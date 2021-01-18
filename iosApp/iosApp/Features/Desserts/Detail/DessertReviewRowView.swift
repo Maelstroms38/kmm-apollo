@@ -21,7 +21,7 @@ struct DessertReviewRowView: View {
                     .font(.title3)
                     .foregroundColor(.accentColor)
                 HStack {
-                    ForEach(0..<review.rating) { index in
+                    ForEach(0..<Int(review.rating)) { index in
                         Image(systemName: "star.fill")
                     }
                 }

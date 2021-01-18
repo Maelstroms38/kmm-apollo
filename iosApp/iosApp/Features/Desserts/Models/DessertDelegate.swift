@@ -6,6 +6,8 @@
 //  Copyright © 2021 orgName. All rights reserved.
 //
 
+import shared
+
 protocol DessertDelegate {
     func onCreateDessert(newDessert: Dessert)
     func onUpdateDessert(updatedDessert: Dessert)
