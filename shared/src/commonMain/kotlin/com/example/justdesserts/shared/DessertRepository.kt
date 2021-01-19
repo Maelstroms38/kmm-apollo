@@ -71,11 +71,8 @@ class DessertRepository(databaseDriverFactory: DatabaseDriverFactory) {
     return response.data?.deleteDessert
   }
 
-  @Throws(Exception::class) suspend fun saveFavorite(dessertId: String) {
-    val dessert = getDessert(dessertId)
-    dessert.let {
-      database.saveDessert(it?.dessert!!)
-    }
+  fun saveFavorite(dessert: Dessert) {
+      database.saveDessert(dessert)
   }
 
   fun removeFavorite(dessertId: String) {

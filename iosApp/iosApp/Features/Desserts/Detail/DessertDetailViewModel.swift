@@ -36,11 +36,9 @@ class DessertDetailViewModel: ObservableObject {
         }
     }
     
-    func saveFavorite(dessertId: String) {
-        self.repository.saveFavorite(dessertId: dessertId, completionHandler: { [weak self] (data, error) in
-            guard let self = self else { return }
-            self.isFavorite = true
-        })
+    func saveFavorite(dessert: Dessert) {
+        self.repository.saveFavorite(dessert: dessert)
+        self.isFavorite = true
     }
     
     func removeFavorite(dessertId: String) {

@@ -48,7 +48,6 @@ fun DessertDetailView(dessert: Dessert, editDessertSelected: (dessert: Dessert) 
     val dessertDetailViewModel = getViewModel<DessertDetailViewModel>()
     val (dessert, setDessert) = remember { mutableStateOf(dessert) }
     val (reviews, setReviews) = remember { mutableStateOf(emptyList<Review>()) }
-    val scope = rememberCoroutineScope()
     val (isFavorite, setIsFavorite) = remember { mutableStateOf(false) }
 
     LaunchedEffect(dessert) {
@@ -80,9 +79,7 @@ fun DessertDetailView(dessert: Dessert, editDessertSelected: (dessert: Dessert) 
                         if (isFavorite) {
                             dessertDetailViewModel.removeFavorite(dessert.id)
                         } else {
-                            scope.async {
-                                dessertDetailViewModel.saveFavorite(dessert.id)
-                            }
+                            dessertDetailViewModel.saveFavorite(dessert)
                         }
                         setIsFavorite(!isFavorite)
                     }) {

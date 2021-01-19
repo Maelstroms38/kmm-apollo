@@ -3,6 +3,7 @@ package com.example.justdesserts.androidApp.ui.desserts.detail
 import androidx.lifecycle.ViewModel
 import com.apollographql.apollo.api.ApolloExperimental
 import com.example.justdesserts.shared.DessertRepository
+import com.example.justdesserts.shared.cache.Dessert
 import com.example.justdesserts.shared.cache.DessertDetail
 
 @ApolloExperimental
@@ -15,8 +16,8 @@ class DessertDetailViewModel constructor(private val repository: DessertReposito
         return repository.isFavorite(dessertId)
     }
 
-    suspend fun saveFavorite(dessertId: String) {
-        return repository.saveFavorite(dessertId)
+    fun saveFavorite(dessert: Dessert) {
+        return repository.saveFavorite(dessert)
     }
 
     fun removeFavorite(dessertId: String) {

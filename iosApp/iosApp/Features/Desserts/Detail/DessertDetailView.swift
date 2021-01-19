@@ -65,7 +65,7 @@ struct DessertDetailView: View, DessertDelegate {
                     if (viewModel.isFavorite ?? false) {
                         viewModel.removeFavorite(dessertId: dessert.id)
                     } else {
-                        viewModel.saveFavorite(dessertId: dessert.id)
+                        viewModel.saveFavorite(dessert: dessert)
                     }
                 }, label: {
                     Image(systemName: viewModel.isFavorite ?? false ? "heart.fill" : "heart")

@@ -11,7 +11,7 @@ struct ContentView: View, DessertDelegate {
         TabView {
             DessertListView(delegate: self, viewModel: viewModel)
                 .tabItem {
-                    Label("Desserts", systemImage: "person.crop.square.fill.and.at.rectangle")
+                    Label("Desserts", systemImage: "safari")
                 }
             DessertFavoriteView(delegate: self, viewModel: favoriteViewModel)
                 .tabItem {

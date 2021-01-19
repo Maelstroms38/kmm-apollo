@@ -22,16 +22,15 @@ class DessertFavoriteViewModel: ObservableObject {
     
     func onUpdateDessert(updatedDessert: Dessert) {
         self.repository.removeFavorite(dessertId: updatedDessert.id)
-        self.repository.saveFavorite(dessertId: updatedDessert.id, completionHandler: { [weak self] (data, error) in
-            guard let self = self else { return }
-            
-            let insertIndex = self.favorites.firstIndex { dessert -> Bool in
-                return dessert.id == updatedDessert.id
-            }
-            if let index = insertIndex {
-                self.favorites[index] = updatedDessert
-            }
-        })
+        self.repository.saveFavorite(dessert: updatedDessert)
+        
+        let insertIndex = self.favorites.firstIndex { dessert -> Bool in
+            return dessert.id == updatedDessert.id
+        }
+        
+        if let index = insertIndex {
+            self.favorites[index] = updatedDessert
+        }
     }
     
     func onDeleteDessert(dessertId: String) {
