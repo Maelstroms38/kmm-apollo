@@ -1,5 +1,6 @@
 CREATE TABLE Dessert (
     id TEXT NOT NULL PRIMARY KEY,
+    userId TEXT NOT NULL,
     name TEXT NOT NULL,
     description TEXT NOT NULL,
     imageUrl TEXT NOT NULL
@@ -8,17 +9,18 @@ CREATE TABLE Dessert (
 CREATE TABLE Review (
     id TEXT NOT NULL PRIMARY KEY,
     dessertId TEXT NOT NULL,
+    userId TEXT NOT NULL,
     text TEXT NOT NULL,
     rating INTEGER NOT NULL
 );
 
 insertDessert:
-INSERT INTO Dessert(id, name, description, imageUrl)
-VALUES(?, ?, ?, ?);
+INSERT INTO Dessert(id, userId, name, description, imageUrl)
+VALUES(?, ?, ?, ?, ?);
 
 insertReview:
-INSERT INTO Review(id, dessertId, text, rating)
-VALUES(?, ?, ?, ?);
+INSERT INTO Review(id, dessertId, userId, text, rating)
+VALUES(?, ?, ?, ?, ?);
 
 removeAllDesserts:
 DELETE FROM Dessert;

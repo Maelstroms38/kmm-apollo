@@ -21,24 +21,21 @@ class DessertListViewModel: ObservableObject {
         }
     }
     
-    public var shouldDisplayNextPage: Bool {
-        if desserts.isEmpty == false,
-           let totalPages = totalPages,
-           currentPage < totalPages {
-            return true
-        }
-        return false
-    }
-    
-    public private(set) var totalPages: Int32?
-    public private(set) var totalDesserts: Int32?
+    public var shouldDisplayNextPage: Bool = false
     
     func fetchDesserts() {
         let page = currentPage
         repository.getDesserts(page: page, size: 10) { [weak self] (data, error) in
             
             guard let self = self,
-                  let desserts = data?.desserts else { return }
+                  let desserts = data else { return }
+            
+            if desserts.isEmpty {
+               self.shouldDisplayNextPage = false
+            } else {
+                self.shouldDisplayNextPage = true
+                self.currentPage += 1
+            }
             
             if page > 0 {
                 self.desserts.append(contentsOf: desserts)
@@ -46,13 +43,6 @@ class DessertListViewModel: ObservableObject {
                 self.desserts = desserts
             }
             
-            if let totalPages = data?.info?.pages {
-                self.totalPages = totalPages.int32Value
-            }
-            
-            if let count = data?.info?.count {
-                self.totalDesserts = count.int32Value
-            }
         }
     }
     

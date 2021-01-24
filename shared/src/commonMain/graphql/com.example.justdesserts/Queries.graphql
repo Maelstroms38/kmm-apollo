@@ -1,29 +1,24 @@
-query GetDesserts($page: Int = 0, $size: Int = 10) {
+query GetDesserts($page: Int!, $size: Int!) {
   desserts(page: $page, size: $size) {
-    results {
-      id
-      name
-      description
-      imageUrl
-    }
-    info {
-      count
-      pages
-      next
-      prev
-    }
+    id
+    userId
+    name
+    description
+    imageUrl
   }
 }
 
-query GetDessert($dessertId:String) {
+query GetDessert($dessertId: String!) {
   dessert(dessertId:$dessertId) {
     id
+    userId
     name
     description
     imageUrl
     reviews {
       id
       dessertId
+      userId
       text
       rating
     }

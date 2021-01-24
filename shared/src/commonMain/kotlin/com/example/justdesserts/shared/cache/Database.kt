@@ -1,9 +1,5 @@
 package com.example.justdesserts.shared.cache
 
-import com.example.justdesserts.GetDessertQuery
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flowOf
-
 internal class Database(databaseDriverFactory: DatabaseDriverFactory) {
     private val database = JustDesserts(databaseDriverFactory.createDriver())
     private val dbQuery = database.justDessertsQueries
@@ -41,6 +37,7 @@ internal class Database(databaseDriverFactory: DatabaseDriverFactory) {
     private fun insertDessert(dessert: Dessert) {
         dbQuery.insertDessert(
             dessert.id,
+            dessert.userId,
             dessert.name,
             dessert.description,
             dessert.imageUrl
@@ -48,6 +45,6 @@ internal class Database(databaseDriverFactory: DatabaseDriverFactory) {
     }
 
     private fun insertReview(review: Review) {
-        dbQuery.insertReview(review.id, review.dessertId, review.text, review.rating)
+        dbQuery.insertReview(review.id, review.dessertId, review.userId, review.text, review.rating.toLong())
     }
 }

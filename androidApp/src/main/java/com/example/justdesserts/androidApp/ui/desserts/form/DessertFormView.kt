@@ -48,6 +48,7 @@ fun DessertFormView(dessert: Dessert, action: DessertAction, popBack: () -> Unit
                 setDessert(
                     Dessert(
                         id = updateDessert?.id ?: "",
+                        userId = updateDessert?.userId ?: "",
                         name = updateDessert?.name ?: "",
                         description = updateDessert?.description ?: "",
                         imageUrl = updateDessert?.imageUrl ?: ""

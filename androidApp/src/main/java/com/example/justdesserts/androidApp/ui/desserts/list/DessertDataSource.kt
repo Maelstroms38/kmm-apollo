@@ -12,10 +12,9 @@ class DessertDataSource @ApolloExperimental constructor(private val repository: 
     val pageNumber = params.key ?: 0
 
     return try {
-      val response = repository.getDesserts(page = pageNumber, size = 10)
-      val desserts = response?.desserts
+      val desserts = repository.getDesserts(page = pageNumber, size = 10)
       val prevKey = if (pageNumber > 0) pageNumber - 1 else null
-      val nextKey = response?.info?.next
+      val nextKey = if (desserts?.isEmpty() == true) null else pageNumber + 1
       LoadResult.Page(data = desserts ?: emptyList(), prevKey = prevKey, nextKey = nextKey)
     } catch (err: Exception) {
       LoadResult.Page(data = emptyList(), prevKey = null, nextKey = null)

@@ -38,7 +38,7 @@ struct DessertFormView: View {
                 Button(
                     action: {
                         let action: DessertAction = isEditing ? .update : .create
-                        self.handler(Dessert(id: dessertId, name: name, description: description, imageUrl: imageUrl
+                        self.handler(Dessert(id: dessertId, userId: "", name: name, description: description, imageUrl: imageUrl
                         ), action)
                     },
                     label: { Text(label) }
@@ -46,7 +46,7 @@ struct DessertFormView: View {
                 if isEditing {
                     Button(
                         action: {
-                            self.handler(Dessert(id: dessertId, name: "", description: "", imageUrl: ""), DessertAction.delete_)
+                            self.handler(Dessert(id: dessertId, userId: "", name: "", description: "", imageUrl: ""), DessertAction.delete_)
                         },
                         label: { Text("Delete") }
                     )

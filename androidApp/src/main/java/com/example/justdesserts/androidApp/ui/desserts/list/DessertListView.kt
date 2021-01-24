@@ -25,7 +25,7 @@ fun DessertListView(bottomBar: @Composable () -> Unit, newDessertSelected: (dess
     bottomBar = bottomBar,
     floatingActionButton = {
       FloatingActionButton(onClick = {
-        newDessertSelected(Dessert("", "", "", ""))
+        newDessertSelected(Dessert("", "","", "", ""))
       }, backgroundColor = MaterialTheme.colors.primary) {
         Icon(Icons.Outlined.Add)
       }

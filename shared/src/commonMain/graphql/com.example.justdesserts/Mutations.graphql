@@ -1,21 +1,33 @@
-mutation NewDessert($name: String!, $description: String!, $imageUrl: String!) {
-  newDessert(name: $name, description: $description, imageUrl: $imageUrl) {
+mutation NewDessert($input: DessertInput!) {
+  createDessert(dessertInput: $input) {
     id
     name
     description
     imageUrl
+    userId
   }
 }
 
-mutation UpdateDessert($dessertId: ID!, $name: String!, $description: String!, $imageUrl: String!) {
-  updateDessert(id:$dessertId, name: $name, description: $description, imageUrl: $imageUrl) {
+mutation UpdateDessert($dessertId: String!, $input: DessertInput!) {
+  updateDessert(dessertId: $dessertId, dessertInput: $input) {
     id
     name
     description
     imageUrl
+    userId
   }
 }
 
-mutation DeleteDessert($dessertId:ID!) {
-  deleteDessert(id:$dessertId)
+mutation DeleteDessert($dessertId: String!) {
+  deleteDessert(dessertId: $dessertId)
+}
+
+mutation CreateReview($dessertId:String!, $reviewInput: ReviewInput!) {
+  createReview(dessertId:$dessertId, reviewInput:$reviewInput) {
+    id
+    text
+    rating
+    dessertId
+    userId
+  }
 }

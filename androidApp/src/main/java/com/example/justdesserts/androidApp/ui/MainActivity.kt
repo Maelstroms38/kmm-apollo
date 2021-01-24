@@ -46,7 +46,7 @@ fun MainLayout() {
 
     val bottomNavigationItems = listOf(Screens.DessertsScreen, Screens.FavoritesScreen)
     val bottomBar: @Composable () -> Unit = { BottomNavigation(navController, bottomNavigationItems) }
-    val queryString = "?id={id}&name={name}&description={description}&imageUrl={imageUrl}"
+    val queryString = "?id={id}&userId={userId}&name={name}&description={description}&imageUrl={imageUrl}"
 
     NavHost(navController, startDestination = Screens.DessertsScreen.route) {
         composable(Screens.DessertsScreen.route) {
@@ -60,15 +60,17 @@ fun MainLayout() {
         composable(Screens.DessertDetailsScreen.route + queryString,
             arguments = listOf(
             navArgument("id") { defaultValue = "" },
+            navArgument("userId") { defaultValue = "" },
             navArgument("name") { defaultValue = "" },
             navArgument("description") { defaultValue = "" },
             navArgument("imageUrl") { defaultValue = "" })) { backStackEntry ->
 
             val id = backStackEntry.arguments?.get("id") as String
+            val userId = backStackEntry.arguments?.get("userId") as String
             val name = backStackEntry.arguments?.get("name") as String
             val description = backStackEntry.arguments?.get("description") as String
             val imageUrl = backStackEntry.arguments?.get("imageUrl") as String
-            val dessert = Dessert(id, name, description, imageUrl)
+            val dessert = Dessert(id = id, userId = userId, name = name, description = description, imageUrl = imageUrl)
 
             DessertDetailView(dessert,
                 editDessertSelected = {
@@ -80,16 +82,18 @@ fun MainLayout() {
         composable(Screens.DessertFormScreen.route + queryString,
             arguments = listOf(
                 navArgument("id") { defaultValue = "new" },
+                navArgument("userId") { defaultValue = "" },
                 navArgument("name") { defaultValue = "" },
                 navArgument("description") { defaultValue = "" },
                 navArgument("imageUrl") { defaultValue = "" })) { backStackEntry ->
 
             val id = backStackEntry.arguments?.get("id") as String
+            val userId = backStackEntry.arguments?.get("userId") as String
             val name = backStackEntry.arguments?.get("name") as String
             val description = backStackEntry.arguments?.get("description") as String
             val imageUrl = backStackEntry.arguments?.get("imageUrl") as String
             val action = if (id != "new") DessertAction.UPDATE else DessertAction.CREATE
-            val dessert = Dessert(id, name, description, imageUrl)
+            val dessert = Dessert(id = id, userId = userId, name = name, description = description, imageUrl = imageUrl)
 
             DessertFormView(dessert, action,
                 popBack = {
