@@ -13,7 +13,11 @@ class DessertFavoriteViewModel: ObservableObject {
     
     @Published public var favorites: [Dessert] = []
 
-    let repository = DessertRepository(databaseDriverFactory: DatabaseDriverFactory())
+    let repository: DessertRepository
+    
+    init(apolloProvider: ApolloProvider) {
+        repository = DessertRepository(apolloProvider: apolloProvider)
+    }
     
     func fetchFavorites() {
         let favorites = self.repository.getFavoriteDesserts()

@@ -13,7 +13,11 @@ import shared
 class DessertListViewModel: ObservableObject {
     @Published public var desserts: [Dessert] = []
     
-    let repository = DessertRepository(databaseDriverFactory: DatabaseDriverFactory())
+    let repository: DessertRepository
+    
+    init(apolloProvider: ApolloProvider) {
+        repository = DessertRepository(apolloProvider: apolloProvider)
+    }
     
     public var currentPage: Int32 = 0 {
         didSet {

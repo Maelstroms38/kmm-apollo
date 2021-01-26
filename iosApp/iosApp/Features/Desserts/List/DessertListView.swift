@@ -15,28 +15,32 @@ struct DessertListView: View {
     
     private(set) var delegate: DessertDelegate
     
-    @StateObject var viewModel: DessertListViewModel
+    private(set) var detailViewModel: DessertDetailViewModel
+    
+    private(set) var createViewModel: DessertCreateViewModel
+    
+    @StateObject var dessertListViewModel: DessertListViewModel
     
     var body: some View {
         NavigationView {
             List {
-                ForEach(viewModel.desserts, id: \.id) { dessert in
-                    NavigationLink(destination: DessertDetailView(dessert: dessert, delegate: delegate)) {
+                ForEach(dessertListViewModel.desserts, id: \.id) { dessert in
+                    NavigationLink(destination: DessertDetailView(detailViewModel: detailViewModel, dessert: dessert, delegate: delegate, createViewModel: createViewModel)) {
                         DessertListRowView(dessert: dessert)
                     }
                 }
-                if viewModel.shouldDisplayNextPage {
+                if dessertListViewModel.shouldDisplayNextPage {
                     nextPageView
                 }
             }
             .navigationTitle("Desserts")
             .navigationBarItems(trailing:
-                NavigationLink(destination: DessertCreateView(delegate: delegate, dessert: nil)) {
+                                    NavigationLink(destination: DessertCreateView(delegate: delegate, createViewModel: createViewModel, dessert: nil)) {
                     Image(systemName: "plus")
                 }
             )
             .onAppear() {
-                viewModel.fetchDesserts()
+                dessertListViewModel.fetchDesserts()
             }
         }
     }
@@ -51,7 +55,7 @@ struct DessertListView: View {
             Spacer()
         }
         .onAppear(perform: {
-            viewModel.currentPage += 1
+            dessertListViewModel.currentPage += 1
         })
     }
 }

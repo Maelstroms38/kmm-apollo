@@ -18,7 +18,11 @@ class DessertDetailViewModel: ObservableObject {
     
     @Published var isFavorite: Bool?
     
-    let repository = DessertRepository(databaseDriverFactory: DatabaseDriverFactory())
+    let repository: DessertRepository
+    
+    init(apolloProvider: ApolloProvider) {
+        repository = DessertRepository(apolloProvider: apolloProvider)
+    }
     
     var delegate: DessertDelegate?
     

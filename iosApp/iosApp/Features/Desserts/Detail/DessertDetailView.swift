@@ -13,11 +13,13 @@ import shared
 @available(iOS 14.0, *)
 struct DessertDetailView: View, DessertDelegate {
     
-    @StateObject private var viewModel = DessertDetailViewModel()
+    @StateObject var detailViewModel: DessertDetailViewModel
     
     private(set) var dessert: Dessert
     
     private(set) var delegate: DessertDelegate
+    
+    private(set) var createViewModel: DessertCreateViewModel
     
     @State var isEditingViewShown = false
     
@@ -50,7 +52,7 @@ struct DessertDetailView: View, DessertDelegate {
             }
                 
             Section(header: Text("Reviews")) {
-                if let reviews = viewModel.reviews {
+                if let reviews = detailViewModel.reviews {
                     ForEach(reviews, id: \.id) { review in
                         DessertReviewRowView(review: review)
                     }
@@ -62,13 +64,13 @@ struct DessertDetailView: View, DessertDelegate {
         .navigationBarItems(trailing:
             HStack {
                 Button(action: {
-                    if (viewModel.isFavorite ?? false) {
-                        viewModel.removeFavorite(dessertId: dessert.id)
+                    if (detailViewModel.isFavorite ?? false) {
+                        detailViewModel.removeFavorite(dessertId: dessert.id)
                     } else {
-                        viewModel.saveFavorite(dessert: dessert)
+                        detailViewModel.saveFavorite(dessert: dessert)
                     }
                 }, label: {
-                    Image(systemName: viewModel.isFavorite ?? false ? "heart.fill" : "heart")
+                    Image(systemName: detailViewModel.isFavorite ?? false ? "heart.fill" : "heart")
                 })
                 Button(action: {
                     self.isEditingViewShown = true
@@ -78,25 +80,25 @@ struct DessertDetailView: View, DessertDelegate {
             }
         )
         .sheet(isPresented: $isEditingViewShown) {
-            DessertCreateView(delegate: self, dessert: viewModel.dessert)
+            DessertCreateView(delegate: self, createViewModel: createViewModel, dessert: detailViewModel.dessert)
         }
         .onAppear() {
-            viewModel.delegate = delegate
-            viewModel.fetchDessert(dessertId: dessert.id)
+            detailViewModel.delegate = delegate
+            detailViewModel.fetchDessert(dessertId: dessert.id)
         }
     }
     
     func onCreateDessert(newDessert: Dessert) {
-        viewModel.onCreateDessert(newDessert: newDessert)
+        detailViewModel.onCreateDessert(newDessert: newDessert)
     }
     
     func onUpdateDessert(updatedDessert: Dessert) {
-        viewModel.onUpdateDessert(updatedDessert: updatedDessert)
+        detailViewModel.onUpdateDessert(updatedDessert: updatedDessert)
     }
     
     func onDeleteDessert(dessertId: String) {
         presentationMode.wrappedValue.dismiss()
-        viewModel.onDeleteDessert(dessertId: dessertId)
+        detailViewModel.onDeleteDessert(dessertId: dessertId)
     }
     
 }

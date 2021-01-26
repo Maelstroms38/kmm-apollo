@@ -14,9 +14,9 @@ struct DessertCreateView: View {
     
     private(set) var delegate: DessertDelegate
     
-    let dessert: Dessert?
+    @StateObject var createViewModel: DessertCreateViewModel
     
-    @StateObject private var viewModel = DessertCreateViewModel()
+    let dessert: Dessert?
     
     @Environment(\.presentationMode) var presentationMode
     
@@ -25,11 +25,11 @@ struct DessertCreateView: View {
             DessertFormView(handler: { dessert, action in
                 switch action {
                 case .create:
-                    viewModel.createDessert(newDessert: dessert)
+                    createViewModel.createDessert(newDessert: dessert)
                 case .update:
-                    viewModel.updateDessert(dessert: dessert)
+                    createViewModel.updateDessert(dessert: dessert)
                 case .delete_:
-                    viewModel.deleteDessert(dessertId: dessert.id)
+                    createViewModel.deleteDessert(dessertId: dessert.id)
                     
                 default:
                     break
@@ -40,8 +40,8 @@ struct DessertCreateView: View {
         }
         .navigationBarTitle("", displayMode: .inline)
         .onAppear() {
-            self.viewModel.dessert = dessert
-            self.viewModel.delegate = delegate
+            self.createViewModel.dessert = dessert
+            self.createViewModel.delegate = delegate
         }
     }
 }
