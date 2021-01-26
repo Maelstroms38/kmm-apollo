@@ -1,10 +1,18 @@
 query GetDesserts($page: Int!, $size: Int!) {
   desserts(page: $page, size: $size) {
-    id
-    userId
-    name
-    description
-    imageUrl
+    results {
+      id
+      userId
+      name
+      description
+      imageUrl
+    }
+    info {
+      count
+      pages
+      next
+      prev
+    }
   }
 }
 
@@ -21,6 +29,22 @@ query GetDessert($dessertId: String!) {
       userId
       text
       rating
+    }
+  }
+}
+
+query GetProfile {
+  getProfile {
+    user {
+      id
+      email
+    }
+    desserts {
+      id
+      userId
+      name
+      description
+      imageUrl
     }
   }
 }

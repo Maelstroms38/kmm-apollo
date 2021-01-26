@@ -18,6 +18,7 @@ import androidx.compose.material.TopAppBar
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
@@ -30,12 +31,23 @@ import kotlinx.coroutines.async
 import org.koin.androidx.compose.getViewModel
 
 @Composable
-fun DessertFormView(dessert: Dessert, action: DessertAction, popBack: () -> Unit) {
+fun DessertFormView(dessertId: String, action: DessertAction, popBack: () -> Unit) {
     val dessertFormViewModel = getViewModel<DessertFormViewModel>()
-    val (dessert, setDessert) = remember { mutableStateOf(dessert) }
+    val (dessert, setDessert) = remember { mutableStateOf(Dessert("", "", "", "", "")) }
     val isEditing = action != DessertAction.CREATE
     val scope = rememberCoroutineScope()
     val label = if (isEditing) "Save" else "Create"
+
+    LaunchedEffect(dessertId) {
+        try {
+            val readDessert = dessertFormViewModel.getDessert(dessertId)
+            readDessert?.let {
+                setDessert(it.dessert)
+            }
+        } catch(err: Exception) {
+            print(err.message)
+        }
+    }
 
     suspend fun handleDessert(action: DessertAction) {
         when (action) {
@@ -45,15 +57,9 @@ fun DessertFormView(dessert: Dessert, action: DessertAction, popBack: () -> Unit
             }
             DessertAction.UPDATE -> {
                 val updateDessert = dessertFormViewModel.updateDessert(dessert)
-                setDessert(
-                    Dessert(
-                        id = updateDessert?.id ?: "",
-                        userId = updateDessert?.userId ?: "",
-                        name = updateDessert?.name ?: "",
-                        description = updateDessert?.description ?: "",
-                        imageUrl = updateDessert?.imageUrl ?: ""
-                    )
-                )
+                updateDessert?.let {
+                    setDessert(it)
+                }
                 popBack()
             }
             DessertAction.DELETE -> {

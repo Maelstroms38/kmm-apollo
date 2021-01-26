@@ -2,12 +2,29 @@ package com.example.justdesserts.shared.cache
 
 import com.example.justdesserts.GetDessertQuery
 import com.example.justdesserts.GetDessertsQuery
+import com.example.justdesserts.GetProfileQuery
 import com.example.justdesserts.NewDessertMutation
 import com.example.justdesserts.UpdateDessertMutation
 
+data class Desserts(val results: List<Dessert>, val info: GetDessertsQuery.Info?)
 data class DessertDetail(val dessert: Dessert, val reviews: List<Review>)
 
-fun GetDessertsQuery.Dessert.toDessert() = Dessert(
+fun GetDessertsQuery.Desserts.toDesserts() = Desserts(
+    results = results.map {
+        it.toDessert()
+    },
+    info = info
+)
+
+fun GetProfileQuery.Dessert.toDessert() = Dessert(
+    id = id,
+    userId = userId,
+    name = name,
+    description = description,
+    imageUrl = imageUrl
+)
+
+fun GetDessertsQuery.Result.toDessert() = Dessert(
     id = id,
     userId = userId,
     name = name,
@@ -38,7 +55,3 @@ fun UpdateDessertMutation.UpdateDessert.toDessert() = Dessert(
     description = description ?: "",
     imageUrl = imageUrl ?: ""
 )
-
-fun Dessert.toQueryString(): String {
-    return "?id=${this.id}&userId=${this.userId}&name=${this.name}&description=${this.description}&imageUrl=${this.imageUrl}"
-}

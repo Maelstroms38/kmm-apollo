@@ -31,3 +31,23 @@ mutation CreateReview($dessertId:String!, $reviewInput: ReviewInput!) {
     userId
   }
 }
+
+mutation SignIn($userInput:UserInput!) {
+  signIn(userInput:$userInput) {
+    token
+    user {
+      id
+      email
+    }
+  }
+}
+
+mutation SignUp($userInput:UserInput!) {
+  signUp(userInput:$userInput) {
+    token
+    user {
+      id
+      email
+    }
+  }
+}

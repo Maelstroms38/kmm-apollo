@@ -14,19 +14,16 @@ CREATE TABLE Review (
     rating INTEGER NOT NULL
 );
 
+CREATE TABLE AuthToken (
+   payload TEXT NOT NULL
+);
+
 insertDessert:
 INSERT INTO Dessert(id, userId, name, description, imageUrl)
 VALUES(?, ?, ?, ?, ?);
 
-insertReview:
-INSERT INTO Review(id, dessertId, userId, text, rating)
-VALUES(?, ?, ?, ?, ?);
-
 removeAllDesserts:
 DELETE FROM Dessert;
-
-removeAllReviews:
-DELETE FROM Review;
 
 selectAllDesserts:
 SELECT * FROM Dessert;
@@ -35,18 +32,17 @@ selectDessertById:
 SELECT * FROM Dessert
 WHERE id = ?;
 
-selectReviewById:
-SELECT * FROM Review
-WHERE id = ?;
-
-selectReviewsByDessertId:
-SELECT * FROM Review
-WHERE dessertId = ?;
-
 removeDessertById:
 DELETE FROM Dessert
 WHERE id = ?;
 
-removeReviewsByDessertId:
-DELETE FROM Review
-WHERE dessertId = ?;
+selectAuthToken:
+SELECT * FROM AuthToken
+LIMIT 1;
+
+insertAuthToken:
+INSERT INTO AuthToken(payload)
+VALUES(?);
+
+removeAuthToken:
+DELETE FROM AuthToken;

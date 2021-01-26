@@ -1,46 +1,30 @@
 package com.example.justdesserts.shared
 
 
-import com.apollographql.apollo.ApolloClient
 import com.apollographql.apollo.api.ApolloExperimental
-import com.apollographql.apollo.network.http.ApolloHttpNetworkTransport
 import com.example.justdesserts.*
-import com.example.justdesserts.shared.cache.Database
-import com.example.justdesserts.shared.cache.DatabaseDriverFactory
 import com.example.justdesserts.shared.cache.Dessert
 import com.example.justdesserts.shared.cache.DessertDetail
+import com.example.justdesserts.shared.cache.Desserts
 import com.example.justdesserts.shared.cache.toDessert
+import com.example.justdesserts.shared.cache.toDesserts
 import com.example.justdesserts.shared.cache.toReview
 import com.example.justdesserts.type.DessertInput
 import kotlinx.coroutines.flow.single
 
 @ApolloExperimental
-class DessertRepository(databaseDriverFactory: DatabaseDriverFactory) {
-  private val database = Database(databaseDriverFactory)
+class DessertRepository(apolloProvider: ApolloProvider) {
+  private val apolloClient = apolloProvider.apolloClient
+  private val database = apolloProvider.database
 
-  companion object {
-    private const val GRAPHQL_ENDPOINT = "http://localhost:8080/graphql"
-  }
-
-  private val token = "database.getAuthToken()"
-  private val apolloClient = ApolloClient(
-    networkTransport = ApolloHttpNetworkTransport(
-      serverUrl = GRAPHQL_ENDPOINT,
-      headers = mapOf(
-        "Accept" to "application/json",
-        "Content-Type" to "application/json",
-      )
-    )
-  )
-
-  @Throws(Exception::class) suspend fun getDesserts(page: Int, size: Int): List<Dessert>? {
+  @Throws(Exception::class) suspend fun getDesserts(page: Int, size: Int): Desserts? {
       val response = apolloClient.query(
         GetDessertsQuery(
           page,
           size
         )
       ).execute().single()
-      return response.data?.desserts?.map { it.toDessert() }
+      return response.data?.desserts?.toDesserts()
   }
 
   @Throws(Exception::class) suspend fun getDessert(dessertId: String): DessertDetail? {
@@ -57,12 +41,12 @@ class DessertRepository(databaseDriverFactory: DatabaseDriverFactory) {
   }
 
   @Throws(Exception::class) suspend fun newDessert(name: String, description: String, imageUrl: String): Dessert? {
-    val response = apolloClient.mutate(NewDessertMutation(DessertInput(name, description, imageUrl))).execute().single()
+    val response = apolloClient.mutate(NewDessertMutation(DessertInput(name = name, description = description, imageUrl = imageUrl))).execute().single()
     return response.data?.createDessert?.toDessert()
   }
 
   @Throws(Exception::class) suspend fun updateDessert(dessertId: String, name: String, description: String, imageUrl: String): Dessert? {
-    val response = apolloClient.mutate(UpdateDessertMutation(dessertId, DessertInput(name, description, imageUrl))).execute().single()
+    val response = apolloClient.mutate(UpdateDessertMutation(dessertId, DessertInput(name = name, description = description, imageUrl = imageUrl))).execute().single()
     return response.data?.updateDessert?.toDessert()
   }
 

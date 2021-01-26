@@ -21,26 +21,37 @@ class DessertListViewModel: ObservableObject {
         }
     }
     
-    public var shouldDisplayNextPage: Bool = false
+    public var shouldDisplayNextPage: Bool {
+        if desserts.isEmpty == false,
+           let totalPages = totalPages,
+           currentPage < totalPages {
+            return true
+        }
+        return false
+    }
+
+    public private(set) var totalPages: Int32?
+    public private(set) var totalDesserts: Int32?
     
     func fetchDesserts() {
         let page = currentPage
         repository.getDesserts(page: page, size: 10) { [weak self] (data, error) in
             
             guard let self = self,
-                  let desserts = data else { return }
-            
-            if desserts.isEmpty {
-               self.shouldDisplayNextPage = false
-            } else {
-                self.shouldDisplayNextPage = true
-                self.currentPage += 1
-            }
+                  let desserts = data?.results else { return }
             
             if page > 0 {
                 self.desserts.append(contentsOf: desserts)
             } else {
                 self.desserts = desserts
+            }
+            
+            if let totalPages = data?.info?.pages {
+                self.totalPages = totalPages
+            }
+
+            if let count = data?.info?.count {
+                self.totalDesserts = count
             }
             
         }

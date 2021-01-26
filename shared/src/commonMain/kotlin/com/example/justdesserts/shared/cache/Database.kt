@@ -6,7 +6,6 @@ internal class Database(databaseDriverFactory: DatabaseDriverFactory) {
 
     internal fun clearDatabase() {
         dbQuery.transaction {
-            dbQuery.removeAllReviews()
             dbQuery.removeAllDesserts()
         }
     }
@@ -30,6 +29,22 @@ internal class Database(databaseDriverFactory: DatabaseDriverFactory) {
         }
     }
 
+    internal fun getAuthToken(): String? {
+        return dbQuery.selectAuthToken().executeAsOneOrNull()
+    }
+
+    internal fun saveAuthToken(payload: String) {
+        dbQuery.transaction {
+            insertAuthToken(payload)
+        }
+    }
+
+    internal fun deleteAuthToken() {
+        dbQuery.transaction {
+            removeAuthToken()
+        }
+    }
+
     private fun removeDessert(dessertId: String) {
         dbQuery.removeDessertById(dessertId)
     }
@@ -44,7 +59,11 @@ internal class Database(databaseDriverFactory: DatabaseDriverFactory) {
         )
     }
 
-    private fun insertReview(review: Review) {
-        dbQuery.insertReview(review.id, review.dessertId, review.userId, review.text, review.rating.toLong())
+    private fun insertAuthToken(payload: String) {
+        dbQuery.insertAuthToken(payload)
+    }
+
+    private fun removeAuthToken() {
+        dbQuery.removeAuthToken()
     }
 }

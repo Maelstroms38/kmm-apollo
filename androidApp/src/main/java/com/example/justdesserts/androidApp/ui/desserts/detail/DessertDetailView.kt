@@ -44,20 +44,25 @@ import kotlinx.coroutines.async
 import org.koin.androidx.compose.getViewModel
 
 @Composable
-fun DessertDetailView(dessert: Dessert, editDessertSelected: (dessert: Dessert) -> Unit, popBack: () -> Unit) {
+fun DessertDetailView(dessertId: String, editDessertSelected: (dessertId: String) -> Unit, popBack: () -> Unit) {
     val dessertDetailViewModel = getViewModel<DessertDetailViewModel>()
-    val (dessert, setDessert) = remember { mutableStateOf(dessert) }
+    val (dessert, setDessert) = remember { mutableStateOf(Dessert("", "", "", "", "")) }
     val (reviews, setReviews) = remember { mutableStateOf(emptyList<Review>()) }
     val (isFavorite, setIsFavorite) = remember { mutableStateOf(false) }
 
-    LaunchedEffect(dessert) {
-        val isFavorite = dessertDetailViewModel.isFavorite(dessert.id)
+    LaunchedEffect(dessertId) {
+        val isFavorite = dessertDetailViewModel.isFavorite(dessertId)
         setIsFavorite(isFavorite)
         try {
-            val readDessert = dessertDetailViewModel.getDessert(dessert.id)
+            val readDessert = dessertDetailViewModel.getDessert(dessertId)
             readDessert?.let {
                 setDessert(it.dessert)
                 setReviews(it.reviews)
+            } ?: run {
+                if (isFavorite) {
+                    dessertDetailViewModel.removeFavorite(dessertId)
+                }
+                popBack()
             }
         } catch(err: Exception) {
             print(err.message)
@@ -77,7 +82,7 @@ fun DessertDetailView(dessert: Dessert, editDessertSelected: (dessert: Dessert) 
                     IconButton(onClick = {
                         // Toggle Favorite
                         if (isFavorite) {
-                            dessertDetailViewModel.removeFavorite(dessert.id)
+                            dessertDetailViewModel.removeFavorite(dessertId)
                         } else {
                             dessertDetailViewModel.saveFavorite(dessert)
                         }
@@ -94,7 +99,7 @@ fun DessertDetailView(dessert: Dessert, editDessertSelected: (dessert: Dessert) 
         },
         floatingActionButton = {
             FloatingActionButton(onClick = {
-                editDessertSelected(dessert)
+                editDessertSelected(dessertId)
             }, backgroundColor = MaterialTheme.colors.primary) {
                 Icon(Icons.Outlined.Create)
             }
