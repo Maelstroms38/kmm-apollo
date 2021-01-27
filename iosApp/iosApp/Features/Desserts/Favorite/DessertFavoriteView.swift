@@ -25,11 +25,6 @@ struct DessertFavoriteView: View {
                 }
             }
             .navigationTitle("Favorites")
-            .navigationBarItems(trailing:
-                                    NavigationLink(destination: DessertCreateView(dessert: nil)) {
-                    Image(systemName: "plus")
-                }
-            )
             .onAppear() {
                 favoriteViewModel.fetchFavorites()
             }

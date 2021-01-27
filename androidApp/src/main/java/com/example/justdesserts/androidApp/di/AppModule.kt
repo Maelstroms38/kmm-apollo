@@ -17,7 +17,7 @@ import org.koin.dsl.module
 
 val mainAppModule = module {
   viewModel { DessertListViewModel(get()) }
-  viewModel { DessertDetailViewModel(get()) }
+  viewModel { DessertDetailViewModel(get(), get()) }
   viewModel { DessertFormViewModel(get()) }
   viewModel { FavoriteListViewModel(get()) }
   viewModel { LoginViewModel(get()) }

@@ -18,7 +18,11 @@ class DessertDetailViewModel: ObservableObject {
     
     @Published var isFavorite: Bool?
     
+    @Published var userState: UserState?
+    
     let repository = DessertRepository(apolloProvider: Apollo.shared.apolloProvider)
+    
+    let authRepository = AuthRepository(apolloProvider: Apollo.shared.apolloProvider)
     
     @Environment(\.presentationMode) var presentationMode
     
@@ -49,5 +53,9 @@ class DessertDetailViewModel: ObservableObject {
     func removeFavorite(dessertId: String) {
         self.repository.removeFavorite(dessertId: dessertId)
         self.isFavorite = false
+    }
+    
+    func getUserState() -> UserState? {
+        return authRepository.getUserState()
     }
 }

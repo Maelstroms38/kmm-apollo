@@ -27,7 +27,7 @@ struct LoginView: View {
             NavigationView {
                 Form {
                     Section {
-                        TextField("Email", text: $email)
+                        TextField("Email", text: $email).textCase(.lowercase)
                         SecureField("Password", text: $password)
                     }
                     Section {
@@ -41,6 +41,18 @@ struct LoginView: View {
                             },
                             label: { Text(label) }
                         )
+                        Button(
+                            action: {
+                                self.login = !login
+                            },
+                            label: {
+                                if (login) {
+                                    Text("Need an account? Sign up")
+                                } else {
+                                    Text("Have an account? Log in")
+                                }
+                            }
+                        )
                     }
                 }
                 .navigationTitle(label)
@@ -48,7 +60,7 @@ struct LoginView: View {
             
         } else {
             ProfileView(logoutHandler: {
-                loginViewModel.deleteAuthToken()
+                loginViewModel.deleteUserState()
             })
         }
     }

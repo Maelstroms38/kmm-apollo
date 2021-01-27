@@ -29,19 +29,19 @@ internal class Database(databaseDriverFactory: DatabaseDriverFactory) {
         }
     }
 
-    internal fun getAuthToken(): String? {
-        return dbQuery.selectAuthToken().executeAsOneOrNull()
+    internal fun getUserState(): UserState? {
+        return dbQuery.selectUserState().executeAsOneOrNull()
     }
 
-    internal fun saveAuthToken(payload: String) {
+    internal fun saveUserState(userId: String, token: String) {
         dbQuery.transaction {
-            insertAuthToken(payload)
+            insertUserState(userId, token)
         }
     }
 
-    internal fun deleteAuthToken() {
+    internal fun deleteUserState() {
         dbQuery.transaction {
-            removeAuthToken()
+            removeUserState()
         }
     }
 
@@ -59,11 +59,11 @@ internal class Database(databaseDriverFactory: DatabaseDriverFactory) {
         )
     }
 
-    private fun insertAuthToken(payload: String) {
-        dbQuery.insertAuthToken(payload)
+    private fun insertUserState(userId: String, token: String) {
+        dbQuery.insertUserState(userId, token)
     }
 
-    private fun removeAuthToken() {
-        dbQuery.removeAuthToken()
+    private fun removeUserState() {
+        dbQuery.removeUserState()
     }
 }

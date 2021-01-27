@@ -51,9 +51,7 @@ fun MainLayout() {
 
     NavHost(navController, startDestination = Screens.DessertsScreen.route) {
         composable(Screens.DessertsScreen.route) {
-            DessertListView(bottomBar, newDessertSelected = {
-                navController.navigate(Screens.DessertFormScreen.route)
-            }, dessertSelected = {
+            DessertListView(bottomBar, dessertSelected = {
                 navController.navigate(Screens.DessertDetailsScreen.route +
                         "/${it.id}")
             })
@@ -67,7 +65,7 @@ fun MainLayout() {
         }
         
         composable(Screens.DessertFormScreen.route + "/{id}") { backStackEntry ->
-            val id = backStackEntry.arguments?.get("id") as String
+            val id = backStackEntry.arguments?.get("id") as? String ?: "new"
             val action = if (id != "new") DessertAction.UPDATE else DessertAction.CREATE
             DessertFormView(id, action,
                 popBack = {
@@ -87,6 +85,8 @@ fun MainLayout() {
             LoginView(bottomBar, dessertSelected = {
                 navController.navigate(Screens.DessertDetailsScreen.route +
                         "/${it.id}")
+            }, newDessertSelected = {
+                navController.navigate(Screens.DessertFormScreen.route + "/new")
             })
         }
     }

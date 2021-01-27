@@ -14,8 +14,9 @@ CREATE TABLE Review (
     rating INTEGER NOT NULL
 );
 
-CREATE TABLE AuthToken (
-   payload TEXT NOT NULL
+CREATE TABLE UserState (
+   userId TEXT NOT NULL,
+   token TEXT NOT NULL
 );
 
 insertDessert:
@@ -36,13 +37,13 @@ removeDessertById:
 DELETE FROM Dessert
 WHERE id = ?;
 
-selectAuthToken:
-SELECT * FROM AuthToken
+selectUserState:
+SELECT * FROM UserState
 LIMIT 1;
 
-insertAuthToken:
-INSERT INTO AuthToken(payload)
-VALUES(?);
+insertUserState:
+INSERT INTO UserState(userId, token)
+VALUES(?, ?);
 
-removeAuthToken:
-DELETE FROM AuthToken;
+removeUserState:
+DELETE FROM UserState;

@@ -19,6 +19,7 @@ class DessertCreateViewModel: ObservableObject {
         repository.doNewDessert(name: newDessert.name, description: newDessert.description_, imageUrl: newDessert.imageUrl) { [weak self] (data, error) in
             guard let self = self,
                   let newDessert = data else { return }
+            self.dessert = newDessert
         }
     }
     
@@ -26,12 +27,14 @@ class DessertCreateViewModel: ObservableObject {
         repository.updateDessert(dessertId: dessert.id, name: dessert.name, description: dessert.description_, imageUrl: dessert.imageUrl) { [weak self] (data, error) in
             guard let self = self,
                   let updatedDessert = data else { return }
+            self.dessert = updatedDessert
         }
     }
     
     func deleteDessert(dessertId: String) {
         repository.deleteDessert(dessertId: dessertId) { [weak self] (deleted, error) in
             guard let self = self else { return }
+            self.dessert = nil
         }
     }
 }

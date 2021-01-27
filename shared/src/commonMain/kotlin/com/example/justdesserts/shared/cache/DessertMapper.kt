@@ -52,6 +52,6 @@ fun UpdateDessertMutation.UpdateDessert.toDessert() = Dessert(
     id = id,
     userId = userId,
     name = name ,
-    description = description ?: "",
-    imageUrl = imageUrl ?: ""
+    description = description,
+    imageUrl = imageUrl
 )

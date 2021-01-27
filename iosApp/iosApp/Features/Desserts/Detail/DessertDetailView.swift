@@ -76,11 +76,13 @@ struct DessertDetailView: View {
                 }, label: {
                     Image(systemName: detailViewModel.isFavorite ?? false ? "heart.fill" : "heart")
                 })
-                Button(action: {
-                    self.isEditingViewShown = true
-                }, label: {
-                    Image(systemName: "square.and.pencil")
-                })
+                if (detailViewModel.userState?.userId ?? "" == detailViewModel.dessert?.userId ?? "") {
+                    Button(action: {
+                        self.isEditingViewShown = true
+                    }, label: {
+                        Image(systemName: "square.and.pencil")
+                    })
+                }
             }
         )
         .sheet(isPresented: $isEditingViewShown) {
@@ -92,6 +94,7 @@ struct DessertDetailView: View {
             }
         }
         .onAppear() {
+            detailViewModel.userState = detailViewModel.getUserState()
             detailViewModel.fetchDessert(dessertId: dessertId) {
                 self.isEditingViewShown = false
             }

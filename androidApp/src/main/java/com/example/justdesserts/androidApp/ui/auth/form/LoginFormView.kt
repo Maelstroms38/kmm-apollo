@@ -19,9 +19,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 
 @Composable
-fun LoginFormView(handler: (email: String, password: String) -> Unit) {
+fun LoginFormView(handler: (login: Boolean, email: String, password: String) -> Unit) {
     val (email, setEmail) = remember { mutableStateOf("") }
     val (password, setPassword) = remember { mutableStateOf("") }
+    val (login, setLogin) = remember { mutableStateOf(true) }
+    val label = if (login) "Login" else "Sign Up"
 
     ScrollableColumn(modifier = Modifier
         .padding(8.dp)
@@ -54,12 +56,23 @@ fun LoginFormView(handler: (email: String, password: String) -> Unit) {
 
             Button(
                 onClick = {
-                    handler(email, password)
+                    handler(login, email, password)
                 }, modifier = Modifier
                     .padding(16.dp)
                     .preferredWidth(320.dp)
             ) {
-                Text("Login")
+                Text(label)
+            }
+
+            Button(
+                onClick = {
+                    setLogin(!login)
+                }, modifier = Modifier
+                    .padding(16.dp)
+                    .preferredWidth(320.dp)
+            ) {
+                val text = if (login) "Need an account? Sign Up" else "Have an account? Log in"
+                Text(text)
             }
         }
     }

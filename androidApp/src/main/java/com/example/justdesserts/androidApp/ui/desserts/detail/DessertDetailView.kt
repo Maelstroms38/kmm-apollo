@@ -49,10 +49,11 @@ fun DessertDetailView(dessertId: String, editDessertSelected: (dessertId: String
     val (dessert, setDessert) = remember { mutableStateOf(Dessert("", "", "", "", "")) }
     val (reviews, setReviews) = remember { mutableStateOf(emptyList<Review>()) }
     val (isFavorite, setIsFavorite) = remember { mutableStateOf(false) }
+    val (userId, setUserId) = remember { mutableStateOf("") }
 
     LaunchedEffect(dessertId) {
-        val isFavorite = dessertDetailViewModel.isFavorite(dessertId)
-        setIsFavorite(isFavorite)
+        setIsFavorite(dessertDetailViewModel.isFavorite(dessertId))
+        setUserId(dessertDetailViewModel.getUserState()?.userId ?: "")
         try {
             val readDessert = dessertDetailViewModel.getDessert(dessertId)
             readDessert?.let {
@@ -98,10 +99,12 @@ fun DessertDetailView(dessertId: String, editDessertSelected: (dessertId: String
             )
         },
         floatingActionButton = {
-            FloatingActionButton(onClick = {
-                editDessertSelected(dessertId)
-            }, backgroundColor = MaterialTheme.colors.primary) {
-                Icon(Icons.Outlined.Create)
+            if (userId == dessert.userId) {
+                FloatingActionButton(onClick = {
+                    editDessertSelected(dessertId)
+                }, backgroundColor = MaterialTheme.colors.primary) {
+                    Icon(Icons.Outlined.Create)
+                }
             }
         },
         bodyContent = {

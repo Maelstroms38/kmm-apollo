@@ -16,7 +16,7 @@ class LoginViewModel: ObservableObject {
     @Published public var token: String = ""
     
     init() {
-        token = getAuthToken()
+        token = getUserState()?.token ?? ""
     }
     
     func signIn(email: String, password: String) {
@@ -36,12 +36,12 @@ class LoginViewModel: ObservableObject {
         }
     }
     
-    func getAuthToken() -> String {
-        return repository.getAuthToken()
+    func getUserState() -> UserState? {
+        return repository.getUserState()
     }
     
-    func deleteAuthToken() {
-        repository.deleteAuthToken()
+    func deleteUserState() {
+        repository.deleteUserState()
         self.token = ""
     }
 }

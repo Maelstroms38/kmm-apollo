@@ -22,7 +22,7 @@ class ApolloProvider(databaseDriverFactory: DatabaseDriverFactory) : TokenProvid
     )
 
     override suspend fun currentToken(): String {
-        return database.getAuthToken() ?: ""
+        return database.getUserState()?.token ?: ""
     }
 
     override suspend fun refreshToken(previousToken: String): String {

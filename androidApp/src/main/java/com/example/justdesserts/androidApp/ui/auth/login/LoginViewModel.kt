@@ -13,9 +13,9 @@ class LoginViewModel constructor(private val repository: AuthRepository): ViewMo
         return repository.signUp(email, password)
     }
     fun getAuthToken(): String {
-        return repository.getAuthToken()
+        return repository.getUserState()?.token ?: ""
     }
     fun deleteAuthToken() {
-        repository.deleteAuthToken()
+        repository.deleteUserState()
     }
 }

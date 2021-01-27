@@ -28,11 +28,6 @@ struct DessertListView: View {
                 }
             }
             .navigationTitle("Desserts")
-            .navigationBarItems(trailing:
-                                    NavigationLink(destination: DessertCreateView(dessert: nil)) {
-                    Image(systemName: "plus")
-                }
-            )
             .onAppear() {
                 dessertListViewModel.currentPage = 0
                 dessertListViewModel.fetchDesserts()
