@@ -14,7 +14,7 @@ struct DessertCreateView: View {
     
     private(set) var delegate: DessertDelegate
     
-    @StateObject var createViewModel: DessertCreateViewModel
+    @StateObject var createViewModel = DessertCreateViewModel()
     
     let dessert: Dessert?
     

@@ -17,22 +17,18 @@ struct DessertFavoriteView: View {
     
     @StateObject var favoriteViewModel: DessertFavoriteViewModel
     
-    private(set) var detailViewModel: DessertDetailViewModel
-    
-    private(set) var createViewModel: DessertCreateViewModel
-    
     var body: some View {
         NavigationView {
             List {
                 ForEach(favoriteViewModel.favorites, id: \.id) { dessert in
-                    NavigationLink(destination: DessertDetailView(detailViewModel: detailViewModel, dessert: dessert, delegate: delegate, createViewModel: createViewModel)) {
+                    NavigationLink(destination: DessertDetailView(dessertId: dessert.id, delegate: delegate)) {
                         DessertListRowView(dessert: dessert)
                     }
                 }
             }
             .navigationTitle("Favorites")
             .navigationBarItems(trailing:
-                                    NavigationLink(destination: DessertCreateView(delegate: delegate, createViewModel: createViewModel, dessert: nil)) {
+                                    NavigationLink(destination: DessertCreateView(delegate: delegate, dessert: nil)) {
                     Image(systemName: "plus")
                 }
             )

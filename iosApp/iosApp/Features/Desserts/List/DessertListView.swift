@@ -15,17 +15,13 @@ struct DessertListView: View {
     
     private(set) var delegate: DessertDelegate
     
-    private(set) var detailViewModel: DessertDetailViewModel
-    
-    private(set) var createViewModel: DessertCreateViewModel
-    
     @StateObject var dessertListViewModel: DessertListViewModel
     
     var body: some View {
         NavigationView {
             List {
                 ForEach(dessertListViewModel.desserts, id: \.id) { dessert in
-                    NavigationLink(destination: DessertDetailView(detailViewModel: detailViewModel, dessert: dessert, delegate: delegate, createViewModel: createViewModel)) {
+                    NavigationLink(destination: DessertDetailView(dessertId: dessert.id, delegate: delegate)) {
                         DessertListRowView(dessert: dessert)
                     }
                 }
@@ -35,7 +31,7 @@ struct DessertListView: View {
             }
             .navigationTitle("Desserts")
             .navigationBarItems(trailing:
-                                    NavigationLink(destination: DessertCreateView(delegate: delegate, createViewModel: createViewModel, dessert: nil)) {
+                                    NavigationLink(destination: DessertCreateView(delegate: delegate, dessert: nil)) {
                     Image(systemName: "plus")
                 }
             )

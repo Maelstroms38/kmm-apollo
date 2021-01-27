@@ -4,33 +4,21 @@ import shared
 @available(iOS 14.0, *)
 struct ContentView: View, DessertDelegate {
     
-    private let dessertListViewModel: DessertListViewModel
-    private let favoriteViewModel: DessertFavoriteViewModel
-    private let createViewModel: DessertCreateViewModel
-    private let detailViewModel: DessertDetailViewModel
-    private let loginViewModel: LoginViewModel
-    private let profileViewModel: ProfileViewModel
-    
-    init(apolloProvider: ApolloProvider) {
-        dessertListViewModel = DessertListViewModel(apolloProvider: apolloProvider)
-        favoriteViewModel = DessertFavoriteViewModel(apolloProvider: apolloProvider)
-        createViewModel = DessertCreateViewModel(apolloProvider: apolloProvider)
-        detailViewModel = DessertDetailViewModel(apolloProvider: apolloProvider)
-        loginViewModel = LoginViewModel(apolloProvider: apolloProvider)
-        profileViewModel = ProfileViewModel(apolloProvider: apolloProvider)
-    }
+    private let dessertListViewModel = DessertListViewModel()
+    private let favoriteViewModel = DessertFavoriteViewModel()
+    private let profileViewModel = ProfileViewModel()
     
     var body: some View {
         TabView {
-            DessertListView(delegate: self, detailViewModel: detailViewModel, createViewModel: createViewModel, dessertListViewModel: dessertListViewModel)
+            DessertListView(delegate: self, dessertListViewModel: dessertListViewModel)
                 .tabItem {
                     Label("Desserts", systemImage: "safari")
                 }
-            DessertFavoriteView(delegate: self, favoriteViewModel: favoriteViewModel, detailViewModel: detailViewModel, createViewModel: createViewModel)
+            DessertFavoriteView(delegate: self, favoriteViewModel: favoriteViewModel)
                 .tabItem {
                     Label("Favorites", systemImage: "heart.fill")
                 }
-            LoginView(loginViewModel: loginViewModel, delegate: self, profileViewModel: profileViewModel, detailViewModel: detailViewModel, createViewModel: createViewModel).tabItem {
+            LoginView(delegate: self, profileViewModel: profileViewModel).tabItem {
                 Label("Profile", systemImage: "person")
             }
         }

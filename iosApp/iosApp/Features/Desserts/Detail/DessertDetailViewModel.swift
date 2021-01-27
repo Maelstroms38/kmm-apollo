@@ -18,11 +18,7 @@ class DessertDetailViewModel: ObservableObject {
     
     @Published var isFavorite: Bool?
     
-    let repository: DessertRepository
-    
-    init(apolloProvider: ApolloProvider) {
-        repository = DessertRepository(apolloProvider: apolloProvider)
-    }
+    let repository = DessertRepository(apolloProvider: Network.shared.apolloProvider)
     
     var delegate: DessertDelegate?
     

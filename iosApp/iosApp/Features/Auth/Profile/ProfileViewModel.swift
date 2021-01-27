@@ -13,11 +13,9 @@ class ProfileViewModel: ObservableObject {
     
     @Published public var desserts: [Dessert] = []
     
-    let repository: AuthRepository
+    let repository: AuthRepository = AuthRepository(apolloProvider: Network.shared.apolloProvider)
     
-    init(apolloProvider: ApolloProvider) {
-        repository = AuthRepository(apolloProvider: apolloProvider)
-    }
+    var delegate: DessertDelegate?
     
     func fetchDesserts() {
         self.repository.getProfileDesserts(completionHandler: { [weak self] (data, error) in

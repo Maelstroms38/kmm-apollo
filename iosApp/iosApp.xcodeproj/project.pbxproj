@@ -10,6 +10,7 @@
 		0B0FA14A259E29920033ABE2 /* DessertFormView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B0FA149259E29920033ABE2 /* DessertFormView.swift */; };
 		0B428C6625A2AE740073BED8 /* DessertCreateView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B428C6525A2AE740073BED8 /* DessertCreateView.swift */; };
 		0B428C6A25A2AE980073BED8 /* DessertCreateViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B428C6925A2AE980073BED8 /* DessertCreateViewModel.swift */; };
+		0B43B46A25C1B5E0006EA59B /* Apollo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B43B46925C1B5E0006EA59B /* Apollo.swift */; };
 		0B58525D259BAC66000572B6 /* DessertListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B58525C259BAC66000572B6 /* DessertListViewModel.swift */; };
 		0B585263259BADD9000572B6 /* DessertListRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B585262259BADD9000572B6 /* DessertListRowView.swift */; };
 		0B585268259BAEC9000572B6 /* KingfisherSwiftUI in Frameworks */ = {isa = PBXBuildFile; productRef = 0B585267259BAEC9000572B6 /* KingfisherSwiftUI */; };
@@ -71,6 +72,7 @@
 		0B0FA149259E29920033ABE2 /* DessertFormView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DessertFormView.swift; sourceTree = "<group>"; };
 		0B428C6525A2AE740073BED8 /* DessertCreateView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DessertCreateView.swift; sourceTree = "<group>"; };
 		0B428C6925A2AE980073BED8 /* DessertCreateViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DessertCreateViewModel.swift; sourceTree = "<group>"; };
+		0B43B46925C1B5E0006EA59B /* Apollo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Apollo.swift; sourceTree = "<group>"; };
 		0B58525C259BAC66000572B6 /* DessertListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DessertListViewModel.swift; sourceTree = "<group>"; };
 		0B585262259BADD9000572B6 /* DessertListRowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DessertListRowView.swift; sourceTree = "<group>"; };
 		0B58526B259BB12E000572B6 /* DessertListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DessertListView.swift; sourceTree = "<group>"; };
@@ -138,9 +140,28 @@
 			path = Create;
 			sourceTree = "<group>";
 		};
+		0B43B46725C1B5AA006EA59B /* Auth */ = {
+			isa = PBXGroup;
+			children = (
+				0B73E66225C0B34C00ED1651 /* Login */,
+				0BDCCD8F25C0A13B00537603 /* Profile */,
+			);
+			path = Auth;
+			sourceTree = "<group>";
+		};
+		0B43B46825C1B5CF006EA59B /* GraphQL */ = {
+			isa = PBXGroup;
+			children = (
+				0B43B46925C1B5E0006EA59B /* Apollo.swift */,
+			);
+			path = GraphQL;
+			sourceTree = "<group>";
+		};
 		0B58525A259BAC35000572B6 /* Features */ = {
 			isa = PBXGroup;
 			children = (
+				0B43B46825C1B5CF006EA59B /* GraphQL */,
+				0B43B46725C1B5AA006EA59B /* Auth */,
 				0B58525B259BAC40000572B6 /* Desserts */,
 			);
 			path = Features;
@@ -149,10 +170,8 @@
 		0B58525B259BAC40000572B6 /* Desserts */ = {
 			isa = PBXGroup;
 			children = (
-				0B73E66225C0B34C00ED1651 /* Login */,
-				0BDCCD8F25C0A13B00537603 /* Profile */,
 				0BC3205025B4D16F00DE0382 /* Favorite */,
-				0BBF3D65259F9B0F00964B35 /* Models */,
+				0BBF3D65259F9B0F00964B35 /* Delegate */,
 				0B915876259CF10700DBA0CE /* List */,
 				0B428C6425A2ADCD0073BED8 /* Create */,
 				0B915875259CF0F400DBA0CE /* Detail */,
@@ -189,12 +208,12 @@
 			path = List;
 			sourceTree = "<group>";
 		};
-		0BBF3D65259F9B0F00964B35 /* Models */ = {
+		0BBF3D65259F9B0F00964B35 /* Delegate */ = {
 			isa = PBXGroup;
 			children = (
 				0BFB077F25AE3BBC00FFF321 /* DessertDelegate.swift */,
 			);
-			path = Models;
+			path = Delegate;
 			sourceTree = "<group>";
 		};
 		0BC3205025B4D16F00DE0382 /* Favorite */ = {
@@ -458,6 +477,7 @@
 				7555FF83242A565900829871 /* ContentView.swift in Sources */,
 				0B73E66425C0B36900ED1651 /* LoginView.swift in Sources */,
 				0B58525D259BAC66000572B6 /* DessertListViewModel.swift in Sources */,
+				0B43B46A25C1B5E0006EA59B /* Apollo.swift in Sources */,
 				0BDCCD9525C0A17100537603 /* ProfileViewModel.swift in Sources */,
 				0BC3205625B4D1EA00DE0382 /* DessertFavoriteViewModel.swift in Sources */,
 				0B428C6625A2AE740073BED8 /* DessertCreateView.swift in Sources */,

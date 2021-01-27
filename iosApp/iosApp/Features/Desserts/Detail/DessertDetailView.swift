@@ -13,13 +13,11 @@ import shared
 @available(iOS 14.0, *)
 struct DessertDetailView: View, DessertDelegate {
     
-    @StateObject var detailViewModel: DessertDetailViewModel
+    @StateObject var detailViewModel = DessertDetailViewModel()
     
-    private(set) var dessert: Dessert
+    private(set) var dessertId: String
     
     private(set) var delegate: DessertDelegate
-    
-    private(set) var createViewModel: DessertCreateViewModel
     
     @State var isEditingViewShown = false
     
@@ -30,7 +28,7 @@ struct DessertDetailView: View, DessertDelegate {
             Section(header: Text("Preview")) {
                 HStack {
                     Spacer()
-                    if let image = dessert.imageUrl,
+                    if let image = detailViewModel.dessert?.imageUrl,
                        let url = URL(string: image) {
                         KFImage(url)
                             .resizable()
@@ -47,7 +45,7 @@ struct DessertDetailView: View, DessertDelegate {
             }
         
             Section(header: Text("Summary")) {
-                Text(dessert.description_)
+                Text(detailViewModel.dessert?.description_ ?? "")
                     .font(.body)
             }
                 
@@ -60,13 +58,14 @@ struct DessertDetailView: View, DessertDelegate {
             }
         }
         .listStyle(GroupedListStyle())
-        .navigationBarTitle(dessert.name, displayMode: .inline)
+        .navigationBarTitle(detailViewModel.dessert?.name ?? "", displayMode: .inline)
         .navigationBarItems(trailing:
             HStack {
                 Button(action: {
                     if (detailViewModel.isFavorite ?? false) {
-                        detailViewModel.removeFavorite(dessertId: dessert.id)
+                        detailViewModel.removeFavorite(dessertId: dessertId)
                     } else {
+                        guard let dessert = detailViewModel.dessert else { return }
                         detailViewModel.saveFavorite(dessert: dessert)
                     }
                 }, label: {
@@ -80,11 +79,11 @@ struct DessertDetailView: View, DessertDelegate {
             }
         )
         .sheet(isPresented: $isEditingViewShown) {
-            DessertCreateView(delegate: self, createViewModel: createViewModel, dessert: detailViewModel.dessert)
+            DessertCreateView(delegate: self, dessert: detailViewModel.dessert)
         }
         .onAppear() {
             detailViewModel.delegate = delegate
-            detailViewModel.fetchDessert(dessertId: dessert.id)
+            detailViewModel.fetchDessert(dessertId: dessertId)
         }
     }
     

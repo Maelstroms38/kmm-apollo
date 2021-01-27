@@ -11,12 +11,11 @@ import shared
 
 class LoginViewModel: ObservableObject {
     
-    let repository: AuthRepository
+    let repository: AuthRepository = AuthRepository(apolloProvider: Network.shared.apolloProvider)
     
     @Published public var token: String = ""
     
-    init(apolloProvider: ApolloProvider) {
-        repository = AuthRepository(apolloProvider: apolloProvider)
+    init() {
         token = getAuthToken()
     }
     

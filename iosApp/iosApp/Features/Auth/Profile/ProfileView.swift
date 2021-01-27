@@ -14,11 +14,7 @@ import shared
 struct ProfileView: View {
     private(set) var delegate: DessertDelegate
     
-    @StateObject var profileViewModel: ProfileViewModel
-    
-    private(set) var detailViewModel: DessertDetailViewModel
-    
-    private(set) var createViewModel: DessertCreateViewModel
+    @StateObject var profileViewModel = ProfileViewModel()
     
     var logoutHandler: () -> Void
     
@@ -26,7 +22,7 @@ struct ProfileView: View {
         NavigationView {
             List {
                 ForEach(profileViewModel.desserts, id: \.id) { dessert in
-                    NavigationLink(destination: DessertDetailView(detailViewModel: detailViewModel, dessert: dessert, delegate: delegate, createViewModel: createViewModel)) {
+                    NavigationLink(destination: DessertDetailView(dessertId: dessert.id, delegate: delegate)) {
                         DessertListRowView(dessert: dessert)
                     }
                 }
@@ -39,12 +35,13 @@ struct ProfileView: View {
                     }, label: {
                         Image(systemName: "arrow.down.left.circle.fill")
                     })
-                    NavigationLink(destination: DessertCreateView(delegate: delegate, createViewModel: createViewModel, dessert: nil)) {
+                    NavigationLink(destination: DessertCreateView(delegate: delegate, dessert: nil)) {
                         Image(systemName: "plus")
                     }
                 }
             )
             .onAppear() {
+                profileViewModel.delegate = delegate
                 profileViewModel.fetchDesserts()
             }
         }
