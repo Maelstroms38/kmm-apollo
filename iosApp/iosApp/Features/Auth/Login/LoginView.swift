@@ -18,10 +18,6 @@ struct LoginView: View {
     
     @StateObject var loginViewModel = LoginViewModel()
     
-    private(set) var delegate: DessertDelegate
-    
-    private(set) var profileViewModel: ProfileViewModel
-    
     private var label: String {
         return login ? "Login" : "Sign Up"
     }
@@ -51,8 +47,8 @@ struct LoginView: View {
             }
             
         } else {
-            ProfileView(delegate: delegate, logoutHandler: {
-                    loginViewModel.deleteAuthToken()
+            ProfileView(logoutHandler: {
+                loginViewModel.deleteAuthToken()
             })
         }
     }

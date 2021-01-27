@@ -8,8 +8,8 @@
 
 import shared
 
-class Network {
-    static let shared = Network()
+class Apollo {
+    static let shared = Apollo()
     private(set) lazy var apolloProvider: ApolloProvider = {
         return ApolloProvider(databaseDriverFactory: DatabaseDriverFactory())
     }()

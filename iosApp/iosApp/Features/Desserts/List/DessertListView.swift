@@ -13,15 +13,13 @@ import shared
 @available(iOS 14.0, *)
 struct DessertListView: View {
     
-    private(set) var delegate: DessertDelegate
-    
-    @StateObject var dessertListViewModel: DessertListViewModel
+    @StateObject var dessertListViewModel = DessertListViewModel()
     
     var body: some View {
         NavigationView {
             List {
                 ForEach(dessertListViewModel.desserts, id: \.id) { dessert in
-                    NavigationLink(destination: DessertDetailView(dessertId: dessert.id, delegate: delegate)) {
+                    NavigationLink(destination: DessertDetailView(dessertId: dessert.id)) {
                         DessertListRowView(dessert: dessert)
                     }
                 }
@@ -31,11 +29,12 @@ struct DessertListView: View {
             }
             .navigationTitle("Desserts")
             .navigationBarItems(trailing:
-                                    NavigationLink(destination: DessertCreateView(delegate: delegate, dessert: nil)) {
+                                    NavigationLink(destination: DessertCreateView(dessert: nil)) {
                     Image(systemName: "plus")
                 }
             )
             .onAppear() {
+                dessertListViewModel.currentPage = 0
                 dessertListViewModel.fetchDesserts()
             }
         }

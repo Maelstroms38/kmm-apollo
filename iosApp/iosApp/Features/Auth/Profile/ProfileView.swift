@@ -12,8 +12,6 @@ import shared
 
 @available(iOS 14.0, *)
 struct ProfileView: View {
-    private(set) var delegate: DessertDelegate
-    
     @StateObject var profileViewModel = ProfileViewModel()
     
     var logoutHandler: () -> Void
@@ -22,7 +20,7 @@ struct ProfileView: View {
         NavigationView {
             List {
                 ForEach(profileViewModel.desserts, id: \.id) { dessert in
-                    NavigationLink(destination: DessertDetailView(dessertId: dessert.id, delegate: delegate)) {
+                    NavigationLink(destination: DessertDetailView(dessertId: dessert.id)) {
                         DessertListRowView(dessert: dessert)
                     }
                 }
@@ -33,15 +31,14 @@ struct ProfileView: View {
                     Button(action: {
                         logoutHandler()
                     }, label: {
-                        Image(systemName: "arrow.down.left.circle.fill")
+                        Image(systemName: "arrow.left.circle.fill")
                     })
-                    NavigationLink(destination: DessertCreateView(delegate: delegate, dessert: nil)) {
+                    NavigationLink(destination: DessertCreateView(dessert: nil)) {
                         Image(systemName: "plus")
                     }
                 }
             )
             .onAppear() {
-                profileViewModel.delegate = delegate
                 profileViewModel.fetchDesserts()
             }
         }

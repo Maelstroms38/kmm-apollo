@@ -11,15 +11,20 @@ import KingfisherSwiftUI
 import shared
 
 @available(iOS 14.0, *)
-struct DessertDetailView: View, DessertDelegate {
+struct DessertDetailView: View {
     
     @StateObject var detailViewModel = DessertDetailViewModel()
     
     private(set) var dessertId: String
     
-    private(set) var delegate: DessertDelegate
-    
-    @State var isEditingViewShown = false
+    @State var isEditingViewShown = false {
+        didSet {
+            if isEditingViewShown == false &&
+                detailViewModel.dessert == nil {
+                self.presentationMode.wrappedValue.dismiss()
+            }
+        }
+    }
     
     @Environment(\.presentationMode) var presentationMode
     
@@ -79,25 +84,17 @@ struct DessertDetailView: View, DessertDelegate {
             }
         )
         .sheet(isPresented: $isEditingViewShown) {
-            DessertCreateView(delegate: self, dessert: detailViewModel.dessert)
+            DessertCreateView(dessert: detailViewModel.dessert)
+            .onDisappear() {
+                detailViewModel.fetchDessert(dessertId: dessertId) {
+                    self.isEditingViewShown = false
+                }
+            }
         }
         .onAppear() {
-            detailViewModel.delegate = delegate
-            detailViewModel.fetchDessert(dessertId: dessertId)
+            detailViewModel.fetchDessert(dessertId: dessertId) {
+                self.isEditingViewShown = false
+            }
         }
     }
-    
-    func onCreateDessert(newDessert: Dessert) {
-        detailViewModel.onCreateDessert(newDessert: newDessert)
-    }
-    
-    func onUpdateDessert(updatedDessert: Dessert) {
-        detailViewModel.onUpdateDessert(updatedDessert: updatedDessert)
-    }
-    
-    func onDeleteDessert(dessertId: String) {
-        presentationMode.wrappedValue.dismiss()
-        detailViewModel.onDeleteDessert(dessertId: dessertId)
-    }
-    
 }

@@ -12,8 +12,6 @@ import shared
 @available(iOS 14.0, *)
 struct DessertCreateView: View {
     
-    private(set) var delegate: DessertDelegate
-    
     @StateObject var createViewModel = DessertCreateViewModel()
     
     let dessert: Dessert?
@@ -41,7 +39,6 @@ struct DessertCreateView: View {
         .navigationBarTitle("", displayMode: .inline)
         .onAppear() {
             self.createViewModel.dessert = dessert
-            self.createViewModel.delegate = delegate
         }
     }
 }

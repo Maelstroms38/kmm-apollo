@@ -11,7 +11,7 @@ import shared
 
 class LoginViewModel: ObservableObject {
     
-    let repository: AuthRepository = AuthRepository(apolloProvider: Network.shared.apolloProvider)
+    let repository: AuthRepository = AuthRepository(apolloProvider: Apollo.shared.apolloProvider)
     
     @Published public var token: String = ""
     

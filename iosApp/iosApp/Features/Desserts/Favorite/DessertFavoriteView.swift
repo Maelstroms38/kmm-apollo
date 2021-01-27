@@ -13,22 +13,20 @@ import shared
 @available(iOS 14.0, *)
 struct DessertFavoriteView: View {
     
-    private(set) var delegate: DessertDelegate
-    
-    @StateObject var favoriteViewModel: DessertFavoriteViewModel
+    @StateObject var favoriteViewModel = DessertFavoriteViewModel()
     
     var body: some View {
         NavigationView {
             List {
                 ForEach(favoriteViewModel.favorites, id: \.id) { dessert in
-                    NavigationLink(destination: DessertDetailView(dessertId: dessert.id, delegate: delegate)) {
+                    NavigationLink(destination: DessertDetailView(dessertId: dessert.id)) {
                         DessertListRowView(dessert: dessert)
                     }
                 }
             }
             .navigationTitle("Favorites")
             .navigationBarItems(trailing:
-                                    NavigationLink(destination: DessertCreateView(delegate: delegate, dessert: nil)) {
+                                    NavigationLink(destination: DessertCreateView(dessert: nil)) {
                     Image(systemName: "plus")
                 }
             )
