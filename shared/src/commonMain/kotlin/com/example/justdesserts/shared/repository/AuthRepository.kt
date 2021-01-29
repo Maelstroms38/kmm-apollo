@@ -1,8 +1,9 @@
-package com.example.justdesserts.shared
+package com.example.justdesserts.shared.repository
 
 import com.example.justdesserts.GetProfileQuery
 import com.example.justdesserts.SignInMutation
 import com.example.justdesserts.SignUpMutation
+import com.example.justdesserts.shared.ApolloProvider
 import com.example.justdesserts.shared.cache.Dessert
 import com.example.justdesserts.shared.cache.UserState
 import com.example.justdesserts.shared.cache.toDessert

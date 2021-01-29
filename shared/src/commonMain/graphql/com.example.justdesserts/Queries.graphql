@@ -48,3 +48,13 @@ query GetProfile {
     }
   }
 }
+
+query GetReview($reviewId:String!) {
+  getReview(reviewId:$reviewId) {
+    id
+    dessertId
+    userId
+    rating
+    text
+  }
+}

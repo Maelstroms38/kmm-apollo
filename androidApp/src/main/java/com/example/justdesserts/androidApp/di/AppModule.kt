@@ -7,8 +7,8 @@ import com.example.justdesserts.androidApp.ui.desserts.detail.DessertDetailViewM
 import com.example.justdesserts.androidApp.ui.desserts.favorites.FavoriteListViewModel
 import com.example.justdesserts.androidApp.ui.desserts.list.DessertListViewModel
 import com.example.justdesserts.shared.ApolloProvider
-import com.example.justdesserts.shared.AuthRepository
-import com.example.justdesserts.shared.DessertRepository
+import com.example.justdesserts.shared.repository.AuthRepository
+import com.example.justdesserts.shared.repository.DessertRepository
 import com.example.justdesserts.shared.cache.DatabaseDriverFactory
 import org.koin.android.ext.koin.androidApplication
 import org.koin.androidx.viewmodel.dsl.viewModel

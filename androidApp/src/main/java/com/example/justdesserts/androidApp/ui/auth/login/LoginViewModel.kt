@@ -2,7 +2,7 @@ package com.example.justdesserts.androidApp.ui.auth.login
 
 import androidx.lifecycle.ViewModel
 import com.apollographql.apollo.api.ApolloExperimental
-import com.example.justdesserts.shared.AuthRepository
+import com.example.justdesserts.shared.repository.AuthRepository
 
 @ApolloExperimental
 class LoginViewModel constructor(private val repository: AuthRepository): ViewModel() {

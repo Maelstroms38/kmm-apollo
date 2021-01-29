@@ -1,8 +1,9 @@
-package com.example.justdesserts.shared
+package com.example.justdesserts.shared.repository
 
 
 import com.apollographql.apollo.api.ApolloExperimental
 import com.example.justdesserts.*
+import com.example.justdesserts.shared.ApolloProvider
 import com.example.justdesserts.shared.cache.Dessert
 import com.example.justdesserts.shared.cache.DessertDetail
 import com.example.justdesserts.shared.cache.Desserts
@@ -40,13 +41,13 @@ class DessertRepository(apolloProvider: ApolloProvider) {
     return null
   }
 
-  @Throws(Exception::class) suspend fun newDessert(name: String, description: String, imageUrl: String): Dessert? {
-    val response = apolloClient.mutate(NewDessertMutation(DessertInput(name = name, description = description, imageUrl = imageUrl))).execute().single()
+  @Throws(Exception::class) suspend fun newDessert(dessertInput: DessertInput): Dessert? {
+    val response = apolloClient.mutate(NewDessertMutation(dessertInput)).execute().single()
     return response.data?.createDessert?.toDessert()
   }
 
-  @Throws(Exception::class) suspend fun updateDessert(dessertId: String, name: String, description: String, imageUrl: String): Dessert? {
-    val response = apolloClient.mutate(UpdateDessertMutation(dessertId, DessertInput(name = name, description = description, imageUrl = imageUrl))).execute().single()
+  @Throws(Exception::class) suspend fun updateDessert(dessertId: String, dessertInput: DessertInput): Dessert? {
+    val response = apolloClient.mutate(UpdateDessertMutation(dessertId, dessertInput)).execute().single()
     return response.data?.updateDessert?.toDessert()
   }
 

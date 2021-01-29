@@ -22,7 +22,7 @@ mutation DeleteDessert($dessertId: String!) {
   deleteDessert(dessertId: $dessertId)
 }
 
-mutation CreateReview($dessertId:String!, $reviewInput: ReviewInput!) {
+mutation NewReview($dessertId:String!, $reviewInput: ReviewInput!) {
   createReview(dessertId:$dessertId, reviewInput:$reviewInput) {
     id
     text
@@ -30,6 +30,20 @@ mutation CreateReview($dessertId:String!, $reviewInput: ReviewInput!) {
     dessertId
     userId
   }
+}
+
+mutation UpdateReview($reviewId:String!, $reviewInput: ReviewInput!) {
+  updateReview(reviewId:$reviewId, reviewInput:$reviewInput) {
+    id
+    text
+    rating
+    dessertId
+    userId
+  }
+}
+
+mutation DeleteReview($reviewId:String!) {
+  deleteReview(reviewId:$reviewId)
 }
 
 mutation SignIn($userInput:UserInput!) {

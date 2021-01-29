@@ -61,7 +61,11 @@ fun MainLayout() {
                 editDessertSelected = {
                     navController.navigate(Screens.DessertFormScreen.route +
                             "/${it}")
-                }, popBack = { navController.popBackStack() })
+                }, popBack = { navController.popBackStack() },
+                editReviewSelected = {
+                    // TODO: Review Detail
+                    // navController.navigate()
+                })
         }
         
         composable(Screens.DessertFormScreen.route + "/{id}") { backStackEntry ->

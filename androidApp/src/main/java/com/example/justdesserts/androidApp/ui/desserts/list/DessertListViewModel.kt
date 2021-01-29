@@ -5,7 +5,7 @@ import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import com.apollographql.apollo.api.ApolloExperimental
-import com.example.justdesserts.shared.DessertRepository
+import com.example.justdesserts.shared.repository.DessertRepository
 import com.example.justdesserts.shared.cache.Dessert
 import kotlinx.coroutines.flow.Flow
 
