@@ -23,8 +23,8 @@ class ReviewRepository(apolloProvider: ApolloProvider) {
         return response.data?.createReview?.toReview()
     }
 
-    @Throws(Exception::class) suspend fun updateReview(dessertId: String, reviewInput: ReviewInput): Review? {
-        val response = apolloClient.mutate(UpdateReviewMutation(dessertId, reviewInput)).execute().single()
+    @Throws(Exception::class) suspend fun updateReview(reviewId: String, reviewInput: ReviewInput): Review? {
+        val response = apolloClient.mutate(UpdateReviewMutation(reviewId, reviewInput)).execute().single()
         return response.data?.updateReview?.toReview()
     }
 

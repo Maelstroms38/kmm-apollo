@@ -21,11 +21,14 @@ import com.example.justdesserts.androidApp.ui.desserts.detail.DessertDetailView
 import com.example.justdesserts.androidApp.ui.desserts.favorites.FavoriteListView
 import com.example.justdesserts.androidApp.ui.desserts.form.DessertFormView
 import com.example.justdesserts.androidApp.ui.desserts.list.DessertListView
+import com.example.justdesserts.androidApp.ui.desserts.review.ReviewFormView
+import com.example.justdesserts.shared.cache.ReviewAction
 
 sealed class Screens(val route: String, val label: String, val icon: ImageVector? = null) {
     object DessertsScreen : Screens("Desserts", "Desserts", Icons.Default.List)
     object DessertDetailsScreen : Screens("DessertDetails", "DessertDetails")
     object DessertFormScreen : Screens("DessertForm", "DessertForm")
+    object ReviewFormScreen : Screens("ReviewForm", "ReviewForm")
     object FavoritesScreen : Screens("Favorites", "Favorites", Icons.Default.Favorite)
     object LoginScreen : Screens("Profile", "Profile", Icons.Default.AccountCircle)
 }
@@ -63,15 +66,30 @@ fun MainLayout() {
                             "/${it}")
                 }, popBack = { navController.popBackStack() },
                 editReviewSelected = {
-                    // TODO: Review Detail
-                    // navController.navigate()
-                })
+                     navController.navigate(Screens.ReviewFormScreen.route +
+                             "?reviewId=${it}")
+                },
+                createReviewSelected = {
+                    navController.navigate(Screens.ReviewFormScreen.route + "?dessertId=${it}")
+                }
+            )
         }
         
         composable(Screens.DessertFormScreen.route + "/{id}") { backStackEntry ->
             val id = backStackEntry.arguments?.get("id") as? String ?: "new"
             val action = if (id != "new") DessertAction.UPDATE else DessertAction.CREATE
             DessertFormView(id, action,
+                popBack = {
+                    navController.popBackStack()
+                }
+            )
+        }
+
+        composable(Screens.ReviewFormScreen.route + "?reviewId={reviewId}&dessertId={dessertId}") { backStackEntry ->
+            val reviewId = backStackEntry.arguments?.get("reviewId") as? String ?: "new"
+            val dessertId = backStackEntry.arguments?.get("dessertId") as? String ?: "new"
+            val action = if (reviewId != "new") ReviewAction.UPDATE else ReviewAction.CREATE
+            ReviewFormView(reviewId, dessertId, action,
                 popBack = {
                     navController.popBackStack()
                 }

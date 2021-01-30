@@ -40,9 +40,11 @@ fun DessertFormView(dessertId: String, action: DessertAction, popBack: () -> Uni
 
     LaunchedEffect(dessertId) {
         try {
-            val readDessert = dessertFormViewModel.getDessert(dessertId)
-            readDessert?.let {
-                setDessert(it.dessert)
+            if (isEditing) {
+                val readDessert = dessertFormViewModel.getDessert(dessertId)
+                readDessert?.let {
+                    setDessert(it.dessert)
+                }
             }
         } catch(err: Exception) {
             print(err.message)

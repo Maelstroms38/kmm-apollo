@@ -48,6 +48,7 @@ import org.koin.androidx.compose.getViewModel
 fun DessertDetailView(dessertId: String,
                       editDessertSelected: (dessertId: String) -> Unit,
                       editReviewSelected: (reviewId: String) -> Unit,
+                      createReviewSelected: (dessertId: String) -> Unit,
                       popBack: () -> Unit) {
     val dessertDetailViewModel = getViewModel<DessertDetailViewModel>()
     val (dessert, setDessert) = remember { mutableStateOf(Dessert("", "", "", "", "")) }
@@ -153,8 +154,12 @@ fun DessertDetailView(dessertId: String,
                         Text(
                             "Reviews", style = typography.h5, color = AmbientContentColor.current,
                         )
-                        Button(onClick = { /*TODO*/ }) {
-                            Icon(Icons.Outlined.Add)
+                        if (userId.isNotEmpty()) {
+                            Button(onClick = {
+                                createReviewSelected(dessertId)
+                            }) {
+                                Icon(Icons.Outlined.Add)
+                            }
                         }
                     }
 
@@ -162,7 +167,9 @@ fun DessertDetailView(dessertId: String,
                         DessertReviewsList(
                             reviews,
                             userId,
-                            editReviewSelected = { editReviewSelected(it.id) })
+                            editReviewSelected = {
+                                editReviewSelected(it.id)
+                            })
                     }
                 }
             }
@@ -198,16 +205,19 @@ private fun DessertReviewsList(reviews: List<Review>, userId: String, editReview
                                 .padding(top = 5.dp, bottom = 5.dp),
                                 horizontalArrangement = Arrangement.SpaceBetween) {
                                 Row {
-                                    List(review.rating.toInt()) {
-                                        Icon(Icons.Filled.Star)
+                                    List(5) {
+                                        val rating = it + 1
+                                        if (rating <= review.rating.toInt()) {
+                                            Icon(Icons.Filled.Star, tint = MaterialTheme.colors.primary)
+                                        } else {
+                                            Icon(Icons.Filled.Star, tint = Color(0xFFd3d3d3))
+                                        }
                                     }
                                 }
 
                                 Row {
                                     if (editable) {
-                                        Button(onClick = { editReviewSelected(review) }) {
-                                            Icon(Icons.Outlined.Create)
-                                        }
+                                        Icon(Icons.Outlined.Create)
                                     }
                                 }
                             }

@@ -12,7 +12,7 @@ class ApolloProvider(databaseDriverFactory: DatabaseDriverFactory) : TokenProvid
     internal val database = Database(databaseDriverFactory)
     internal val apolloClient: ApolloClient = ApolloClient(
         networkTransport = ApolloHttpNetworkTransport(
-            serverUrl = "http://192.168.0.154:8080/graphql",
+            serverUrl = "https://ktor-graphql.herokuapp.com/graphql",
             headers = mapOf(
                 "Accept" to "application/json",
                 "Content-Type" to "application/json",

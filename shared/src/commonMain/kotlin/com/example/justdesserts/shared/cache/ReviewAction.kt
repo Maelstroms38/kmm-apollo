@@ -1,6 +1,6 @@
 package com.example.justdesserts.shared.cache
 
-enum class DessertAction {
+enum class ReviewAction {
     CREATE,
     UPDATE,
     DELETE
