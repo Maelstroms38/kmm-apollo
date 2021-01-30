@@ -20,9 +20,15 @@ struct DessertReviewRowView: View {
                 Text(review.text)
                     .font(.title3)
                     .foregroundColor(.accentColor)
-                HStack {
-                    ForEach(0..<Int(review.rating)) { index in
-                        Image(systemName: "star.fill")
+                VStack {
+                    HStack {
+                        ForEach(0..<5) { index in
+                            if (index <= review.rating) {
+                                Image(systemName: "star.fill")
+                            } else {
+                                Image(systemName: "star")
+                            }
+                        }
                     }
                 }
             }

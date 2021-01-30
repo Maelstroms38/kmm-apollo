@@ -16,7 +16,7 @@ class DessertCreateViewModel: ObservableObject {
     let repository: DessertRepository = DessertRepository(apolloProvider: Apollo.shared.apolloProvider)
     
     func createDessert(newDessert: Dessert) {
-        repository.doNewDessert(name: newDessert.name, description: newDessert.description_, imageUrl: newDessert.imageUrl) { [weak self] (data, error) in
+        repository.doNewDessert(dessertInput: DessertInput(description: newDessert.description_, imageUrl: newDessert.imageUrl, name: newDessert.name)) { [weak self] (data, error) in
             guard let self = self,
                   let newDessert = data else { return }
             self.dessert = newDessert
@@ -24,7 +24,7 @@ class DessertCreateViewModel: ObservableObject {
     }
     
     func updateDessert(dessert: Dessert) {
-        repository.updateDessert(dessertId: dessert.id, name: dessert.name, description: dessert.description_, imageUrl: dessert.imageUrl) { [weak self] (data, error) in
+        repository.updateDessert(dessertId: dessert.id, dessertInput: DessertInput(description: dessert.description_, imageUrl: dessert.imageUrl, name: dessert.name)) { [weak self] (data, error) in
             guard let self = self,
                   let updatedDessert = data else { return }
             self.dessert = updatedDessert

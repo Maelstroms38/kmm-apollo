@@ -55,8 +55,24 @@ struct DessertDetailView: View {
             }
                 
             Section(header: Text("Reviews")) {
-                if let reviews = detailViewModel.reviews {
-                    ForEach(reviews, id: \.id) { review in
+                if let userId = detailViewModel.userState?.userId,
+                   !userId.isEmpty {
+                    NavigationLink(destination: ReviewCreateView(review: Review(id: "new", dessertId: dessertId, userId: "", text: "", rating: 0))) {
+                        HStack {
+                            VStack(alignment: .leading) {
+                                Text("Create Review")
+                                    .font(.title3)
+                                    .foregroundColor(.accentColor)
+                            }
+                        }
+                    }
+                }
+                ForEach(detailViewModel.reviews ?? [], id: \.id) { review in
+                    if (review.userId == detailViewModel.userState?.userId ?? "") {
+                        NavigationLink(destination: ReviewCreateView(review: review)) {
+                                DessertReviewRowView(review: review)
+                            }
+                    } else {
                         DessertReviewRowView(review: review)
                     }
                 }
