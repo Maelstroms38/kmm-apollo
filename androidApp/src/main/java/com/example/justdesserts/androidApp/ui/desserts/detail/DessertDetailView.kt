@@ -65,9 +65,6 @@ fun DessertDetailView(dessertId: String,
                 setDessert(it.dessert)
                 setReviews(it.reviews)
             } ?: run {
-                if (isFavorite) {
-                    dessertDetailViewModel.removeFavorite(dessertId)
-                }
                 popBack()
             }
         } catch(err: Exception) {
