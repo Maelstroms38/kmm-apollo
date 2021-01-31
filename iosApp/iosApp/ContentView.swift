@@ -5,14 +5,13 @@ func greet() -> String {
     return Greeting().greeting()
 }
 
+@available(iOS 14.0, *)
 struct ContentView: View {
     var body: some View {
-        Text(greet())
-    }
-}
-
-struct ContentView_Previews: PreviewProvider {
-    static var previews: some View {
-        ContentView()
+        TabView {
+            Text(greet()).tabItem {
+                Label("Desserts", systemImage: "list.bullet")
+            }
+        }
     }
 }
