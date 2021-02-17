@@ -9,13 +9,17 @@
 import Foundation
 import shared
 
-class ReviewFormViewModel: ObservableObject {
+class ReviewFormViewModel: ViewModel, ObservableObject {
     @Published var review: Review?
     
-    let repository: ReviewRepository = ReviewRepository(apolloProvider: Apollo.shared.apolloProvider)
+    let reviewRepository: ReviewRepository
+    
+    init(reviewRepository: ReviewRepository) {
+        self.reviewRepository = reviewRepository
+    }
     
     func createReview(dessertId: String, newReview: Review) {
-        repository.doNewReview(dessertId: dessertId, reviewInput: ReviewInput(rating: Int32(newReview.rating), text: newReview.text)) { [weak self] (data, error) in
+        reviewRepository.doNewReview(dessertId: dessertId, reviewInput: ReviewInput(rating: Int32(newReview.rating), text: newReview.text)) { [weak self] (data, error) in
             guard let self = self,
                   let newDessert = data else { return }
             self.review = newDessert
@@ -23,7 +27,7 @@ class ReviewFormViewModel: ObservableObject {
     }
     
     func updateReview(review: Review) {
-        repository.updateReview(reviewId: review.id, reviewInput: ReviewInput(rating: Int32(review.rating), text: review.text)) { [weak self] (data, error) in
+        reviewRepository.updateReview(reviewId: review.id, reviewInput: ReviewInput(rating: Int32(review.rating), text: review.text)) { [weak self] (data, error) in
             guard let self = self,
                   let updatedDessert = data else { return }
             self.review = updatedDessert
@@ -31,7 +35,7 @@ class ReviewFormViewModel: ObservableObject {
     }
     
     func deleteReview(reviewId: String) {
-        repository.deleteReview(reviewId: reviewId) { [weak self] (deleted, error) in
+        reviewRepository.deleteReview(reviewId: reviewId) { [weak self] (deleted, error) in
             guard let self = self else { return }
             self.review = nil
         }

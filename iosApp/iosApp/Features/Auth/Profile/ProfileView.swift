@@ -8,18 +8,17 @@
 
 import Foundation
 import SwiftUI
-import shared
 
 @available(iOS 14.0, *)
 struct ProfileView: View {
-    @StateObject var profileViewModel = ProfileViewModel()
+    @StateObject var viewModel = ViewModelFactory.viewModel(forType: ProfileViewModel.self)
     
     var logoutHandler: () -> Void
     
     var body: some View {
         NavigationView {
             List {
-                ForEach(profileViewModel.desserts, id: \.id) { dessert in
+                ForEach(viewModel.desserts, id: \.id) { dessert in
                     NavigationLink(destination: DessertDetailView(dessertId: dessert.id)) {
                         DessertListRowView(dessert: dessert)
                     }
@@ -33,13 +32,13 @@ struct ProfileView: View {
                     }, label: {
                         Image(systemName: "arrow.left.circle.fill")
                     })
-                    NavigationLink(destination: DessertCreateView(dessert: nil)) {
+                    NavigationLink(destination: DessertFormView(dessert: nil)) {
                         Image(systemName: "plus")
                     }
                 }
             )
             .onAppear() {
-                profileViewModel.fetchDesserts()
+                viewModel.fetchDesserts()
             }
         }
     }

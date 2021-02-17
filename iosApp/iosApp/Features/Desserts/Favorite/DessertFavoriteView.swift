@@ -8,17 +8,16 @@
 
 import Foundation
 import SwiftUI
-import shared
 
 @available(iOS 14.0, *)
 struct DessertFavoriteView: View {
     
-    @StateObject var favoriteViewModel = DessertFavoriteViewModel()
+    @StateObject var viewModel = ViewModelFactory.viewModel(forType: DessertFavoriteViewModel.self)
     
     var body: some View {
         NavigationView {
             List {
-                ForEach(favoriteViewModel.favorites, id: \.id) { dessert in
+                ForEach(viewModel.favorites, id: \.id) { dessert in
                     NavigationLink(destination: DessertDetailView(dessertId: dessert.id)) {
                         DessertListRowView(dessert: dessert)
                     }
@@ -26,7 +25,7 @@ struct DessertFavoriteView: View {
             }
             .navigationTitle("Favorites")
             .onAppear() {
-                favoriteViewModel.fetchFavorites()
+                viewModel.fetchFavorites()
             }
         }
     }

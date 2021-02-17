@@ -1,5 +1,5 @@
 //
-//  ReviewFormView.swift
+//  ReviewCreateView.swift
 //  iosApp
 //
 //  Created by Michael Stromer on 1/30/21.
@@ -7,64 +7,39 @@
 //
 
 import Foundation
-import SwiftUI
 import shared
+import SwiftUI
 
 @available(iOS 14.0, *)
 struct ReviewFormView: View {
-    var handler: (Review, ReviewAction) -> Void
     
-    let reviewId: String
-    let dessertId: String
-    @State var text: String
-    @State var rating: Int64
+    @StateObject var viewModel = ViewModelFactory.viewModel(forType: ReviewFormViewModel.self)
     
-    private var isEditing: Bool {
-        return reviewId != "new"
-    }
+    let review: Review?
     
-    private var label: String {
-        return isEditing ? "Edit" : "Create"
-    }
+    @Environment(\.presentationMode) var presentationMode
     
     var body: some View {
-        Form {
-            Section(header: Text("\(label) Review")) {
-                TextField("Description", text: $text)
-                
-                VStack {
-                    HStack {
-                        ForEach(0..<5) { index in
-                            if (index <= rating) {
-                                Image(systemName: "star.fill").onTapGesture {
-                                    self.rating = Int64(index)
-                                }
-                            } else {
-                                Image(systemName: "star").onTapGesture {
-                                    self.rating = Int64(index)
-                                }
-                            }
-                        }
-                    }
+        VStack {
+            ReviewForm(handler: { review, action in
+                switch action {
+                case .create:
+                    viewModel.createReview(dessertId: review.dessertId, newReview: review)
+                case .update:
+                    viewModel.updateReview(review: review)
+                case .delete_:
+                    viewModel.deleteReview(reviewId: review.id)
+                    
+                default:
+                    break
                 }
-            }
-            Section {
-                Button(
-                    action: {
-                        let action: ReviewAction = isEditing ? .update : .create
-                        self.handler(Review(id: reviewId, dessertId: dessertId, userId: "", text: text, rating: rating), action)
-                    },
-                    label: { Text(label) }
-                )
-                if isEditing {
-                    Button(
-                        action: {
-                            self.handler(Review(id: reviewId, dessertId: dessertId, userId: "", text: text, rating: rating), ReviewAction.delete_)
-                        },
-                        label: { Text("Delete") }
-                    )
-                }
-            }
+                presentationMode.wrappedValue.dismiss()
+            },
+            reviewId: review?.id ?? "new", dessertId: review?.dessertId ?? "new", text: review?.text ?? "", rating: review?.rating ?? 0)
+        }
+        .navigationBarTitle("", displayMode: .inline)
+        .onAppear() {
+            self.viewModel.review = review
         }
     }
 }

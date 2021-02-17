@@ -8,7 +8,6 @@
 
 import Foundation
 import SwiftUI
-import shared
 
 @available(iOS 14.0, *)
 struct LoginView: View {
@@ -16,14 +15,14 @@ struct LoginView: View {
     @State private var email: String = ""
     @State private var password: String = ""
     
-    @StateObject var loginViewModel = LoginViewModel()
+    @StateObject var viewModel = ViewModelFactory.viewModel(forType: LoginViewModel.self)
     
     private var label: String {
         return login ? "Login" : "Sign Up"
     }
     
     var body: some View {
-        if (loginViewModel.token.isEmpty) {
+        if (viewModel.token.isEmpty) {
             NavigationView {
                 Form {
                     Section {
@@ -34,9 +33,9 @@ struct LoginView: View {
                         Button(
                             action: {
                                 if (login) {
-                                    loginViewModel.signIn(email: email, password: password)
+                                    viewModel.signIn(email: email, password: password)
                                 } else {
-                                    loginViewModel.signUp(email: email, password: password)
+                                    viewModel.signUp(email: email, password: password)
                                 }
                             },
                             label: { Text(label) }
@@ -60,7 +59,7 @@ struct LoginView: View {
             
         } else {
             ProfileView(logoutHandler: {
-                loginViewModel.deleteUserState()
+                viewModel.deleteUserState()
             })
         }
     }

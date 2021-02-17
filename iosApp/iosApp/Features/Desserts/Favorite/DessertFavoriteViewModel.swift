@@ -9,20 +9,24 @@
 import Foundation
 import shared
 
-class DessertFavoriteViewModel: ObservableObject {
+class DessertFavoriteViewModel: ViewModel, ObservableObject {
     
     @Published public var favorites: [Dessert] = []
 
-    let repository = DessertRepository(apolloProvider: Apollo.shared.apolloProvider)
+    let dessertRepository: DessertRepository
+    
+    init(dessertRepository: DessertRepository) {
+        self.dessertRepository = dessertRepository
+    }
     
     func fetchFavorites() {
-        let favorites = self.repository.getFavoriteDesserts()
+        let favorites = self.dessertRepository.getFavoriteDesserts()
         self.favorites = favorites
     }
     
     func onUpdateDessert(updatedDessert: Dessert) {
-        self.repository.removeFavorite(dessertId: updatedDessert.id)
-        self.repository.saveFavorite(dessert: updatedDessert)
+        self.dessertRepository.removeFavorite(dessertId: updatedDessert.id)
+        self.dessertRepository.saveFavorite(dessert: updatedDessert)
         
         let insertIndex = self.favorites.firstIndex { dessert -> Bool in
             return dessert.id == updatedDessert.id
@@ -34,6 +38,6 @@ class DessertFavoriteViewModel: ObservableObject {
     }
     
     func onDeleteDessert(dessertId: String) {
-        self.repository.removeFavorite(dessertId: dessertId)
+        self.dessertRepository.removeFavorite(dessertId: dessertId)
     }
 }

@@ -8,29 +8,28 @@
 
 import Foundation
 import SwiftUI
-import shared
 
 @available(iOS 14.0, *)
 struct DessertListView: View {
     
-    @StateObject var dessertListViewModel = DessertListViewModel()
+    @StateObject var viewModel = ViewModelFactory.viewModel(forType: DessertListViewModel.self)
     
     var body: some View {
         NavigationView {
             List {
-                ForEach(dessertListViewModel.desserts, id: \.id) { dessert in
+                ForEach(viewModel.desserts, id: \.id) { dessert in
                     NavigationLink(destination: DessertDetailView(dessertId: dessert.id)) {
                         DessertListRowView(dessert: dessert)
                     }
                 }
-                if dessertListViewModel.shouldDisplayNextPage {
+                if viewModel.shouldDisplayNextPage {
                     nextPageView
                 }
             }
             .navigationTitle("Desserts")
             .onAppear() {
-                dessertListViewModel.currentPage = 0
-                dessertListViewModel.fetchDesserts()
+                viewModel.currentPage = 0
+                viewModel.fetchDesserts()
             }
         }
     }
@@ -45,7 +44,7 @@ struct DessertListView: View {
             Spacer()
         }
         .onAppear(perform: {
-            dessertListViewModel.currentPage += 1
+            viewModel.currentPage += 1
         })
     }
 }

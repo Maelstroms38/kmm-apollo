@@ -16,16 +16,20 @@ class DessertDetailViewModel constructor(private val repository: DessertReposito
         return repository.getDessert(dessertId)
     }
 
-    fun isFavorite(dessertId: String): Boolean {
-        return repository.isFavorite(dessertId)
-    }
-
     fun saveFavorite(dessert: Dessert) {
         return repository.saveFavorite(dessert)
     }
 
+    fun updateFavorite(dessert: Dessert) {
+        return repository.updateFavorite(dessert)
+    }
+
     fun removeFavorite(dessertId: String) {
         return repository.removeFavorite(dessertId)
+    }
+
+    fun getFavorite(dessertId: String): Dessert? {
+        return repository.getFavoriteDessert(dessertId)
     }
 
     fun getUserState(): UserState? {

@@ -10,10 +10,17 @@ import Foundation
 import SwiftUI
 import shared
 
-class DessertListViewModel: ObservableObject {
+class DessertListViewModel: ViewModel, ObservableObject {
+    
+    private let dessertRepository: DessertRepository
+    
+    // UI binding
     @Published public var desserts: [Dessert] = []
     
-    let repository = DessertRepository(apolloProvider: Apollo.shared.apolloProvider)
+    init(dessertRepository: DessertRepository)
+    {
+        self.dessertRepository = dessertRepository
+    }
     
     public var currentPage: Int32 = 0 {
         didSet {
@@ -35,7 +42,7 @@ class DessertListViewModel: ObservableObject {
     
     func fetchDesserts() {
         let page = currentPage
-        repository.getDesserts(page: page, size: 10) { [weak self] (data, error) in
+        dessertRepository.getDesserts(page: page, size: 10) { [weak self] (data, error) in
             
             guard let self = self,
                   let desserts = data?.results else { return }

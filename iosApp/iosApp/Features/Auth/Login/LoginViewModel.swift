@@ -9,18 +9,19 @@
 import Foundation
 import shared
 
-class LoginViewModel: ObservableObject {
+class LoginViewModel: ViewModel, ObservableObject {
     
-    let repository: AuthRepository = AuthRepository(apolloProvider: Apollo.shared.apolloProvider)
+    let authRepository: AuthRepository
     
     @Published public var token: String = ""
     
-    init() {
-        token = getUserState()?.token ?? ""
+    init(authRepository: AuthRepository) {
+        self.authRepository = authRepository
+        token = authRepository.getUserState()?.token ?? ""
     }
     
     func signIn(email: String, password: String) {
-        repository.signIn(email: email, password: password) { [weak self] (data, error) in
+        authRepository.signIn(email: email, password: password) { [weak self] (data, error) in
             guard let self = self,
                   let token = data else { return }
             self.token = token
@@ -28,7 +29,7 @@ class LoginViewModel: ObservableObject {
     }
     
     func signUp(email: String, password: String) {
-        repository.signUp(email: email, password: password) { [weak self] (data, error) in
+        authRepository.signUp(email: email, password: password) { [weak self] (data, error) in
             guard let self = self,
                   let token = data else { return }
             self.token = token
@@ -37,11 +38,11 @@ class LoginViewModel: ObservableObject {
     }
     
     func getUserState() -> UserState? {
-        return repository.getUserState()
+        return authRepository.getUserState()
     }
     
     func deleteUserState() {
-        repository.deleteUserState()
+        authRepository.deleteUserState()
         self.token = ""
     }
 }

@@ -23,6 +23,13 @@ internal class Database(databaseDriverFactory: DatabaseDriverFactory) {
             insertDessert(dessert)
         }
     }
+
+    internal fun updateDessert(dessert: Dessert) {
+        dbQuery.transaction {
+            updateDessertById(dessert)
+        }
+    }
+
     internal fun deleteDessert(dessertId: String) {
         dbQuery.transaction {
             removeDessert(dessertId)
@@ -56,6 +63,15 @@ internal class Database(databaseDriverFactory: DatabaseDriverFactory) {
             dessert.name,
             dessert.description,
             dessert.imageUrl
+        )
+    }
+
+    private fun updateDessertById(dessert: Dessert) {
+        dbQuery.updateDessertById(
+            name = dessert.name,
+            description = dessert.description,
+            imageUrl = dessert.imageUrl,
+            id = dessert.id
         )
     }
 

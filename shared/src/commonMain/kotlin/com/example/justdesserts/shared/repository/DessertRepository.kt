@@ -64,8 +64,12 @@ class DessertRepository(apolloProvider: ApolloProvider) {
     database.deleteDessert(dessertId)
   }
 
-  fun isFavorite(dessertId: String): Boolean {
-    return database.getDessertById(dessertId) != null
+  fun updateFavorite(dessert: Dessert) {
+    database.updateDessert(dessert)
+  }
+
+  fun getFavoriteDessert(dessertId: String): Dessert? {
+    return database.getDessertById(dessertId)
   }
 
   fun getFavoriteDesserts(): List<Dessert> {

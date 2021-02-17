@@ -23,6 +23,11 @@ insertDessert:
 INSERT INTO Dessert(id, userId, name, description, imageUrl)
 VALUES(?, ?, ?, ?, ?);
 
+updateDessertById:
+UPDATE Dessert
+SET name = ?, description = ?, imageUrl = ?
+WHERE id = ?;
+
 removeAllDesserts:
 DELETE FROM Dessert;
 

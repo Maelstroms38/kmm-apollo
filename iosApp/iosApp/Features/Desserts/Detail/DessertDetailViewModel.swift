@@ -10,7 +10,7 @@ import Foundation
 import SwiftUI
 import shared
 
-class DessertDetailViewModel: ObservableObject {
+class DessertDetailViewModel: ViewModel, ObservableObject {
     
     @Published public var dessert: Dessert?
     
@@ -20,24 +20,34 @@ class DessertDetailViewModel: ObservableObject {
     
     @Published var userState: UserState?
     
-    let repository = DessertRepository(apolloProvider: Apollo.shared.apolloProvider)
+    let dessertRepository: DessertRepository
     
-    let authRepository = AuthRepository(apolloProvider: Apollo.shared.apolloProvider)
+    let authRepository: AuthRepository
+    
+    init(dessertRepository: DessertRepository, authRepository: AuthRepository) {
+        self.dessertRepository = dessertRepository
+        self.authRepository = authRepository
+        self.userState = authRepository.getUserState()
+    }
     
     @Environment(\.presentationMode) var presentationMode
     
     func fetchDessert(dessertId: String, completion: @escaping () -> Void) {
-        repository.getDessert(dessertId: dessertId) { [weak self] (data, error) in
+        dessertRepository.getDessert(dessertId: dessertId) { [weak self] (data, error) in
             defer { completion() }
             do {
                 guard let self = self else { return }
-                let isFavorite = self.repository.isFavorite(dessertId: dessertId)
+                let favorite = self.dessertRepository.getFavoriteDessert(dessertId: dessertId)
+                let isFavorite = favorite != nil
                 self.isFavorite = isFavorite
                 
                 guard let dessert = data?.dessert,
                       let reviews = data?.reviews else {
                     self.dessert = nil
                     return
+                }
+                if (isFavorite) {
+                    self.updateFavorite(dessert: dessert)
                 }
                 self.dessert = dessert
                 self.reviews = reviews
@@ -46,12 +56,16 @@ class DessertDetailViewModel: ObservableObject {
     }
     
     func saveFavorite(dessert: Dessert) {
-        self.repository.saveFavorite(dessert: dessert)
+        self.dessertRepository.saveFavorite(dessert: dessert)
         self.isFavorite = true
     }
     
+    func updateFavorite(dessert: Dessert) {
+        self.dessertRepository.updateFavorite(dessert: dessert)
+    }
+    
     func removeFavorite(dessertId: String) {
-        self.repository.removeFavorite(dessertId: dessertId)
+        self.dessertRepository.removeFavorite(dessertId: dessertId)
         self.isFavorite = false
     }
     

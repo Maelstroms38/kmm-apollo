@@ -7,7 +7,7 @@ struct ContentView: View {
         TabView {
             DessertListView()
                 .tabItem {
-                    Label("Desserts", systemImage: "safari")
+                    Label("Desserts", systemImage: "list.bullet")
                 }
             DessertFavoriteView()
                 .tabItem {

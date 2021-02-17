@@ -57,13 +57,23 @@ fun DessertDetailView(dessertId: String,
     val (userId, setUserId) = remember { mutableStateOf("") }
 
     LaunchedEffect(dessertId) {
-        setIsFavorite(dessertDetailViewModel.isFavorite(dessertId))
+        val favDessert = dessertDetailViewModel.getFavorite(dessertId)
+        val isFavoriteDessert = favDessert != null
+        setIsFavorite(isFavoriteDessert)
         setUserId(dessertDetailViewModel.getUserState()?.userId ?: "")
         try {
+            // Read Dessert from local database
+            if (isFavoriteDessert) {
+                setDessert(favDessert!!)
+            }
             val readDessert = dessertDetailViewModel.getDessert(dessertId)
             readDessert?.let {
                 setDessert(it.dessert)
                 setReviews(it.reviews)
+                // Update Favorite Dessert
+                if (isFavoriteDessert) {
+                    dessertDetailViewModel.updateFavorite(dessert)
+                }
             } ?: run {
                 popBack()
             }
