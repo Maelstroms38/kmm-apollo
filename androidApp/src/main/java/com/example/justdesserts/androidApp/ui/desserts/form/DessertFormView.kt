@@ -25,16 +25,16 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.example.justdesserts.shared.cache.DessertAction
+import com.example.justdesserts.shared.cache.ActionType
 import com.example.justdesserts.shared.cache.Dessert
 import kotlinx.coroutines.async
 import org.koin.androidx.compose.getViewModel
 
 @Composable
-fun DessertFormView(dessertId: String, action: DessertAction, popBack: () -> Unit) {
+fun DessertFormView(dessertId: String, action: ActionType, popBack: () -> Unit) {
     val dessertFormViewModel = getViewModel<DessertFormViewModel>()
     val (dessert, setDessert) = remember { mutableStateOf(Dessert("", "", "", "", "")) }
-    val isEditing = action != DessertAction.CREATE
+    val isEditing = action != ActionType.CREATE
     val scope = rememberCoroutineScope()
     val label = if (isEditing) "Save" else "Create"
 
@@ -51,20 +51,20 @@ fun DessertFormView(dessertId: String, action: DessertAction, popBack: () -> Uni
         }
     }
 
-    suspend fun handleDessert(action: DessertAction) {
+    suspend fun handleDessert(action: ActionType) {
         when (action) {
-            DessertAction.CREATE -> {
+            ActionType.CREATE -> {
                 dessertFormViewModel.createDessert(dessert)
                 popBack()
             }
-            DessertAction.UPDATE -> {
+            ActionType.UPDATE -> {
                 val updateDessert = dessertFormViewModel.updateDessert(dessert)
                 updateDessert?.let {
                     setDessert(it)
                 }
                 popBack()
             }
-            DessertAction.DELETE -> {
+            ActionType.DELETE -> {
                 val deleted = dessertFormViewModel.deleteDessert(dessert.id)
                 if (deleted == true) popBack()
             }
@@ -129,7 +129,7 @@ fun DessertFormView(dessertId: String, action: DessertAction, popBack: () -> Uni
                         if (isEditing) {
                             Button(onClick = {
                                 scope.async {
-                                    handleDessert(DessertAction.DELETE)
+                                    handleDessert(ActionType.DELETE)
                                 }
                             }, modifier = Modifier.padding(16.dp).preferredWidth(320.dp)) {
                                 Text("Delete")

@@ -12,7 +12,7 @@ import shared
 
 @available(iOS 14.0, *)
 struct ReviewForm: View {
-    var handler: (Review, ReviewAction) -> Void
+    var handler: (Review, ActionType) -> Void
     
     let reviewId: String
     let dessertId: String
@@ -51,7 +51,7 @@ struct ReviewForm: View {
             Section {
                 Button(
                     action: {
-                        let action: ReviewAction = isEditing ? .update : .create
+                        let action: ActionType = isEditing ? .update : .create
                         self.handler(Review(id: reviewId, dessertId: dessertId, userId: "", text: text, rating: rating), action)
                     },
                     label: { Text(label) }
@@ -59,7 +59,7 @@ struct ReviewForm: View {
                 if isEditing {
                     Button(
                         action: {
-                            self.handler(Review(id: reviewId, dessertId: dessertId, userId: "", text: text, rating: rating), ReviewAction.delete_)
+                            self.handler(Review(id: reviewId, dessertId: dessertId, userId: "", text: text, rating: rating), ActionType.delete_)
                         },
                         label: { Text("Delete") }
                     )

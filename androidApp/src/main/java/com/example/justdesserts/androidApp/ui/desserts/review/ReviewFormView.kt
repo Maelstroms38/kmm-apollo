@@ -28,16 +28,16 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import com.example.justdesserts.shared.cache.ActionType
 import com.example.justdesserts.shared.cache.Review
-import com.example.justdesserts.shared.cache.ReviewAction
 import kotlinx.coroutines.async
 import org.koin.androidx.compose.getViewModel
 
 @Composable
-fun ReviewFormView(reviewId: String, dessertId: String, action: ReviewAction, popBack: () -> Unit) {
+fun ReviewFormView(reviewId: String, dessertId: String, action: ActionType, popBack: () -> Unit) {
     val reviewFormViewModel = getViewModel<ReviewFormViewModel>()
     val (review, setReview) = remember { mutableStateOf(Review("", "", "", "", 0)) }
-    val isEditing = action != ReviewAction.CREATE
+    val isEditing = action != ActionType.CREATE
     val scope = rememberCoroutineScope()
     val label = if (isEditing) "Save" else "Create"
 
@@ -54,20 +54,20 @@ fun ReviewFormView(reviewId: String, dessertId: String, action: ReviewAction, po
         }
     }
 
-    suspend fun handleReview(action: ReviewAction) {
+    suspend fun handleReview(action: ActionType) {
         when (action) {
-            ReviewAction.CREATE -> {
+            ActionType.CREATE -> {
                 reviewFormViewModel.createReview(dessertId, review)
                 popBack()
             }
-            ReviewAction.UPDATE -> {
+            ActionType.UPDATE -> {
                 val updateDessert = reviewFormViewModel.updateReview(review)
                 updateDessert?.let {
                     setReview(it)
                 }
                 popBack()
             }
-            ReviewAction.DELETE -> {
+            ActionType.DELETE -> {
                 val deleted = reviewFormViewModel.deleteReview(review.id)
                 if (deleted == true) popBack()
             }
@@ -149,7 +149,7 @@ fun ReviewFormView(reviewId: String, dessertId: String, action: ReviewAction, po
                             Button(
                                 onClick = {
                                     scope.async {
-                                        handleReview(ReviewAction.DELETE)
+                                        handleReview(ActionType.DELETE)
                                     }
                                 }, modifier = Modifier
                                     .padding(16.dp)

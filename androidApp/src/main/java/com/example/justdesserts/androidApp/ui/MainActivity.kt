@@ -15,14 +15,12 @@ import androidx.compose.ui.platform.setContent
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.*
 import com.example.justdesserts.androidApp.ui.auth.login.LoginView
-import com.example.justdesserts.androidApp.ui.auth.profile.ProfileView
-import com.example.justdesserts.shared.cache.DessertAction
+import com.example.justdesserts.shared.cache.ActionType
 import com.example.justdesserts.androidApp.ui.desserts.detail.DessertDetailView
 import com.example.justdesserts.androidApp.ui.desserts.favorites.FavoriteListView
 import com.example.justdesserts.androidApp.ui.desserts.form.DessertFormView
 import com.example.justdesserts.androidApp.ui.desserts.list.DessertListView
 import com.example.justdesserts.androidApp.ui.desserts.review.ReviewFormView
-import com.example.justdesserts.shared.cache.ReviewAction
 
 sealed class Screens(val route: String, val label: String, val icon: ImageVector? = null) {
     object DessertsScreen : Screens("Desserts", "Desserts", Icons.Default.List)
@@ -77,7 +75,7 @@ fun MainLayout() {
         
         composable(Screens.DessertFormScreen.route + "/{id}") { backStackEntry ->
             val id = backStackEntry.arguments?.get("id") as? String ?: "new"
-            val action = if (id != "new") DessertAction.UPDATE else DessertAction.CREATE
+            val action = if (id != "new") ActionType.UPDATE else ActionType.CREATE
             DessertFormView(id, action,
                 popBack = {
                     navController.popBackStack()
@@ -88,7 +86,7 @@ fun MainLayout() {
         composable(Screens.ReviewFormScreen.route + "?reviewId={reviewId}&dessertId={dessertId}") { backStackEntry ->
             val reviewId = backStackEntry.arguments?.get("reviewId") as? String ?: "new"
             val dessertId = backStackEntry.arguments?.get("dessertId") as? String ?: "new"
-            val action = if (reviewId != "new") ReviewAction.UPDATE else ReviewAction.CREATE
+            val action = if (reviewId != "new") ActionType.UPDATE else ActionType.CREATE
             ReviewFormView(reviewId, dessertId, action,
                 popBack = {
                     navController.popBackStack()

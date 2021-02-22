@@ -1,6 +1,6 @@
 package com.example.justdesserts.shared.cache
 
-internal class Database(databaseDriverFactory: DatabaseDriverFactory) {
+class Database(databaseDriverFactory: DatabaseDriverFactory) {
     private val database = JustDesserts(databaseDriverFactory.createDriver())
     private val dbQuery = database.justDessertsQueries
 
