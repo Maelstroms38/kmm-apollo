@@ -6,33 +6,20 @@ import com.example.justdesserts.shared.cache.Dessert
 import com.example.justdesserts.shared.cache.DessertDetail
 import com.example.justdesserts.shared.cache.Desserts
 import com.example.justdesserts.shared.cache.toDessert
+import com.example.justdesserts.shared.cache.toDessertDetail
 import com.example.justdesserts.shared.cache.toDesserts
-import com.example.justdesserts.shared.cache.toReview
 import com.example.justdesserts.type.DessertInput
 import kotlinx.coroutines.flow.single
 
 class DessertRepository(apolloProvider: ApolloProvider): BaseRepository(apolloProvider) {
   suspend fun getDesserts(page: Int, size: Int): Desserts? {
-      val response = apolloClient.query(
-        GetDessertsQuery(
-          page,
-          size
-        )
-      ).execute().single()
+      val response = apolloClient.query(GetDessertsQuery(page, size)).execute().single()
       return response.data?.desserts?.toDesserts()
   }
 
   suspend fun getDessert(dessertId: String): DessertDetail? {
     val response = apolloClient.query(GetDessertQuery(dessertId)).execute().single()
-    response.data?.dessert?.let { dessert ->
-      return DessertDetail(
-        dessert = dessert.toDessert(),
-        reviews = dessert.reviews.map {
-          it.toReview()
-        }
-      )
-    }
-    return null
+    return response.data?.dessert?.toDessertDetail()
   }
 
   suspend fun newDessert(dessertInput: DessertInput): Dessert? {

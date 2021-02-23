@@ -16,6 +16,12 @@ fun GetDessertsQuery.Desserts.toDesserts() = Desserts(
     info = info
 )
 
+fun GetDessertQuery.Dessert.toDessertDetail() =
+    DessertDetail(
+    dessert = this.toDessert(),
+    reviews = reviews.map { it.toReview() }
+)
+
 fun GetProfileQuery.Dessert.toDessert() = Dessert(
     id = id,
     userId = userId,
