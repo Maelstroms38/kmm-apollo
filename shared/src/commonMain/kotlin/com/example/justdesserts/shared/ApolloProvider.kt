@@ -18,7 +18,7 @@ class ApolloProvider(databaseDriverFactory: DatabaseDriverFactory) : TokenProvid
                 "Content-Type" to "application/json",
             ),
         ),
-        interceptors = listOf(BearerTokenInterceptor(this))
+        interceptors = listOf(BearerTokenInterceptor(this), LoggingInterceptor())
     )
 
     override suspend fun currentToken(): String {
