@@ -11,24 +11,25 @@ import com.example.justdesserts.type.UserInput
 import kotlinx.coroutines.flow.single
 
 class AuthRepository(apolloProvider: ApolloProvider): BaseRepository(apolloProvider) {
-    suspend fun signIn(email: String, password: String): String {
-        val response = apolloClient.mutate(SignInMutation(UserInput(email = email, password = password))).execute().single()
-        response.data?.signIn.let { data ->
-            if (data?.user?.id != null) {
+
+    suspend fun signIn(userInput: UserInput): String {
+        val response = apolloClient.mutate(SignInMutation(userInput)).execute().single()
+        response.data?.signIn?.let { data ->
+            data.user.also {
                 database.saveUserState(data.user.id, data.token)
-                return data.token
             }
+            return data.token
         }
         throw Exception("Could not sign in")
     }
 
-    suspend fun signUp(email: String, password: String): String {
-        val response = apolloClient.mutate(SignUpMutation(UserInput(email = email, password = password))).execute().single()
-        response.data?.signUp.let { data ->
-            if (data?.user?.id != null) {
+    suspend fun signUp(userInput: UserInput): String {
+        val response = apolloClient.mutate(SignUpMutation(userInput)).execute().single()
+        response.data?.signUp?.let { data ->
+            data.user.also {
                 database.saveUserState(data.user.id, data.token)
-                return data.token
             }
+            return data.token
         }
         throw Exception("Could not sign up")
     }

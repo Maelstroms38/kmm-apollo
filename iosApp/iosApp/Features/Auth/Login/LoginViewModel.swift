@@ -21,7 +21,7 @@ class LoginViewModel: ViewModel, ObservableObject {
     }
     
     func signIn(email: String, password: String) {
-        authRepository.signIn(email: email, password: password) { [weak self] (data, error) in
+        authRepository.signIn(userInput: UserInput(email: email, password: password)) { [weak self] (data, error) in
             guard let self = self,
                   let token = data else { return }
             self.token = token
@@ -29,7 +29,7 @@ class LoginViewModel: ViewModel, ObservableObject {
     }
     
     func signUp(email: String, password: String) {
-        authRepository.signUp(email: email, password: password) { [weak self] (data, error) in
+        authRepository.signUp(userInput: UserInput(email: email, password: password)) { [weak self] (data, error) in
             guard let self = self,
                   let token = data else { return }
             self.token = token
