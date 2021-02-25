@@ -6,8 +6,10 @@ import com.apollographql.apollo.interceptor.TokenProvider
 import com.apollographql.apollo.network.http.ApolloHttpNetworkTransport
 import com.example.justdesserts.shared.cache.Database
 import com.example.justdesserts.shared.cache.DatabaseDriverFactory
+import com.example.justdesserts.shared.logger.LoggingInterceptor
+import com.example.justdesserts.shared.logger.MyLogger
 
-class ApolloProvider(databaseDriverFactory: DatabaseDriverFactory) : TokenProvider {
+class ApolloProvider(databaseDriverFactory: DatabaseDriverFactory, myLogger: MyLogger) : TokenProvider {
 
     internal val database = Database(databaseDriverFactory)
     internal val apolloClient: ApolloClient = ApolloClient(
@@ -18,7 +20,7 @@ class ApolloProvider(databaseDriverFactory: DatabaseDriverFactory) : TokenProvid
                 "Content-Type" to "application/json",
             ),
         ),
-        interceptors = listOf(BearerTokenInterceptor(this), LoggingInterceptor())
+        interceptors = listOf(BearerTokenInterceptor(this), LoggingInterceptor(myLogger))
     )
 
     override suspend fun currentToken(): String {

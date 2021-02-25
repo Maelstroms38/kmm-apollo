@@ -16,7 +16,7 @@ final class ModuleProvider
     let authRepository: AuthRepository
     let reviewRepository: ReviewRepository
     
-    private let apolloProvider = ApolloProvider(databaseDriverFactory: DatabaseDriverFactory())
+    private let apolloProvider = ApolloProvider(databaseDriverFactory: DatabaseDriverFactory(), myLogger: MyLogger())
     
     init()
     {
