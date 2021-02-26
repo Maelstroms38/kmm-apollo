@@ -14,14 +14,14 @@ import org.koin.androidx.compose.getViewModel
 @Composable
 fun FavoriteListView(bottomBar: @Composable () -> Unit, dessertSelected: (dessert: Dessert) -> Unit) {
     val favoriteListViewModel = getViewModel<FavoriteListViewModel>()
-    val favorites = favoriteListViewModel.desserts.collectAsLazyPagingItems()
+    val lazyDessertList = favoriteListViewModel.desserts.collectAsLazyPagingItems()
 
     Scaffold(
-        topBar = { TopAppBar(title = { Text( "Desserts") }) },
+        topBar = { TopAppBar(title = { Text( "Favorites") }) },
         bottomBar = bottomBar,
         bodyContent = {
             LazyColumn(contentPadding = it) {
-                items(favorites) { favorite ->
+                items(lazyDessertList) { favorite ->
                     favorite?.let { dessert ->
                         DessertListRowView(dessert, dessertSelected)
                     }

@@ -8,7 +8,11 @@ import com.example.justdesserts.shared.cache.Dessert
 class ProfileDataSource @ApolloExperimental constructor(private val repository: AuthRepository): PagingSource<Int, Dessert>() {
     @ApolloExperimental
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, Dessert> {
-        val favorites = repository.getProfileDesserts()
-        return LoadResult.Page(data = favorites, prevKey = null, nextKey = null)
+        return try {
+            val favorites = repository.getProfileDesserts()
+            LoadResult.Page(data = favorites, prevKey = null, nextKey = null)
+        } catch(err: Exception) {
+            LoadResult.Error(err)
+        }
     }
 }

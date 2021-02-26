@@ -18,7 +18,7 @@ class DessertDataSource @ApolloExperimental constructor(private val repository: 
       val nextKey = response?.info?.next
       LoadResult.Page(data = desserts ?: emptyList(), prevKey = prevKey, nextKey = nextKey)
     } catch (err: Exception) {
-      LoadResult.Page(data = emptyList(), prevKey = null, nextKey = null)
+      LoadResult.Error(err)
     }
   }
 }
