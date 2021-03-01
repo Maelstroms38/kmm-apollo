@@ -17,7 +17,7 @@ import com.example.justdesserts.shared.cache.Dessert
 import dev.chrisbanes.accompanist.coil.CoilImage
 
 @Composable
-fun DessertListRowView(dessert: Dessert, dessertSelected: (network: Dessert) -> Unit) {
+fun DessertListRowView(dessert: Dessert, dessertSelected: (dessert: Dessert) -> Unit) {
   Row(modifier = Modifier.fillMaxWidth().clickable(onClick = { dessertSelected(dessert) }).padding(16.dp),
       verticalAlignment = Alignment.CenterVertically
   ) {

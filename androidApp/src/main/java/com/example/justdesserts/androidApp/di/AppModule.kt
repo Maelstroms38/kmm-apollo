@@ -6,7 +6,6 @@ import com.example.justdesserts.androidApp.ui.desserts.form.DessertFormViewModel
 import com.example.justdesserts.androidApp.ui.desserts.detail.DessertDetailViewModel
 import com.example.justdesserts.androidApp.ui.desserts.favorites.FavoriteListViewModel
 import com.example.justdesserts.androidApp.ui.desserts.list.DessertListViewModel
-import com.example.justdesserts.androidApp.ui.desserts.review.ReviewFormView
 import com.example.justdesserts.androidApp.ui.desserts.review.ReviewFormViewModel
 import com.example.justdesserts.shared.ApolloProvider
 import com.example.justdesserts.shared.repository.AuthRepository
